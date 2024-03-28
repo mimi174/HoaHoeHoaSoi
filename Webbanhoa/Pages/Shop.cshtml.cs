@@ -2,69 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 
 namespace Webbanhoa.Pages.Shared
 {
-	public class ShopModel : PageModel
+    public class ShopModel : PageModel
     {
-        public List<ClientInfo> listClients = new List<ClientInfo>();
+        public List<Products> listProducts = new List<Products>();
 
         public void OnGet()
         {
             try
             {
-                string connectionString = "Server=localhost;Database=My_store;User Id=sa;Password=Password.1;Trusted_Connection=";
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                string sql = "SELECT * FROM Clients";
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                string connectionString = "Server=localhost;Database=HoaHoeHoaSoi;User Id=sa;Password=Password.1;Trusted_Connection=";
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    string sql = "SELECT * FROM Products";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            var clientInfo = new ClientInfo();
-                            clientInfo.Id = "" + reader.GetInt32(0);
-                            clientInfo.Name = reader.GetString(1);
-                            clientInfo.Email = reader.GetString(2);
-                            clientInfo.Phone = reader.GetString(3);
-                            clientInfo.Address = reader.GetString(4);
-                            clientInfo.Created_at = reader.GetDateTime(5).ToString();
-                            clientInfo.Urf = reader.GetString(6);
-                            listClients.Add(clientInfo);
+                            while (reader.Read())
+                            {
+                                var Products = new Products();
+                                Products.Id = "" + reader.GetInt32(0);
+                                Products.Name = reader.GetString(1);
+                                Products.Price = reader.GetString(1);
+                                Products.Img = reader.GetString(3);
+                                listProducts.Add(Products);
+                            }
                         }
                     }
                 }
-            }
 
-        }
+            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 throw;
             }
-}
+        }
     }
 }
 
-public class ClientInfo
-{
-    public string Id { get; set; }
-
-    public string Name { get; set; }
-
-    public string Phone { get; set; }
-
-    public string Email { get; set; }
-
-    public string Address { get; set; }
-
-    public string Created_at { get; set; }
-
-    public string Urf { get; set; }
-}
 

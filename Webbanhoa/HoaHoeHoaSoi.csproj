@@ -9,10 +9,14 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <Folder Include="wwwroot\Picture\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Picture\Hoa.png" />
     <Content Remove="wwwroot\Picture\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Model\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Picture\Hoa.png" />

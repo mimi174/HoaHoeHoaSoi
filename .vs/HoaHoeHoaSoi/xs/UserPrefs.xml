@@ -13,24 +13,28 @@
       <File FileName="Webbanhoa/Pages/Shared/_ValidationScriptsPartial.cshtml" />
       <File FileName="Webbanhoa/Program.cs" />
       <File FileName="Webbanhoa/Pages/_ViewStart.cshtml" />
-      <File FileName="Webbanhoa/Pages/Shop.cshtml" Line="35" Column="7" />
       <File FileName="Webbanhoa/Properties/launchSettings.json" />
       <File FileName="Webbanhoa/wwwroot/css/site.css" />
       <File FileName="Webbanhoa/Pages/Error.cshtml" />
       <File FileName="Webbanhoa/Pages/_ViewImports.cshtml" />
-      <File FileName="Webbanhoa/Pages/Shop.cshtml.cs" Line="28" Column="20" />
+      <File FileName="Webbanhoa/Pages/Shop.cshtml.cs" Line="39" Column="30" />
+      <File FileName="Webbanhoa/Model/Products.cs" Line="7" Column="4" />
+      <File FileName="Webbanhoa/Pages/Shop.cshtml" Line="8" Column="26" NotebookId="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HoaHoeHoaSoi" expanded="True">
-            <Node name="HoaHoeHoaSoi" expanded="True" selected="True">
+            <Node name="HoaHoeHoaSoi">
+              <Node name="Model" expanded="True" />
               <Node name="Pages" expanded="True">
                 <Node name="Shared" expanded="True">
                   <Node name="_Layout.cshtml" expanded="True" />
                 </Node>
                 <Node name="Index.cshtml" expanded="True" />
-                <Node name="Shop.cshtml" expanded="True" />
+                <Node name="Shop.cshtml" expanded="True">
+                  <Node name="Shop.cshtml.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
