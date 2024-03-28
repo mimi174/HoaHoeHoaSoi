@@ -1,0 +1,243 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "";
+}
+
+@*<div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>*@
+<style>
+    .img-wall {
+        width: 100%;
+        height: 100%;
+        border-radius: 150px;
+        filter: drop-shadow(0 0 5px black);
+        padding: 1.1vw;
+    }
+
+    .img-wall-main {
+        width: 100%;
+        height: 100%;
+        border-radius: 100px;
+        filter: drop-shadow(0 0 5px black);
+        position: relative;
+    }
+
+    .div-img {
+        float: none;
+        text-align: center;
+        display: inline;
+        padding-top:2vw;
+        padding-bottom:2vw
+    }
+
+    div.relative {
+        position: relative;
+    }
+
+    div.absolute {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 100px;
+        background-color: rgba(255,255,255,0.7);
+        backdrop-filter: blur(20%) contrast(50%);
+    }
+
+    .btn-shop {
+        filter: drop-shadow(0.3em 0.3em 0.3em black);
+        border-radius: 30px;
+        background-color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.6vw;
+        border: none;
+    }
+    div.text-heading{
+        position:relative;
+    }
+
+    div.div-img-wall{
+        position:relative;
+    }
+
+    div.text-heading-wall{
+        position:absolute;
+    }
+    .info-left {        
+        width: 60%;
+    }
+
+    .info-right {       
+        width: 40%;
+    }
+
+    .img-info {
+        border-radius: 200px 200px 0px 0px;
+        border: 0.8vw solid;
+        border-color: #9D1030;
+    }
+
+    .text-box {
+        width:35vw;
+        font-family: Courier;
+        font-size: 1.5vw;
+        color: #9D1030;
+        background-color: #F6D8DC;
+        border-color: #9D1030;
+        border: 0.3vw solid;
+        border-radius:100px;
+        padding: 1vw 2vw 1vw 2vw ;
+    }
+
+    .box-title {
+        font-size: 2.5vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1vw;
+    }
+
+    .text-box-note {
+        width: 35vw;
+        height: 26vw;
+        font-family: Courier;
+        font-size: 1.5vw;
+        color: #9D1030;
+        background-color: #F6D8DC;
+        border-color: #9D1030;
+        border: 0.3vw solid;
+        border-radius: 80px;
+        padding: 2vw 2vw 2vw 2vw;
+        resize:none;
+    }
+
+    .info-left-note {
+        width: 50%;
+    }
+
+    .info-right-note {
+        width: 50%;
+    }
+
+</style>
+
+
+<div class="container-fluid text-white" style=" padding: 50px 50px; background-color: #F6D8DC ">
+    <center>
+        <div class="relative" style="width:80% ; height:80%">
+            <img class="img-wall-main" src="/Picture/wall.jpg" style="max-width: 100%; max-height: 100%" />
+            <div class="absolute" style="width:100%; height:100%; top:0px">
+                <center>
+                    <p style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #9D1030; font-size: 4vw; padding-top: 20%">
+                        <b>PIPE CLEANER FLOWERS</b>
+                    </p>
+                    <p style="font-family: Courier; padding-bottom:2%; color:#9D1030; font-size:1vw">DIY gift made with pipe cleaners.</p>
+                    <a href="/Shop">
+                        <button class="btn-shop" style="padding: 10px 50px 10px 50px ; color:white"> <b>Shop now</b></button>
+                    </a>
+                </center>
+            </div>
+        </div>
+    </center>
+
+</div>
+
+
+<div class="container-fluid text-white" style="padding: 5vw 10vw; background-color: #9D1030; padding-bottom:8vw; ">
+    <center>
+        <img src="/Picture/Hoa.png" style="text-align: center; margin-bottom: 30px; width:70px; height:70px" />
+    </center>
+    <p style="text-align: center; font-family: Courier; font-size:1.5vw ">
+        Let’s make pipe cleaner flowers. If you want to get a gift that stay forever, are easy to take care of then our products would be perfect for you
+    </p>
+</div>
+
+<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 5% 10%; display: flex; ">
+    <div class="info-left">
+        <p style=" text-align: left; font-family: Courier; font-size: 1.5vw; color: #9D1030; padding-top:2vw">
+            Pipe cleaners are thin, flexible wires that are covered in fuzzy material, typically made of chenille or polyester. They are widely used for various crafting and cleaning purposes.
+        </p>
+        <p style=" text-align: left; font-family: Courier; font-size: 1.5vw; color: #9D1030">
+            The name "pipe cleaners" originated from their initial intended use of cleaning tobacco pipes. However, over time, their versatility and ease of manipulation led to their adoption in a wide range of creative projects.
+        </p>
+    </div>
+    <div class="info-right">
+        <center>
+            <div style="width:60%; height:60%">
+                <img class="img-info" src="/Picture/6.jpeg" style="max-width: 100%; max-height: 100%"/>            
+            </div>
+        </center>
+    </div>
+</div>
+
+
+<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC ">
+    <div style="padding-top:5%;padding-bottom:2%">
+        <center style="padding-bottom:4vw">
+            <div class="div-img-wall" style="padding-bottom:1.5vw">
+                <div class="text-heading-wall">
+                    <h1 style="font-size: 3vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding-left: 5vw; "><b>BEST SELLER</b></h1>
+                </div>
+                <div class="div-img">
+                    <img class="img-wall" src="/Picture/img1.png" style="width:15%; height:15%" />
+                </div>
+                <div class="div-img">
+                    <img class="img-wall" src="/Picture/img2.png" style="width:18%; height:18%" />
+                </div>
+                <div class="div-img">
+                    <img class="img-wall" src="/Picture/img3.png" style="width:22%; height:22%" />
+                </div>
+                <div class="div-img">
+                    <img class="img-wall" src="/Picture/img4.png" style="width:18%; height:18%" />
+                </div>
+                <div class="div-img">
+                    <img class="img-wall" src="/Picture/img5.png" style="width:15%; height:15%" />
+                </div>
+            </div>
+            <a href="/Shop">
+                <button class="btn-shop" style="padding: 10px 50px 10px 50px ; color:white"> <b>Shop now</b></button>
+            </a>
+</center>
+    </div>
+</div>
+
+<div class="container-fluid text-white" style="padding: 5vw 10vw; background-color: #9D1030; ">
+    <center>
+        <img src="/Picture/leaf.png" style="text-align: center; width:80px; height:80px" />
+    </center>
+    <p style="text-align: center; font-family: Courier; font-size:1.5vw ">
+        Our products are 100% hand-made. All made with love and passion. 20% of our benefits will be sent to local animal rescue organizations to support them!
+    </p>
+</div>
+
+<div class="container-fluid text-white" style="padding: 5vw 10vw; background-color: #F6D8DC; display: inline-flex; flex-flow: row wrap">
+    <div class="" style="display:inline-block; width: 100%">
+        <center>
+            <h1 style="font-size: 3vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;padding-bottom:2vw ; "> <b>SENT US YOUR LOVE !!!</b> </h1>
+        </center>
+    </div>
+
+    <div class="info-left-note">
+        <form style="padding-left:10%">
+            <label class="box-title" for="name"><b>NAME</b></label><br>
+            <input class="text-box" type="text" id="name" name="name" value=""><br>
+            <label class="box-title" for="phone"><b>PHONE</b></label><br>
+            <input class="text-box" type="text" id="phone" name="phone" value=""><br>
+            <label class="box-title" for="mail"><b>MAIL</b></label><br>
+            <input class="text-box" type="text" id="mail" name="email" value="">
+        </form>
+    </div>
+    <div class="info-right-note">
+
+        <form style="padding-left:10%">
+            <label class="box-title" for="name"><b>WRITE FOR US</b></label><br>
+            <textarea class="text-box-note" type="text" id="note" name="note" value=""></textarea><br>
+        </form>
+
+    </div>
+    <center style="width:100%; padding-top:2vw;" >
+        <button class="btn-shop" style="padding: 10px 50px 10px 50px ; color:white"> <b>Send</b></button>
+    </center>
+
+</div>

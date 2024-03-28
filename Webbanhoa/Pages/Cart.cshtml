@@ -1,0 +1,84 @@
+﻿@page
+@model HoaHoeHoaSoi.Pages.Shared.CartModel
+@{
+}
+
+<style>
+    .info-left {
+        width: 40%;
+    }
+
+    .info-right {
+        width: 60%;
+    }
+
+    .box-title {
+        font-size: 2.5vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 0.4vw;
+    }
+
+    .text-box {
+        width: 30vw;
+        font-family: Courier;
+        font-size: 1.2vw;
+        color: #9D1030;
+        background-color: #F6D8DC;
+        border-color: #9D1030;
+        border: 0.15vw solid;
+        border-radius: 100px;
+        padding: 0.5vw 1.5vw 0.5vw 1.5vw;
+    }
+
+    .text-header {
+        border-bottom: solid;
+        border-color: #9D1030;
+        font-size: 2.2vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    #div-payment {
+        border-bottom: solid;
+        border-color: #9D1030;
+    }
+</style>
+
+<div class="container-fluid text-white" style="padding: 2vw; background-color: #9D1030; ">
+    <p style="text-align: center; font-family: Courier; font-size: 4vw; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding:0 0 ">
+       <b>IT'S TIME TO CHECK OUT !</b>
+    </p>
+</div>
+
+<div id="div-payment "class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
+    <div class="info-left">
+        <div class="text-header" style="">
+            <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFOMATION</b> </p>
+        </div>
+            <form>
+                <label class="box-title" for="name">Name</label><br>
+                <center>
+                <input class="text-box" type="text" id="name" name="name" value=""><br>
+                </center>
+                <label class="box-title" for="phone">Phone</label><br>
+                <center>
+                <input class="text-box" type="text" id="phone" name="phone" value=""><br>
+                </center>
+                <label class="box-title" for="address">Address</label><br>
+                <center>
+                <input class="text-box" type="text" id="address" name="address" value="">
+                </center>
+            </form>
+    </div>
+
+    <div class="info-right">
+        <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+            <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
+        </div>
+
+        <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+            <p style="text-align: center; margin-bottom: 0.1vw;"><b>TOTAL</b> </p>
+        </div>
+    </div>
+</div>

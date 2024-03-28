@@ -1,0 +1,43 @@
+﻿<Properties StartupConfiguration="{A3D30932-BFBE-4DF9-BC85-37C26805EC3B}|http">
+  <MonoDevelop.Ide.ItemProperties.HoaHoeHoaSoi PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Webbanhoa/Pages/Shop.cshtml">
+    <Files>
+      <File FileName="Webbanhoa/Pages/Shared/_Layout.cshtml" Line="59" Column="15" IsPinned="True" />
+      <File FileName="Webbanhoa/Pages/Cart.cshtml" Line="79" Column="1" IsPinned="True" />
+      <File FileName="Webbanhoa/Pages/Shared/_ValidationScriptsPartial.cshtml" />
+      <File FileName="Webbanhoa/Program.cs" />
+      <File FileName="Webbanhoa/Pages/_ViewStart.cshtml" Line="1" Column="1" />
+      <File FileName="Webbanhoa/Pages/Shop.cshtml" Line="35" Column="7" />
+      <File FileName="Webbanhoa/Properties/launchSettings.json" />
+      <File FileName="Webbanhoa/wwwroot/css/site.css" />
+      <File FileName="Webbanhoa/Pages/Error.cshtml" Line="1" Column="1" />
+      <File FileName="Webbanhoa/Pages/_ViewImports.cshtml" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="HoaHoeHoaSoi" expanded="True">
+            <Node name="HoaHoeHoaSoi" expanded="True">
+              <Node name="Pages" expanded="True">
+                <Node name="Shared" expanded="True">
+                  <Node name="_Layout.cshtml" expanded="True" />
+                </Node>
+                <Node name="Index.cshtml" expanded="True" />
+                <Node name="Shop.cshtml" selected="True" />
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="Picture" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>
