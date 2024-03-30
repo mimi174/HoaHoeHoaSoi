@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 
 namespace Webbanhoa.Pages.Shared
 {
@@ -29,10 +29,10 @@ namespace Webbanhoa.Pages.Shared
                             while (reader.Read())
                             {
                                 var Products = new Products();
-                                Products.Id = "" + reader.GetInt32(0);
+                                Products.Id = reader.GetInt32(0);
                                 Products.Name = reader.GetString(1);
-                                Products.Price = reader.GetString(1);
-                                Products.Img = reader.GetString(3);
+                                Products.Price = reader.GetDouble(2);
+                                Products.Img = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
                                 listProducts.Add(Products);
                             }
                         }

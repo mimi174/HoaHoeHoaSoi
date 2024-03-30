@@ -10,6 +10,8 @@
   <ItemGroup>
     <Folder Include="wwwroot\Picture\" />
     <Folder Include="Model\" />
+    <Folder Include="Pages\ADMIN\" />
+    <Folder Include="UpLoadFile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\Picture\Hoa.png" />
@@ -17,6 +19,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Model\" />
+    <None Remove="Pages\ADMIN\" />
+    <None Remove="UpLoadFile\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\Picture\Hoa.png" />
@@ -24,5 +28,6 @@
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
   </ItemGroup>
 </Project>
