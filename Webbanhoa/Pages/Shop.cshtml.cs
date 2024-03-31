@@ -17,7 +17,7 @@ namespace Webbanhoa.Pages.Shared
         {
             try
             {
-                string connectionString = "Server=localhost;Database=HoaHoeHoaSoi;User Id=sa;Password=Password.1;Trusted_Connection=";
+                string connectionString = "Data Source=DESKTOP-0BD8UOC;Initial Catalog=HoaHoeHoaSoi;Persist Security Info=True;User ID=sa;Password=123456;Trusted_Connection=True";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
