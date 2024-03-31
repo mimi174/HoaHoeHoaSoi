@@ -10,7 +10,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\Picture\" />
     <Folder Include="Model\" />
-    <Folder Include="Pages\ADMIN\" />
     <Folder Include="UpLoadFile\" />
   </ItemGroup>
   <ItemGroup>

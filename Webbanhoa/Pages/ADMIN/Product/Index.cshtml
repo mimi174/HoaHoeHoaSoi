@@ -1,0 +1,43 @@
+﻿@page
+@model HoaHoeHoaSoi.Pages.ADMIN.Product.IndexModel
+@{
+}
+<div class="container">
+	<a href="/ADMIN/Product/Create" class="btn btn-info" role="button">Create a new</a>
+	<div class="row">
+		<form method="get">
+			<div class="form-group">
+				<label for="search">Search</label>
+				<input type="text" name="search" class="form-control" asp-for="Search" />
+				<button type="submit" class="btn btn-primary">Search</button>
+			</div>
+		</form>
+		<div class="col-12">
+			<table class="table table-image">
+				<thead>
+					<tr>
+						<th scope="col">Image</th>
+						<th scope="col">Name</th>
+						<th scope="col">Price</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach(var product in Model.Products)
+					{
+						<tr>
+							<td class="w-25">
+								<img src="data:image/jpeg;base64, @product.Img" class="img-fluid img-thumbnail" alt="Sheep">
+							</td>
+							<td>@product.Name</td>
+							<td>$@product.Price</td>
+							<td>
+								<a href="/ADMIN/Product/Edit/@product.Id" class="btn btn-info" role="button">Details</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

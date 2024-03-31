@@ -6,6 +6,8 @@ using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using HoaHoeHoaSoi.Helpers;
 
 namespace Webbanhoa.Pages.Shared
 {
@@ -17,8 +19,7 @@ namespace Webbanhoa.Pages.Shared
         {
             try
             {
-                string connectionString = "Data Source=DESKTOP-0BD8UOC;Initial Catalog=HoaHoeHoaSoi;Persist Security Info=True;User ID=sa;Password=123456;Trusted_Connection=True";
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = HoaDBContext.GetSqlConnection())
                 {
                     connection.Open();
                     string sql = "SELECT * FROM Products";
