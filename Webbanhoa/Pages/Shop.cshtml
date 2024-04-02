@@ -59,11 +59,12 @@
                 <img class="img" src="data:image/jpeg;base64, @item.Img" alt="Sheep"/>
                 <div class="card-body">
                     <h5 class="card-title"><b>@item.Name</b></h5>
-                    <a >
-                        <div class="add-cart" style="width:60%">                          
-                              <img class="add-cart" src="/Picture/cart1.png" style="max-width:15%; max-height:15%" />                              
-                        </div>
-                    </a>
+                    <form method="post" asp-page-handler="AddToCart">
+                                <input type="hidden" name="productId" value="@item.Id" />
+                                <button type="submit" class="add-cart">
+                                    <img src="/Picture/cart1.png" style="max-width:15%; max-height:15%" />
+                                </button>
+                    </form>
                     <div class="price">
                         @item.Price<p style="display:inline">$</p>
                     </div>
