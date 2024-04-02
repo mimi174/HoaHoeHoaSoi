@@ -2,39 +2,74 @@
 @model HoaHoeHoaSoi.Pages.ADMIN.Product.CreateModel
 @{
 }
-<form method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input asp-for="Name" class="form-control"/>
-        <small><span class="text-danger" asp-validation-for="Name"></span></small>
-    </div>
-    <div class="form-group">
-        <label for="Price">Price</label>
-        <input asp-for="Price" class="form-control" />
-        <small><span class="text-danger" asp-validation-for="Price"></span></small>
-    </div>
-    <div class="form-group">
-        <label for="img">Image</label>
-        <input asp-for="Img" class="form-control" accept="image/png, image/jpg, image/jpeg" onchange="readURL(this);" />
-        <small><span class="text-danger" asp-validation-for="Img"></span></small>
-        <img id="selected-img" src="#" alt="your image" hidden width="30%" height="30%"/>
-    </div>
-    <a href="/ADMIN/Product" class="btn btn-info" role="button">Back</a>
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
 
-@section Script{
-    <script type="text/javascript">
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#selected-img').attr('src', e.target.result);
-                    $('#selected-img').removeAttr('hidden');
-                };
+<style>
+    .container-fluid {
+        background-color: #F6D8DC;
+        color: #9D1030;
+        padding: 2vw 6vw 2vw 6vw;
+    }
+    #btn_back {
+        border-radius: 30px;
+        background-color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.6vw;
+        border: none;
+        color: white;
+        padding: 1vw 2vw 1vw 2vw;
+    }
 
-                reader.readAsDataURL(input.files[0]);
+    #btn_create {
+        border-radius: 30px;
+        background-color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.6vw;
+        border: none;
+        color: white;
+        padding: 1vw 2vw 1vw 2vw;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input asp-for="Name" class="form-control"/>
+            <small><span class="text-danger" asp-validation-for="Name"></span></small>
+        </div>
+        <div class="form-group">
+            <label for="Price">Price</label>
+            <input asp-for="Price" class="form-control" />
+            <small><span class="text-danger" asp-validation-for="Price"></span></small>
+        </div>
+        <div class="form-group">
+            <label for="img">Image (Please select a square photo)</label>
+            <input asp-for="Img" class="form-control" accept="image/png, image/jpg, image/jpeg" onchange="readURL(this);" />
+            <small><span class="text-danger" asp-validation-for="Img"></span></small>
+            <img id="selected-img" src="#" alt="your image" hidden width="30%" height="30%"/>
+        </div>
+        <div style="padding-top:2vw">
+            <center>
+            <a id="btn_back" href="/ADMIN/Product" class="btn" role="button">Back</a>
+            <button id="btn_create" type="submit" class="btn" >Create</button>
+            </center>
+        </div>
+    </form>
+
+    @section Script{
+        <script type="text/javascript">
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#selected-img').attr('src', e.target.result);
+                        $('#selected-img').removeAttr('hidden');
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
-        }
-    </script>
-}
+        </script>
+    }
+</div>

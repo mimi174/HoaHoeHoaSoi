@@ -13,7 +13,7 @@ namespace HoaHoeHoaSoi.Helpers
             if (file == null) return false;
 
             var extension = Path.GetExtension(file.FileName);
-            return VALID_EXTENSTIONS.Contains(extension);
+            return VALID_EXTENSTIONS.Contains(extension.ToLower());
         }
     }
 }

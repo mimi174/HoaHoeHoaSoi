@@ -56,7 +56,7 @@
         @foreach (var item in Model.listProducts)
         {
             <div id="card-products" class="card col-sm-6 col-md-4 col-lg-3">
-                <img class="img" src="/Picture/4.jpg"/>
+                <img class="img" src="data:image/jpeg;base64, @item.Img" alt="Sheep"/>
                 <div class="card-body">
                     <h5 class="card-title"><b>@item.Name</b></h5>
                     <a >
