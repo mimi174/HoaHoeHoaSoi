@@ -13,6 +13,27 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product
         public string Search { get; set; }
         public List<ProductViewModel> Products = new List<ProductViewModel>();
 
+        [BindProperty]
+        public int DeleteId { get; set; }
+
+        public IActionResult OnPostDelete()
+        {
+            if(DeleteId > 0)
+            {
+                using(var connection = HoaDBContext.GetSqlConnection())
+                {
+                    connection.Open();
+                    string command = $"DELETE FROM Products Where Id = {DeleteId}";
+                    using(var sqlCommand = new SqlCommand(command, connection))
+                    {
+                        sqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            return RedirectToPage("Index");
+        }
+
         public void OnGet()
         {
             Search = string.Empty;

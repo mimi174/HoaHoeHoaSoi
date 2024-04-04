@@ -78,6 +78,7 @@
 						<th scope="col">Name</th>
 						<th scope="col">Price</th>
 						<th></th>
+                        <th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -92,6 +93,12 @@
 							<td>
 								<a href="/ADMIN/Product/Edit/@product.Id" class="btn btn-info" role="button">Details</a>
 							</td>
+                            <td>
+                                <form asp-page-handler="Delete">
+                                    <input hidden type="number" value="@product.Id" asp-for="DeleteId"/>
+                                    <button type="submit" class="form-control btn-danger">Delete</button>
+                                </form>
+                            </td>
 						</tr>
 					}
 				</tbody>
