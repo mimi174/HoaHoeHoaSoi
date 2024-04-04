@@ -80,7 +80,7 @@
     }
 
     .text-box {
-        width:35vw;
+        width:100%;
         font-family: Courier;
         font-size: 1.5vw;
         color: #9D1030;
@@ -99,7 +99,7 @@
     }
 
     .text-box-note {
-        width: 35vw;
+        width: 100%;
         height: 26vw;
         font-family: Courier;
         font-size: 1.5vw;
@@ -113,7 +113,7 @@
     }
 
     .info-left-note {
-        width: 50%;
+        width: 45%;
     }
 
     .info-right-note {
@@ -229,24 +229,26 @@
             </h1>
         </center>
     </div>
-
-    <form method="post">
-        <div class="form-container">
-            <div class="info-left-note" style="padding-left:10%">
-                <label class="box-title" for="name"><b>NAME</b></label><br>
-                <input class="text-box" type="text" id="name" name="name" value=""><br>
-                <label class="box-title" for="phone"><b>PHONE</b></label><br>
-                <input class="text-box" type="text" id="phone" name="phone" value=""><br>
-                <label class="box-title" for="mail"><b>MAIL</b></label><br>
-                <input class="text-box" type="text" id="mail" name="email" value="">
+    <div class="container-fluid">
+        <form method="post">
+            <div class="form-container">
+                <div class="info-left-note" style="">
+                    <label class="box-title" for="name"><b>NAME</b></label><br>
+                    <input class="text-box" type="text" id="name" name="name" value=""><br>
+                    <label class="box-title" for="phone"><b>PHONE</b></label><br>
+                    <input class="text-box" type="text" id="phone" name="phone" value=""><br>
+                    <label class="box-title" for="mail"><b>MAIL</b></label><br>
+                    <input class="text-box" type="text" id="mail" name="email" value="">
+                </div>
+                <div style="width:10%"></div>
+                <div class="info-right-note" style="flex: 1;">
+                    <label class="box-title" for="name"><b>WRITE FOR US</b></label><br>
+                    <textarea class="text-box-note" type="text" id="note" name="note" value=""></textarea><br>
+                </div>
             </div>
-            <div class="info-right-note" style="padding-left:20%">
-                <label class="box-title" for="name"><b>WRITE FOR US</b></label><br>
-                <textarea class="text-box-note" type="text" id="note" name="note" value=""></textarea><br>
-            </div>
-        </div>
-        <center style="width:100%; padding-top:2vw; padding-left: 30%">
-            <button class="btn-shop" style="padding: 10px 50px 10px 50px ; color:white"><b>Send</b></button>
-        </center>
-    </form>
+            <center style="width:100%; padding-top:2vw">
+                <button class="btn-shop" style="padding: 10px 50px 10px 50px ; color:white"><b>Send</b></button>
+            </center>
+        </form>
+    </div>
 </div>

@@ -9,7 +9,7 @@
     }
 
     .info-right {
-        width: 60%;
+        width: 50%;
     }
 
     .box-title {
@@ -53,6 +53,20 @@
         color: white;
         padding: 0.5vw 2vw 0.5vw 2vw;
     }
+
+    .products_cart {
+        border-radius: 30px;
+        background-color: #F6D8DC;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.6vw;
+        border-color: #9D1030;
+        color: #9D1030;
+        padding: 0.5vw 2vw 0.5vw 2vw;
+        border: 0.15vw solid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
 <div class="container-fluid text-white" style="padding: 2vw; background-color: #9D1030; ">
@@ -82,18 +96,26 @@
             </form>
     </div>
 
+    <div style="width:10%"></div>
+
    <div class="info-right">
        <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
            <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
        </div>
        @foreach (var product in Model.SelectedProducts)
        {
-           <div>
-               <p>@product.Name: @product.Price$</p>
+           <div class="products_cart">
+               <div style=" float:left;">
+                   @product.Name
+               </div>
+               <div style=" margin-left: auto;">
+                   @product.Price$
+               </div>
            </div>
+           <div style="padding:0.5vw"></div>
        }
-       <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
-           <p style="text-align: center; margin-bottom: 0.1vw;"><b>TOTAL</b> </p>
+       <div style="font-size: 2.2vw; color: #9D1030;margin-top:auto; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+           <p style="text-align: left;"><b>TOTAL</b> </p>
        </div>
    </div>
 </div>

@@ -29,14 +29,13 @@
     }
 
     .add-cart{
-        float:right;
+        display:flex;
     }
 
     .price {
         font-size: 1.5vw;
         color: #9D1030;
         font-family: Courier;
-        float:left;
         padding-left:0.5vw;
     }
 
@@ -59,14 +58,18 @@
                 <img class="img" src="data:image/jpeg;base64, @item.Img" alt="Sheep"/>
                 <div class="card-body">
                     <h5 class="card-title"><b>@item.Name</b></h5>
-                    <form method="post" asp-page-handler="AddToCart">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: auto; bottom:0">
+                        <div class="price">
+                            @item.Price<p style="display:inline">$</p>
+                        </div>
+                        <div class="add-cart" style="margin-left: auto; right: 0; bottom: 0;">
+                            <form method="post" asp-page-handler="AddToCart">
                                 <input type="hidden" name="productId" value="@item.Id" />
-                                <button type="submit" class="add-cart">
-                                    <img src="/Picture/cart1.png" style="max-width:15%; max-height:15%" />
+                                <button type="submit" style="border: none; background-color: #F6D8DC;">
+                                    <img src="/Picture/cart1.png" style="max-width: 15%; max-height: 15%; float: right;" />
                                 </button>
-                    </form>
-                    <div class="price">
-                        @item.Price<p style="display:inline">$</p>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
