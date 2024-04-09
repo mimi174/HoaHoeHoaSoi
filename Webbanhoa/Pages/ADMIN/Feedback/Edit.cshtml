@@ -1,0 +1,67 @@
+﻿@page "{id}"
+@model HoaHoeHoaSoi.Pages.ADMIN.Feedback.EditModel
+@{
+    Layout = "/Pages/Shared/_HomeAdminLayout.cshtml";
+}
+
+<style>
+    .container-fluid {
+        background-color: #F6D8DC;
+        color: #9D1030;
+        padding: 2vw 6vw 2vw 6vw;
+    }
+</style>
+
+<div class="container-fluid">
+    @if (Model.FeedbackId == 0) {
+        <h2>Feedback not found!</h2>
+    } else {
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="FeedbackId" hidden />
+            <input asp-for="CustomerId" hidden />
+            <div class="row justify-content-center">
+                <!-- Sử dụng lớp row và justify-content-center để căn giữa -->
+                <div class="col-md-6">
+                    <!-- Sử dụng lớp col-md-6 để rút gọn các ô input -->
+                    <div class="form-group">
+                        <label asp-for="CustomerName" class="font-weight-bold">Customer Name</label>
+                        <input asp-for="CustomerName" class="form-control rounded-pill" placeholder="Enter customer name" />
+                        <span asp-validation-for="CustomerName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Address" class="font-weight-bold">Address</label>
+                        <input asp-for="Address" class="form-control rounded-pill" placeholder="Enter address" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Email" class="font-weight-bold">Email</label>
+                        <input asp-for="Email" class="form-control rounded-pill" placeholder="Enter email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="font-weight-bold">Phone Number</label>
+                        <input asp-for="PhoneNumber" class="form-control rounded-pill" placeholder="Enter phone number" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Content" class="font-weight-bold">Content</label>
+                        <textarea asp-for="Content" class="form-control rounded" rows="4" placeholder="Enter content"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/ADMIN/Feedback" class="btn btn-info mx-2" style="background-color: darkred; border-color: darkred; color:aliceblue" role="button">Back</a>
+                <button type="submit" class="btn btn-primary mx-2" style="background-color: darkred; border-color: darkred;">Update</button>
+            </div>
+        </form>
+    }
+</div>

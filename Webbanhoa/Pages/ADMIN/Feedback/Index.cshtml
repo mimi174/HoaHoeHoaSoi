@@ -1,14 +1,10 @@
 ﻿@page
 @model HoaHoeHoaSoi.Pages.ADMIN.Feedback.IndexModel
 @{
+    Layout = "/Pages/Shared/_HomeAdminLayout.cshtml";
 }
 
-@{
-    var name = TempData["Name"] as string;
-}
-@section Name {
-    @name
-}
+
 <style>
     .container-fluid {
         background-color: #F6D8DC;
@@ -23,10 +19,11 @@
         border-radius: 30px;
         background-color: #9D1030;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        font-size: 1.6vw;
+        font-size: 1vw;
         border: none;
         color: white;
         padding: 0.5vw 2vw 0.5vw 2vw;
+        margin-bottom: 5%;
     }
 
     .btn-create {
@@ -72,12 +69,12 @@
 </style>
 
 <div class="container-fluid">
+    <a href="/ADMIN/HomeAdmin" class="btn-create" role="button" style="text-decoration: none;font-size: 1.2em;padding-bottom: 0.1%;padding-top: 0.1%;">Back</a>
     <div id="wall-form" class="container-fluid">
-        <a href="/ADMIN/Product/Create" class="btn-create" role="button">Create new product</a>
         <form method="get">
             <div class="form-group">
                 <label for="search" style="font-size:1.6vw;padding-right:3vw"><b>Search</b></label>
-                @* <input type="text" name="search" class="form-control" asp-for="Search" /> *@
+                <input type="text" name="search" class="form-control" asp-for="Search" />
                 <div style="padding-left:4vw">
                     <button type="submit" class="btn-search">Search</button>
                 </div>
@@ -85,41 +82,41 @@
         </form>
     </div>
 
-    <div class="row" style="display:block; padding-top:2vw">
+    <div class="row" style="display:block; padding-top:2vw;">
         <div class="col-12">
-            <table class="table table-image">
-                <thead>
+            <table class="table" style="border-radius: 20px; overflow: hidden;">
+                <thead style="background-color: lightpink;">
                     <tr>
                         <th scope="col">Feedback ID</th>
                         <th scope="col">Customer Name</th>
                         <th scope="col">Address</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone Number</th>
-                        <th></th>
-                        <th></th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @* @foreach (var product in Model.Feedbacks) {
+                <tbody style="background-color: lightpink;">
+                    @foreach (var feedback in Model.FeedbackList) {
                         <tr>
-                            <td class="w-25">
-                                <img src="data:image/jpeg;base64, @product.Img" class="img-fluid img-thumbnail" alt="Sheep">
-                            </td>
-                            <td>@product.Name</td>
-                            <td>$@product.Price</td>
+                            <td>@feedback.FeedbackId</td>
+                            <td>@feedback.CustomerName</td>
+                            <td>@feedback.Address</td>
+                            <td>@feedback.Email</td>
+                            <td>@feedback.Phone</td>
+                            <td>@feedback.Content</td>
                             <td>
-                                <a href="/ADMIN/Product/Edit/@product.Id" class="btn btn-info" role="button">Details</a>
-                            </td>
-                            <td>
+                                <a href="/ADMIN/Feedback/Edit/@feedback.FeedbackId" class="btn btn-danger" role="button">Edit</a>
                                 <form asp-page-handler="Delete">
-                                    <input hidden type="number" value="@product.Id" asp-for="DeleteId" />
-                                    <button type="submit" class="btn-danger">Delete</button>
+                                    <input hidden type="number" value="@feedback.FeedbackId" asp-for="DeleteId" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>
-                    } *@
+                    }
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
