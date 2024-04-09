@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -58,8 +59,8 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted" style="background-color: #9D1030; position: relative;">
+    
+        <footer class="border-top footer text-muted" style="background-color: #9D1030; position: relative; bottom: 0; width: 100%; height: auto;">
         <div class="div-contact1" style="bottom:1vw">
             <span style="font-size: 1.5em; position: absolute; bottom: 0; left: 0; color: #F6D8DC; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
                 &copy; 2024 - HoaHoeHoaSoi based in Hanoi
@@ -99,6 +100,7 @@
     @await RenderSectionAsync("Scripts", required: false)
     @if (IsSectionDefined("Script"))
         @RenderSection("Script")
+
 
 
 
