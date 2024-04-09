@@ -10,8 +10,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         ProductViewModel productViewModel = new ProductViewModel();
 
         public void OnGet() {
-            string name = HttpContext.Session.GetString("Name");
-            TempData["Name"] = name;
+            
         }
 
         public IActionResult OnPost() {
