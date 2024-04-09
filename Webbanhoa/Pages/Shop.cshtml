@@ -2,7 +2,12 @@
 @model Webbanhoa.Pages.Shared.ShopModel
 @{
 }
-
+@{
+    var name = TempData["Name"] as string;
+}
+@section Name {
+    @name
+}
 <style>
     .container-fluid {
         background-color: #F6D8DC;
@@ -28,15 +33,15 @@
         padding: 2vw 4vw 2vw 4vw
     }
 
-    .add-cart{
-        display:flex;
+    .add-cart {
+        display: flex;
     }
 
     .price {
         font-size: 1.5vw;
         color: #9D1030;
         font-family: Courier;
-        padding-left:0.5vw;
+        padding-left: 0.5vw;
     }
 
     #card-products {
@@ -45,17 +50,14 @@
         border: none;
     }
 
-
-
 </style>
 
-<div class="container-fluid" >
+<div class="container-fluid">
     <p class="title" style=" padding-left:2vw"> <b>OUR PRODUCTS</b></p>
     <div class="shop row">
-        @foreach (var item in Model.listProducts)
-        {
+        @foreach (var item in Model.listProducts) {
             <div id="card-products" class="card col-sm-6 col-md-4 col-lg-3">
-                <img class="img" src="data:image/jpeg;base64, @item.Img" alt="Sheep"/>
+                <img class="img" src="data:image/jpeg;base64, @item.Img" alt="Sheep" />
                 <div class="card-body">
                     <h5 class="card-title"><b>@item.Name</b></h5>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: auto; bottom:0">

@@ -14,7 +14,7 @@ public class IndexModel : PageModel {
     public string mail { get; set; }
     [BindProperty]
     public string Data { get; set; }
-    
+
     private readonly ILogger<IndexModel> _logger;
     public bool hasData = false;
     public IndexModel(ILogger<IndexModel> logger) {
@@ -22,7 +22,8 @@ public class IndexModel : PageModel {
     }
 
     public void OnGet() {
-
+        string name = HttpContext.Session.GetString("Name");
+        TempData["Name"] = name;
     }
     //TO-DO: Data Validation
     public void OnPost() {
@@ -37,7 +38,7 @@ public class IndexModel : PageModel {
                 string name = Request.Form["name"];
                 string email = Request.Form["email"];
                 string phone = Request.Form["phone"];
-                
+
                 using (SqlCommand command = new SqlCommand(sql, connection)) {
                     command.Parameters.AddWithValue("@name", name);
                     command.Parameters.AddWithValue("@email", email);
@@ -46,8 +47,7 @@ public class IndexModel : PageModel {
                     command.ExecuteNonQuery();
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             _logger.LogError(e, "An error occurred while executing the query.");
         }
     }

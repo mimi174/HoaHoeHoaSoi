@@ -9,7 +9,6 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <Folder Include="wwwroot\Picture\" />
-    <Folder Include="Model\" />
     <Folder Include="UpLoadFile\" />
   </ItemGroup>
   <ItemGroup>
