@@ -1,15 +1,11 @@
 ﻿@page
 @model HoaHoeHoaSoi.Pages.ADMIN.HomeAdminModel
 @{
+    Layout = "/Pages/Shared/_HomeAdminLayout.cshtml";
     ViewData["Title"] = "Admin Home";
 }
 
-@{
-    var name = TempData["Name"] as string;
-}
-@section Name {
-    @name
-}
+
 <style>
     .img-wall {
         width: 100%;
