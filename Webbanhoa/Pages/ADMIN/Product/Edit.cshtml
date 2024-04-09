@@ -2,6 +2,12 @@
 @model HoaHoeHoaSoi.Pages.ADMIN.Product.EditModel
 @{
 }
+@{
+    var name = TempData["Name"] as string;
+}
+@section Name {
+    @name
+}
 @if(Model.Product == null){
     <h2>Product not found!</h2>
 }else{

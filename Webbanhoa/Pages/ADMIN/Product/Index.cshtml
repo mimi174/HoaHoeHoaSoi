@@ -2,6 +2,12 @@
 @model HoaHoeHoaSoi.Pages.ADMIN.Product.IndexModel
 @{
 }
+@{
+    var name = TempData["Name"] as string;
+}
+@section Name {
+    @name
+}
 <style>
     .container-fluid {
         background-color: #F6D8DC;
@@ -21,14 +27,21 @@
         color: white;
         padding: 0.5vw 2vw 0.5vw 2vw;
     }
-	.form-control{
-		width:20vw;
-	}
+
+    .btn-create {
+        text-decoration: none;
+    }
+
+    .form-control {
+        width: 20vw;
+    }
+
     .form-group {
         display: flex;
         align-items: center;
         margin-left: auto;
     }
+
     .btn-search {
         border-radius: 30px;
         background-color: #9D1030;
@@ -38,6 +51,7 @@
         color: white;
         padding: 0.5vw 2vw 0.5vw 2vw;
     }
+
     .btn-create {
         border-radius: 30px;
         background-color: #9D1030;
@@ -48,6 +62,7 @@
         padding: 0.5vw 2vw 0.5vw 2vw;
         margin-right: auto;
     }
+
     #wall-form {
         display: flex;
         align-items: center;
@@ -56,53 +71,52 @@
 </style>
 
 <div class="container-fluid">
-	<div id="wall-form" class="container-fluid" >
-		<a href="/ADMIN/Product/Create" class="btn-create" role="button">Create a new</a>
-		<form method="get">
-			<div class="form-group">
-				<label for="search" style="font-size:1.6vw;padding-right:3vw"><b>Search</b></label>
-				<input type="text" name="search" class="form-control" asp-for="Search" />
-				<div style="padding-left:4vw">
-				<button type="submit" class="btn-search">Search</button>
-				</div>
-			</div>
-		</form>
-	</div>
+    <div id="wall-form" class="container-fluid">
+        <a href="/ADMIN/Product/Create" class="btn-create" role="button">Create new product</a>
+        <form method="get">
+            <div class="form-group">
+                <label for="search" style="font-size:1.6vw;padding-right:3vw"><b>Search</b></label>
+                <input type="text" name="search" class="form-control" asp-for="Search" />
+                <div style="padding-left:4vw">
+                    <button type="submit" class="btn-search">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
-	<div class="row" style="display:block; padding-top:2vw">
-		<div class="col-12">
-			<table class="table table-image">
-				<thead>
-					<tr>
-						<th scope="col">Image</th>
-						<th scope="col">Name</th>
-						<th scope="col">Price</th>
-						<th></th>
+    <div class="row" style="display:block; padding-top:2vw">
+        <div class="col-12">
+            <table class="table table-image">
+                <thead>
+                    <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
                         <th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach(var product in Model.Products)
-					{
-						<tr>
-							<td class="w-25">
-								<img src="data:image/jpeg;base64, @product.Img" class="img-fluid img-thumbnail" alt="Sheep">
-							</td>
-							<td>@product.Name</td>
-							<td>$@product.Price</td>
-							<td>
-								<a href="/ADMIN/Product/Edit/@product.Id" class="btn btn-info" role="button">Details</a>
-							</td>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products) {
+                        <tr>
+                            <td class="w-25">
+                                <img src="data:image/jpeg;base64, @product.Img" class="img-fluid img-thumbnail" alt="Sheep">
+                            </td>
+                            <td>@product.Name</td>
+                            <td>$@product.Price</td>
+                            <td>
+                                <a href="/ADMIN/Product/Edit/@product.Id" class="btn btn-info" role="button">Details</a>
+                            </td>
                             <td>
                                 <form asp-page-handler="Delete">
-                                    <input hidden type="number" value="@product.Id" asp-for="DeleteId"/>
-                                    <button type="submit" class="form-control btn-danger">Delete</button>
+                                    <input hidden type="number" value="@product.Id" asp-for="DeleteId" />
+                                    <button type="submit" class="btn-danger">Delete</button>
                                 </form>
                             </td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-	</div>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
