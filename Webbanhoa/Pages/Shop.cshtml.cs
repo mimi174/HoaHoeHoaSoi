@@ -11,8 +11,7 @@ using HoaHoeHoaSoi.Helpers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace Webbanhoa.Pages.Shared
-{
+namespace Webbanhoa.Pages.Shared {
     public class ShopModel : PageModel {
         public List<Products> listProducts = new List<Products>();
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,6 +23,8 @@ namespace Webbanhoa.Pages.Shared
         }
 
         public void OnGet() {
+            string name = HttpContext.Session.GetString("Name");
+            TempData["Name"] = name;
             try {
                 using (SqlConnection connection = HoaDBContext.GetSqlConnection()) {
                     connection.Open();
@@ -42,8 +43,7 @@ namespace Webbanhoa.Pages.Shared
                     }
                 }
 
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -70,8 +70,7 @@ namespace Webbanhoa.Pages.Shared
                         }
                     }
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 _logger.LogError(ex, "Error fetching product from database.");
                 throw;
             }

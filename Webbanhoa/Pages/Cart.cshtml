@@ -2,7 +2,12 @@
 @model HoaHoeHoaSoi.Pages.Shared.CartModel
 @{
 }
-
+@{
+    var name = TempData["Name"] as string;
+}
+@section Name {
+    @name
+}
 <style>
     .info-left {
         width: 40%;
@@ -71,59 +76,57 @@
 
 <div class="container-fluid text-white" style="padding: 2vw; background-color: #9D1030; ">
     <p style="text-align: center; font-family: Courier; font-size: 4vw; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding:0 0 ">
-       <b>IT'S TIME TO CHECK OUT !</b>
+        <b>IT'S TIME TO CHECK OUT !</b>
     </p>
 </div>
 
-<div id="div-payment "class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
+<div id="div-payment " class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
     <div class="info-left">
         <div class="text-header" style="">
             <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFOMATION</b> </p>
         </div>
-            <form>
-                <label class="box-title" for="name">Name</label><br>
-                <center>
+        <form>
+            <label class="box-title" for="name">Name</label><br>
+            <center>
                 <input class="text-box" type="text" id="name" name="name" value=""><br>
-                </center>
-                <label class="box-title" for="phone">Phone</label><br>
-                <center>
+            </center>
+            <label class="box-title" for="phone">Phone</label><br>
+            <center>
                 <input class="text-box" type="text" id="phone" name="phone" value=""><br>
-                </center>
-                <label class="box-title" for="address">Address</label><br>
-                <center>
+            </center>
+            <label class="box-title" for="address">Address</label><br>
+            <center>
                 <input class="text-box" type="text" id="address" name="address" value="">
-                </center>
-            </form>
+            </center>
+        </form>
     </div>
 
     <div style="width:10%"></div>
 
-   <div class="info-right">
-       <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
-           <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
-       </div>
-       @foreach (var product in Model.SelectedProducts)
-       {
-           <div class="products_cart">
-               <div style=" float:left;">
-                   @product.Name
-               </div>
-               <div style=" margin-left: auto;">
-                   @product.Price$
-               </div>
-           </div>
-           <div style="padding:0.5vw"></div>
-       }
-       <div style="font-size: 2.2vw; color: #9D1030;margin-top:auto; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
-           <p style="text-align: left;"><b>TOTAL</b> </p>
-       </div>
-   </div>
-</div>
-    <div id="div-payment " class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
-
-        <center style="width:100%">
-            <button type="submit" class="btn-submit"><b>ORDER NOW!</b></button>
-        </center>
+    <div class="info-right">
+        <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+            <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
+        </div>
+        @foreach (var product in Model.SelectedProducts) {
+            <div class="products_cart">
+                <div style=" float:left;">
+                    @product.Name
+                </div>
+                <div style=" margin-left: auto;">
+                    @product.Price$
+                </div>
+            </div>
+            <div style="padding:0.5vw"></div>
+        }
+        <div style="font-size: 2.2vw; color: #9D1030;margin-top:auto; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+            <p style="text-align: left;"><b>TOTAL</b> </p>
+        </div>
     </div>
+</div>
+<div id="div-payment " class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
 
-    
+    <center style="width:100%">
+        <button type="submit" class="btn-submit"><b>ORDER NOW!</b></button>
+    </center>
+</div>
+
