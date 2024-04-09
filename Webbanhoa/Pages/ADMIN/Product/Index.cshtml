@@ -92,7 +92,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var product in Model.Products) {
+                    @foreach (var product in Model.Products)
+                    {
                         <tr>
                             <td class="w-25">
                                 <img src="data:image/jpeg;base64, @product.Img" class="img-fluid img-thumbnail" alt="Sheep">
