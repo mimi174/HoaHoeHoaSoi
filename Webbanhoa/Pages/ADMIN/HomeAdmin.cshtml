@@ -23,14 +23,6 @@
         position: relative;
     }
 
-    .div-img {
-        float: none;
-        text-align: center;
-        display: inline;
-        padding-top: 2vw;
-        padding-bottom: 2vw
-    }
-
     div.relative {
         position: relative;
     }
@@ -44,84 +36,14 @@
         backdrop-filter: blur(20%) contrast(50%);
     }
 
-    .btn-shop {
+    .btn {
         filter: drop-shadow(0.3em 0.3em 0.3em black);
         border-radius: 30px;
         background-color: #9D1030;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         font-size: 1.6vw;
         border: none;
-    }
-
-    div.text-heading {
-        position: relative;
-    }
-
-    div.div-img-wall {
-        position: relative;
-    }
-
-    div.text-heading-wall {
-        position: absolute;
-    }
-
-    .info-left {
-        width: 60%;
-    }
-
-    .info-right {
-        width: 40%;
-    }
-
-    .img-info {
-        border-radius: 200px 200px 0px 0px;
-        border: 0.8vw solid;
-        border-color: #9D1030;
-    }
-
-    .text-box {
-        width: 100%;
-        font-family: Courier;
-        font-size: 1.5vw;
-        color: #9D1030;
-        background-color: #F6D8DC;
-        border-color: #9D1030;
-        border: 0.3vw solid;
-        border-radius: 100px;
-        padding: 1vw 2vw 1vw 2vw;
-    }
-
-    .box-title {
-        font-size: 2.5vw;
-        color: #9D1030;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        padding: 1vw;
-    }
-
-    .text-box-note {
-        width: 100%;
-        height: 26vw;
-        font-family: Courier;
-        font-size: 1.5vw;
-        color: #9D1030;
-        background-color: #F6D8DC;
-        border-color: #9D1030;
-        border: 0.3vw solid;
-        border-radius: 80px;
-        padding: 2vw 2vw 2vw 2vw;
-        resize: none;
-    }
-
-    .info-left-note {
-        width: 45%;
-    }
-
-    .info-right-note {
-        width: 100%;
-    }
-
-    .form-container {
-        display: flex;
+        padding: 1vw 1vw 1vw 1vw;
     }
 
 </style>
@@ -138,21 +60,14 @@
                     </p>
                     <p style="font-family: Courier; padding-bottom:2%; color:#9D1030; font-size:1vw">DIY gift made with pipe cleaners.</p>
                     <div style="margin-bottom: 20px;">
-                        <a href="Pro
-                           duct/Index">
-                            <button class="btn-shop" style="padding: 10px 50px 10px 50px; color:white; margin-right: 20px;">
-                                <b>Manage Products</b>
-                            </button>
+                        <a href="Product/Index" class="btn btn" style="color:white;">
+                            <b>Manage Products</b>
                         </a>
-                        <a href="#">
-                            <button class="btn-shop" style="padding: 10px 50px 10px 50px; color:white; margin-right: 20px;">
-                                <b>Manage Orders</b>
-                            </button>
+                        <a href="#" class="btn btn" style="color:white;">
+                            <b>Manage Ordered</b>
                         </a>
-                        <a href="Feedback/Index">
-                            <button class="btn-shop" style="padding: 10px 50px 10px 50px; color:white;">
-                                <b>Manage Feedbacks</b>
-                            </button>
+                        <a href="Feedback/Index" class="btn btn" style="color:white;">
+                            <b>Manage Feedbacks</b>
                         </a>
                     </div>
                 </center>
