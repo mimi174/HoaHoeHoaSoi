@@ -18,8 +18,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product
         public void OnGet(int id)
         {
             LoadProduct(id);
-            string name = HttpContext.Session.GetString("Name");
-            TempData["Name"] = name;
+            
         }
 
         private void LoadProduct(int id)

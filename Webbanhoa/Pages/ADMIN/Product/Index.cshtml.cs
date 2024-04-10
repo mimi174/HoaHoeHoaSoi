@@ -29,8 +29,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         }
 
         public void OnGet() {
-            string name = HttpContext.Session.GetString("Name");
-            TempData["Name"] = name;
+            
             Search = string.Empty;
             var data = Request.Query["search"];
             if (!data.IsNullOrEmpty() && data.FirstOrDefault() != null)
