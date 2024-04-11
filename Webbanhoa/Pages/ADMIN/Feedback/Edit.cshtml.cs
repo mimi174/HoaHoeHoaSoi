@@ -7,27 +7,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
     public class EditModel : PageModel {
-        //[Required(ErrorMessage = "Customer Name is required")]
-        //public string CustomerName { get; set; }
-
-        //[Required(ErrorMessage = "Address is required")]
-        //public string Address { get; set; }
-
-        //[Required(ErrorMessage = "Email is required")]
-        //[EmailAddress(ErrorMessage = "Invalid Email Address")]
-        //public string Email { get; set; }
-
-        //[Required(ErrorMessage = "Phone Number is required")]
-        //[RegularExpression(@"^\d{10,11}$", ErrorMessage = "Invalid Phone Number")]
-        //public string PhoneNumber { get; set; }
-
-        //[Required(ErrorMessage = "Content is required")]
-        //public string Content { get; set; }
-
-
-
-
-
         [BindProperty]
         public int FeedbackId { get; set; }
 
@@ -38,9 +17,6 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         [BindProperty]
         public string CustomerName { get; set; }
 
-        [Required(ErrorMessage = "Address is required")]
-        [BindProperty]
-        public string Address { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
@@ -74,7 +50,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         private void LoadFeedback(int id) {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
-                string command = $"SELECT F.Id, C.Id, C.Name AS CustomerName, C.Address, C.Email, C.Phone, F.Content " +
+                string command = $"SELECT F.Id, C.Id, C.Name AS CustomerName, C.Email, C.Phone, F.Content " +
                     $"FROM Feedback AS F " +
                     $"INNER JOIN Customer AS C ON F.CustomerId = C.Id " +
                     $"WHERE F.Id = {id}";
@@ -84,10 +60,9 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
                             FeedbackId = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
                             CustomerId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
                             CustomerName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
-                            Address = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
-                            Email = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
-                            PhoneNumber = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
-                            Content = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                            Email = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            PhoneNumber = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                            Content = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
                         }
                     }
                 }
@@ -105,10 +80,9 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
                 }
 
                 // Cập nhật thông tin của khách hàng
-                string customerCommandText = $"UPDATE Customer SET Name = @CustomerName, Address = @Address, Email = @Email, Phone = @PhoneNumber WHERE Id = @CustomerId";
+                string customerCommandText = $"UPDATE Customer SET Name = @CustomerName, Email = @Email, Phone = @PhoneNumber WHERE Id = @CustomerId";
                 using (var customerCommand = new SqlCommand(customerCommandText, connection)) {
                     customerCommand.Parameters.AddWithValue("@CustomerName", CustomerName);
-                    customerCommand.Parameters.AddWithValue("@Address", Address);
                     customerCommand.Parameters.AddWithValue("@Email", Email);
                     customerCommand.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
                     customerCommand.Parameters.AddWithValue("@CustomerId", CustomerId);

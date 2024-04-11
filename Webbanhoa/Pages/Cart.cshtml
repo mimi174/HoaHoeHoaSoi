@@ -2,8 +2,38 @@
 @model HoaHoeHoaSoi.Pages.Shared.CartModel
 @{
 }
-
+@if (TempData["SuccessMessage"] != null) {
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<div class="container">
+    @if (!ModelState.IsValid) {
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                @foreach (var modelState in ViewData.ModelState.Values) {
+                    foreach (var error in modelState.Errors) {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+</div>
 <style>
+    .remove-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #9D1030;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .remove-link:hover {
+            background-color: #771023;
+        }
+
     .info-left {
         width: 40%;
     }
@@ -74,54 +104,96 @@
         <b>IT'S TIME TO CHECK OUT !</b>
     </p>
 </div>
+<form id="orderForm" method="post">
+    <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;">
+        <div class="info-left">
+            <div class="text-header">
+                <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFORMATION</b> </p>
+            </div>
+            <input type="hidden" id="currentQuantityInput" name="currentQuantity" value="0">
 
-<div id="div-payment " class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
-    <div class="info-left">
-        <div class="text-header" style="">
-            <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFOMATION</b> </p>
-        </div>
-        <form>
+            <input type="hidden" id="totalAmountInput" name="totalAmount" value="0">
+
             <label class="box-title" for="name">Name</label><br>
             <center>
-                <input class="text-box" type="text" id="name" name="name" value=""><br>
+                <input class="text-box" type="text" id="name" name="name" required><br>
             </center>
             <label class="box-title" for="phone">Phone</label><br>
             <center>
-                <input class="text-box" type="text" id="phone" name="phone" value=""><br>
+                <input class="text-box" type="text" id="phone" name="phone" required><br>
             </center>
             <label class="box-title" for="address">Address</label><br>
             <center>
-                <input class="text-box" type="text" id="address" name="address" value="">
+                <input class="text-box" type="text" id="address" name="address" required>
             </center>
-        </form>
-    </div>
 
-    <div style="width:10%"></div>
-
-    <div class="info-right">
-        <div style="font-size: 2.2vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
-            <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
         </div>
-        @foreach (var product in Model.SelectedProducts) {
-            <div class="products_cart">
-                <div style=" float:left;">
-                    @product.Name
-                </div>
-                <div style=" margin-left: auto;">
-                    @product.Price$
-                </div>
+
+        <div style="width:10%"></div>
+
+        <div class="info-right">
+            <div class="text-header">
+                <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
             </div>
-            <div style="padding:0.5vw"></div>
-        }
-        <div style="font-size: 2.2vw; color: #9D1030;margin-top:auto; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
-            <p style="text-align: left;"><b>TOTAL</b> </p>
+            @if (Model.SelectedProducts != null) {
+                @foreach (var product in Model.SelectedProducts) {
+                    <div class="products_cart" data-product-id="@product.Id">
+                        <div style="float:left;">
+                            @product.Name
+                        </div>
+                        <div style="margin-left: auto;">
+                            <input type="number" class="quantity-input" value="1" min="1">
+                            <span class="price">@product.Price$</span>
+                            <a href="/Cart?handler=Delete&productId=@product.Id" class="remove-link">Remove</a>
+                        </div>
+                    </div>
+                    <div style="padding:0.5vw"></div>
+                }
+            }
+            <div class="text-header">
+                <p style="text-align: left;"><b>TOTAL: $<span id="totalAmount">0.00</span></b> </p>
+            </div>
         </div>
     </div>
-</div>
-<div id="div-payment " class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 2% 10%; display: flex; ">
 
-    <center style="width:100%">
-        <button type="submit" class="btn-submit"><b>ORDER NOW!</b></button>
-    </center>
-</div>
+    <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;">
+        <center style="width:100%">
+            <button type="submit" id="orderButton" form="orderForm" class="btn-submit"><b>ORDER NOW!</b></button>
+        </center>
+    </div>
+</form>
+<script>
+    var productQuantities = {};
+    updateTotalAmount();
+
+    function updateTotalAmount() {
+        var totalAmount = 0;
+        var products = document.querySelectorAll('.products_cart');
+        products.forEach(function (product) {
+            var price = parseFloat(product.querySelector('.price').innerText.match(/[\d.]+/g)[0]);
+            var quantity = parseInt(product.querySelector('.quantity-input').value);
+            var productId = product.getAttribute('data-product-id');
+            totalAmount += price * quantity;
+            productQuantities[productId] = quantity;
+        });
+        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
+        var quantitiesArray = Object.values(productQuantities);
+        var integerQuantities = quantitiesArray.filter(quantity => Number.isInteger(quantity));
+        var quantityString = integerQuantities.join(',');
+        document.getElementById('currentQuantityInput').value = quantityString;
+        document.getElementById('totalAmountInput').value = totalAmount.toFixed(2);
+    }
+
+    var quantityInputs = document.querySelectorAll('.quantity-input');
+
+    quantityInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            var productId = input.parentElement.parentElement.getAttribute('data-product-id');
+            var currentQuantity = parseInt(input.value);
+            currentQuantity = Math.max(1, currentQuantity);
+            input.value = currentQuantity;
+            updateTotalAmount();
+        });
+    });
+</script>
 

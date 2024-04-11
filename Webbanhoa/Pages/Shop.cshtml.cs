@@ -23,8 +23,6 @@ namespace Webbanhoa.Pages.Shared {
         }
 
         public void OnGet() {
-            string name = HttpContext.Session.GetString("Name");
-            TempData["Name"] = name;
             try {
                 using (SqlConnection connection = HoaDBContext.GetSqlConnection()) {
                     connection.Open();
@@ -70,27 +68,32 @@ namespace Webbanhoa.Pages.Shared {
                         }
                     }
                 }
+
+                if (product == null) {
+                    _logger.LogWarning($"Product with ID {productId} not found.");
+                    return RedirectToPage("Shop");
+                }
+
+                var productJson = _httpContextAccessor.HttpContext.Session.GetString("SelectedProducts");
+                var products = string.IsNullOrEmpty(productJson) ? new List<Products>() : JsonConvert.DeserializeObject<List<Products>>(productJson);
+
+                if (products.Any(p => p.Id == productId)) {
+                    _logger.LogInformation($"Product with ID {productId} already exists in the cart.");
+                    return RedirectToPage("Shop");
+                }
+
+                products.Add(product);
+                _logger.LogInformation(
+                    $"Added product with ID {productId} to the cart. There are now {products.Count} product(s) in the cart.");
+
+                _httpContextAccessor.HttpContext.Session.SetString("SelectedProducts",
+                    JsonConvert.SerializeObject(products));
+
+                return RedirectToPage("Shop");
             } catch (Exception ex) {
                 _logger.LogError(ex, "Error fetching product from database.");
                 throw;
             }
-
-            if (product == null) {
-                _logger.LogWarning($"Product with ID {productId} not found.");
-                return RedirectToPage("Shop");
-            }
-
-            var productJson = _httpContextAccessor.HttpContext.Session.GetString("SelectedProducts");
-            var products = string.IsNullOrEmpty(productJson)
-                ? new List<Products>()
-                : JsonConvert.DeserializeObject<List<Products>>(productJson);
-            products.Add(product);
-            _logger.LogInformation(
-                $"Added product with ID {productId} to the cart. There are now {products.Count} product(s) in the cart.");
-            _httpContextAccessor.HttpContext.Session.SetString("SelectedProducts",
-                JsonConvert.SerializeObject(products));
-
-            return RedirectToPage("Shop");
         }
     }
 }
