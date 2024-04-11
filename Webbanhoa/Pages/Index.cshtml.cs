@@ -12,7 +12,8 @@ namespace Webbanhoa.Pages {
         public string Name { get; set; }
 
         [BindProperty]
-        [Required(ErrorMessage = "Phone is required")]
+        [Required(ErrorMessage = "Phone Number is required")]
+        [RegularExpression(@"^\d{10,11}$", ErrorMessage = "Invalid Phone Number")]
         public string Phone { get; set; }
 
         [BindProperty]
@@ -24,9 +25,6 @@ namespace Webbanhoa.Pages {
         [Required(ErrorMessage = "Content is required")]
         public string Content { get; set; }
 
-        [BindProperty]
-        [Required(ErrorMessage = "Address is required")]
-        public string Address { get; set; }
 
         private readonly ILogger<IndexModel> _logger;
         public bool hasData = false;
@@ -35,8 +33,6 @@ namespace Webbanhoa.Pages {
         }
 
         public void OnGet() {
-            string name = HttpContext.Session.GetString("Name");
-            TempData["Name"] = name;
         }
 
         public IActionResult OnPost() {
@@ -49,11 +45,10 @@ namespace Webbanhoa.Pages {
                     connection.Open();
 
 
-                    string insertCustomerQuery = "INSERT INTO Customer (Name, Address, Phone, Email) OUTPUT INSERTED.Id VALUES (@Name, @Address, @Phone, @Email)";
+                    string insertCustomerQuery = "INSERT INTO Customer (Name, Phone, Email) OUTPUT INSERTED.Id VALUES (@Name, @Phone, @Email)";
                     int customerId;
                     using (var insertCustomerCommand = new SqlCommand(insertCustomerQuery, connection)) {
                         insertCustomerCommand.Parameters.AddWithValue("@Name", Name);
-                        insertCustomerCommand.Parameters.AddWithValue("@Address", Address);
                         insertCustomerCommand.Parameters.AddWithValue("@Phone", Phone);
                         insertCustomerCommand.Parameters.AddWithValue("@Email", Email);
                         customerId = (int)insertCustomerCommand.ExecuteScalar();

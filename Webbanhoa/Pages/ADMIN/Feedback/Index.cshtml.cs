@@ -16,7 +16,6 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         public class FeedbackViewModel {
             public int FeedbackId { get; set; }
             public string CustomerName { get; set; }
-            public string Address { get; set; }
             public string Email { get; set; }
             public string Content { get; set; }
             public string Phone { get; set; }
@@ -70,20 +69,19 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
                 string command = $@"
-            SELECT F.Id, C.Name, C.Address, C.Email, C.Phone, F.Content
+            SELECT F.Id, C.Name, C.Email, C.Phone, F.Content
             FROM Feedback AS F
             INNER JOIN Customer AS C ON F.CustomerId = C.Id
-            WHERE F.Content LIKE '%{Search}%' OR F.Id LIKE '%{Search}%' OR C.Name LIKE '%{Search}%' OR C.Address LIKE '%{Search}%' OR C.Email LIKE '%{Search}%' OR C.Phone LIKE '%{Search}%'";
+            WHERE F.Content LIKE '%{Search}%' OR F.Id LIKE '%{Search}%' OR C.Name LIKE '%{Search}%' OR C.Email LIKE '%{Search}%' OR C.Phone LIKE '%{Search}%'";
                 using (var sqlCommand = new SqlCommand(command, connection)) {
                     using (var reader = sqlCommand.ExecuteReader()) {
                         while (reader.Read()) {
                             var feedback = new FeedbackViewModel();
                             feedback.FeedbackId = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
                             feedback.CustomerName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
-                            feedback.Address = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
-                            feedback.Email = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
-                            feedback.Phone = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
-                            feedback.Content = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                            feedback.Email = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            feedback.Phone = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            feedback.Content = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
 
                             FeedbackList.Add(feedback);
                         }
