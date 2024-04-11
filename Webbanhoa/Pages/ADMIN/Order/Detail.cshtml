@@ -1,9 +1,8 @@
-﻿@page
-@model HoaHoeHoaSoi.Pages.ADMIN.Order.IndexModel
+﻿@page "{id}"
+@model HoaHoeHoaSoi.Pages.ADMIN.Order.DetailModel
 @{
     Layout = "/Pages/Shared/_HomeAdminLayout.cshtml";
 }
-
 
 <style>
     .container-fluid {
@@ -11,8 +10,8 @@
         color: #9D1030;
         padding: 2vw 6vw 2vw 6vw;
         position: relative;
-        justify-content: space-between; 
-        align-items: center; 
+        justify-content: space-between;
+        align-items: center;
     }
 
     .btn {
@@ -69,7 +68,7 @@
 </style>
 
 <div class="container-fluid">
-    <a href="/ADMIN/HomeAdmin" class="btn-create" role="button" style="text-decoration: none;font-size: 1.2em;padding-bottom: 0.1%;padding-top: 0.1%;">Back</a>
+    <a href="/ADMIN/Order/Index" class="btn-create" role="button" style="text-decoration: none;font-size: 1.2em;padding-bottom: 0.1%;padding-top: 0.1%;">Back</a>
     <div id="wall-form" class="container-fluid">
         <form method="get">
             <div class="form-group">
@@ -87,28 +86,24 @@
             <table class="table" style="border-radius: 20px; overflow: hidden;">
                 <thead style="background-color: lightpink;">
                     <tr>
-                        <th scope="col">Order ID</th>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Customer Address</th>
-                        <th scope="col">Customer Phone Number</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Total</th>
+                        <th>Order Line ID</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody style="background-color: lightpink;">
-                    @foreach (var order in Model.OrderList) {
+                    @foreach (var orderLine in Model.OrderLines) {
                         <tr>
-                            <td>@order.OrderId</td>
-                            <td>@order.CustomerName</td>
-                            <td>@order.CustomerAddress</td>
-                            <td>@order.CustomerPhone</td>
-                            <td>@order.Date.ToString("yyyy-MM-dd")</td>
-                            <td>@order.Total</td>
+                            <td>@orderLine.OrderLineId</td>
+                            <td>@orderLine.ProductName</td>
+                            <td>@orderLine.Price</td>
+                            <td>@orderLine.Quantity</td>
                             <td>
-                                <a href="/ADMIN/Order/Detail/@order.OrderId" class="btn btn-danger" role="button">Details</a>
+                                <a href="/ADMIN/Order/Edit/@orderLine.OrderLineId" class="btn btn-danger" role="button">Edit</a>
                                 <form asp-page-handler="Delete">
-                                    <input hidden type="number" value="@order.OrderId" asp-for="DeleteId" />
+                                    <input hidden type="number" value="@orderLine.OrderLineId" asp-for="DeleteId" />
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </td>

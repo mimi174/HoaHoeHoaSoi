@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
-namespace HoaHoeHoaSoi.Pages.ADMIN.Product
-{
-    public class ProductPageModel : PageModel
-    {
+namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
+    public class ProductPageModel : PageModel {
         [BindProperty]
         [Required]
         [MinLength(3)]
@@ -21,14 +19,12 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product
         [ImageExtenstion]
         public IFormFile Img { get; set; }
 
-        protected string ConvertImgToBase64()
-        {
+        protected string ConvertImgToBase64() {
             if (Img == null)
                 return string.Empty;
 
             string imgValue = string.Empty;
-            using (var ms = new MemoryStream())
-            {
+            using (var ms = new MemoryStream()) {
                 Img.CopyTo(ms);
                 imgValue = Convert.ToBase64String(ms.ToArray());
             }
