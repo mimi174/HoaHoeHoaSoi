@@ -44,21 +44,12 @@ namespace Webbanhoa.Pages {
                 using (var connection = HoaDBContext.GetSqlConnection()) {
                     connection.Open();
 
-
-                    string insertCustomerQuery = "INSERT INTO Customer (Name, Phone, Email) OUTPUT INSERTED.Id VALUES (@Name, @Phone, @Email)";
-                    int customerId;
-                    using (var insertCustomerCommand = new SqlCommand(insertCustomerQuery, connection)) {
-                        insertCustomerCommand.Parameters.AddWithValue("@Name", Name);
-                        insertCustomerCommand.Parameters.AddWithValue("@Phone", Phone);
-                        insertCustomerCommand.Parameters.AddWithValue("@Email", Email);
-                        customerId = (int)insertCustomerCommand.ExecuteScalar();
-                    }
-
-
-                    string insertFeedbackQuery = "INSERT INTO Feedback (CustomerId, Content) VALUES (@CustomerId, @Content)";
+                    string insertFeedbackQuery = "INSERT INTO Feedback (Name, Content, Email, Phone) VALUES (@Name, @Content, @Email, @Phone)";
                     using (var insertFeedbackCommand = new SqlCommand(insertFeedbackQuery, connection)) {
-                        insertFeedbackCommand.Parameters.AddWithValue("@CustomerId", customerId);
+                        insertFeedbackCommand.Parameters.AddWithValue("@Name", Name);
                         insertFeedbackCommand.Parameters.AddWithValue("@Content", Content);
+                        insertFeedbackCommand.Parameters.AddWithValue("@Email", Email);
+                        insertFeedbackCommand.Parameters.AddWithValue("@Phone", Phone);
                         insertFeedbackCommand.ExecuteNonQuery();
                     }
                 }

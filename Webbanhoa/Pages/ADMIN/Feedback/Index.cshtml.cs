@@ -22,43 +22,22 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         }
         public List<FeedbackViewModel> FeedbackList { get; set; }
 
-
         public IActionResult OnPostDelete(int DeleteId) {
             if (DeleteId > 0) {
                 using (var connection = HoaDBContext.GetSqlConnection()) {
                     connection.Open();
-
-                    // Xóa thông tin từ bảng Feedback với điều kiện FeedbackID
                     string deleteFeedbackCommand = $"DELETE FROM Feedback WHERE Id = {DeleteId}";
                     using (var sqlCommand = new SqlCommand(deleteFeedbackCommand, connection)) {
                         sqlCommand.ExecuteNonQuery();
                     }
-
-                    // Xác định CustomerID tương ứng với FeedbackID
-                    string selectCustomerIdCommand = $"SELECT CustomerId FROM Feedback WHERE Id = {DeleteId}";
-                    int customerId = 0;
-                    using (var selectCustomerIdCmd = new SqlCommand(selectCustomerIdCommand, connection)) {
-                        using (var reader = selectCustomerIdCmd.ExecuteReader()) {
-                            if (reader.Read()) {
-                                customerId = reader.GetInt32(0);
-                            }
-                        }
-                    }
-
-                    // Nếu CustomerID được xác định, xóa thông tin từ bảng Customer với điều kiện CustomerID
-                    if (customerId > 0) {
-                        string deleteCustomerCommand = $"DELETE FROM Customer WHERE Id = {customerId}";
-                        using (var deleteCustomerCmd = new SqlCommand(deleteCustomerCommand, connection)) {
-                            deleteCustomerCmd.ExecuteNonQuery();
-                        }
-                    }
                 }
             }
-
             return RedirectToPage("Index");
         }
 
         public void OnGet() {
+            string name = HttpContext.Session.GetString("Name");
+            TempData["Name"] = name;
             Search = string.Empty;
             var data = Request.Query["search"];
             if (!data.IsNullOrEmpty() && data.FirstOrDefault() != null)
@@ -69,10 +48,9 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
                 string command = $@"
-            SELECT F.Id, C.Name, C.Email, C.Phone, F.Content
-            FROM Feedback AS F
-            INNER JOIN Customer AS C ON F.CustomerId = C.Id
-            WHERE F.Content LIKE '%{Search}%' OR F.Id LIKE '%{Search}%' OR C.Name LIKE '%{Search}%' OR C.Email LIKE '%{Search}%' OR C.Phone LIKE '%{Search}%'";
+            SELECT Id, Name, Email, Phone, Content
+            FROM Feedback 
+            WHERE Content LIKE '%{Search}%' OR Id LIKE '%{Search}%' OR Name LIKE '%{Search}%' OR Email LIKE '%{Search}%' OR Phone LIKE '%{Search}%'";
                 using (var sqlCommand = new SqlCommand(command, connection)) {
                     using (var reader = sqlCommand.ExecuteReader()) {
                         while (reader.Read()) {

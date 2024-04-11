@@ -4,6 +4,7 @@ using HoaHoeHoaSoi.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 
 namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
     public class EditModel : PageModel {
@@ -33,6 +34,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         public string Content { get; set; }
 
         public IActionResult OnGet(int id) {
+            string name = HttpContext.Session.GetString("Name");
+            TempData["Name"] = name;
             LoadFeedback(id);
             return Page();
         }
@@ -50,19 +53,17 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         private void LoadFeedback(int id) {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
-                string command = $"SELECT F.Id, C.Id, C.Name AS CustomerName, C.Email, C.Phone, F.Content " +
+                string command = $"SELECT Id, Name, Email, Phone, Content " +
                     $"FROM Feedback AS F " +
-                    $"INNER JOIN Customer AS C ON F.CustomerId = C.Id " +
                     $"WHERE F.Id = {id}";
                 using (var sqlCommand = new SqlCommand(command, connection)) {
                     using (var reader = sqlCommand.ExecuteReader()) {
                         if (reader.Read()) {
                             FeedbackId = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
-                            CustomerId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
-                            CustomerName = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
-                            Email = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
-                            PhoneNumber = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
-                            Content = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                            CustomerName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                            Email = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                            PhoneNumber = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            Content = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
                         }
                     }
                 }
@@ -71,22 +72,14 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Feedback {
         private void UpdateFeedback() {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
-                // Cập nhật thông tin phản hồi
-                string feedbackCommandText = $"UPDATE Feedback SET Content = @Content WHERE Id = @FeedbackId";
+                string feedbackCommandText = $"UPDATE Feedback SET Name = @Name, Content = @Content, Email = @Email, Phone = @Phone WHERE Id = @FeedbackId";
                 using (var feedbackCommand = new SqlCommand(feedbackCommandText, connection)) {
+                    feedbackCommand.Parameters.AddWithValue("@Name", CustomerName);
                     feedbackCommand.Parameters.AddWithValue("@Content", Content);
+                    feedbackCommand.Parameters.AddWithValue("@Email", Email);
+                    feedbackCommand.Parameters.AddWithValue("@Phone", PhoneNumber);
                     feedbackCommand.Parameters.AddWithValue("@FeedbackId", FeedbackId);
                     feedbackCommand.ExecuteNonQuery();
-                }
-
-                // Cập nhật thông tin của khách hàng
-                string customerCommandText = $"UPDATE Customer SET Name = @CustomerName, Email = @Email, Phone = @PhoneNumber WHERE Id = @CustomerId";
-                using (var customerCommand = new SqlCommand(customerCommandText, connection)) {
-                    customerCommand.Parameters.AddWithValue("@CustomerName", CustomerName);
-                    customerCommand.Parameters.AddWithValue("@Email", Email);
-                    customerCommand.Parameters.AddWithValue("@PhoneNumber", PhoneNumber);
-                    customerCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
-                    customerCommand.ExecuteNonQuery();
                 }
             }
         }
