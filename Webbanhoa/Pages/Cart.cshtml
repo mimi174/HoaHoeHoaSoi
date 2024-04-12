@@ -192,7 +192,7 @@
             totalAmount += price * quantity;
             productQuantities[productId] = quantity;
         });
-        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
+        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2) + "$";
         var quantitiesArray = Object.values(productQuantities);
         var integerQuantities = quantitiesArray.filter(quantity => Number.isInteger(quantity));
         var quantityString = integerQuantities.join(',');
