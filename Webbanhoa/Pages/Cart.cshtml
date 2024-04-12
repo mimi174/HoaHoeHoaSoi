@@ -28,11 +28,13 @@
         color: white;
         text-decoration: none;
         border-radius: 5px;
+/*        float: right;*/
+        justify-content: space-between;
     }
 
-        .remove-link:hover {
-            background-color: #771023;
-        }
+    .remove-link:hover {
+        background-color: #771023;         
+    }
 
     .info-left {
         width: 40%;
@@ -69,6 +71,14 @@
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
 
+    .text-total {
+        border-top: solid;
+        border-color: #9D1030;
+        font-size: 2.2vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
     #div-payment {
         border-bottom: solid;
         border-color: #9D1030;
@@ -96,6 +106,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .price {
+        /*        float: right;*/
+        padding-right: 2vw;
+        justify-content: space-between;
+        padding-left: 2vw
     }
 </style>
 
@@ -135,23 +151,28 @@
             <div class="text-header">
                 <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
             </div>
-            @if (Model.SelectedProducts != null) {
-                @foreach (var product in Model.SelectedProducts) {
+            <div style="height:2vw"></div>
+            @if (Model.SelectedProducts != null)
+            {
+                @foreach (var product in Model.SelectedProducts)
+                {
                     <div class="products_cart" data-product-id="@product.Id">
-                        <div style="float:left;">
+                        <div style=" width:55%">
                             @product.Name
                         </div>
-                        <div style="margin-left: auto;">
-                            <input type="number" class="quantity-input" value="1" min="1">
-                            <span class="price">@product.Price$</span>
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <input type="number" class="quantity-input" style="width:20%;" value="1" min="1">
+                                <span class="price">@product.Price$</span>
+                            </div>
                             <a href="/Cart?handler=Delete&productId=@product.Id" class="remove-link">Remove</a>
                         </div>
                     </div>
                     <div style="padding:0.5vw"></div>
                 }
             }
-            <div class="text-header">
-                <p style="text-align: left;"><b>TOTAL: $<span id="totalAmount">0.00</span></b> </p>
+            <div class="text-total">
+                <p style="text-align: left;"><b>TOTAL: <span id="totalAmount" style="float:right">0.00</span></b> </p>
             </div>
         </div>
     </div>
