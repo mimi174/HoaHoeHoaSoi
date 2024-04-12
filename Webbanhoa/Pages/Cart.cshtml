@@ -288,29 +288,9 @@
         });
     });
 
-    // Xử lý sự kiện khi nhấn vào nút ORDER NOW!
-    document.getElementById('orderButton').addEventListener('click', function (event) {
-        // Ngăn chặn hành động mặc định của nút ORDER NOW!
-        event.preventDefault();
-
-        // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
-        var products = document.querySelectorAll('.products_cart');
-        products.forEach(function (product) {
-            var productId = product.getAttribute('data-product-id');
-            updateQuantityInSession(productId, 1);
-        });
-
-        // Cập nhật số lượng trên trang và tổng số tiền
-        loadQuantityFromSession();
-        updateTotalAmount();
-
-        // Submit form để đặt hàng
-        document.getElementById('orderForm').submit();
-    });
 
     // Xử lý sự kiện khi nhấn vào nút ORDER NOW!
     document.getElementById('orderButton').addEventListener('click', function (event) {
-
 
         // Cập nhật số lượng trên trang và tổng số tiền
         loadQuantityFromSession();
@@ -321,7 +301,7 @@
         var formData = new FormData(form);
 
         // Gửi yêu cầu đặt hàng đến máy chủ
-        fetch('/Cart/OnPost', {
+        fetch('/Cart', {
             method: 'POST',
             body: formData
         })
