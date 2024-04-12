@@ -195,5 +195,161 @@
             updateTotalAmount();
         });
     });
+    // // Function to update user information in session storage
+    // function updateUserInfoInSession() {
+    //     var userInfo = {
+    //         name: document.getElementById('name').value,
+    //         phone: document.getElementById('phone').value,
+    //         address: document.getElementById('address').value
+    //     };
+    //     sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+    // }
+
+    // // Call the function to update user information when there's a change in any field
+    // var userInfoInputs = document.querySelectorAll('#name, #phone, #address');
+    // userInfoInputs.forEach(function (input) {
+    //     input.addEventListener('change', function () {
+    //         updateUserInfoInSession();
+    //     });
+    // });
+
+    // // Load user information from session storage
+    // function loadUserInfoFromSession() {
+    //     var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+    //     if (userInfo) {
+    //         document.getElementById('name').value = userInfo.name;
+    //         document.getElementById('phone').value = userInfo.phone;
+    //         document.getElementById('address').value = userInfo.address;
+    //     }
+    // }
+
+    // Lưu Quantity vào Session Storage khi thay đổi
+    function updateQuantityInSession(productId, quantity) {
+        var productQuantities = JSON.parse(sessionStorage.getItem('productQuantities')) || {};
+        productQuantities[productId] = quantity;
+        sessionStorage.setItem('productQuantities', JSON.stringify(productQuantities));
+    }
+
+    // Cập nhật số lượng và lưu vào Session Storage khi số lượng thay đổi
+    quantityInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            var productId = input.parentElement.parentElement.getAttribute('data-product-id');
+            var currentQuantity = parseInt(input.value);
+            currentQuantity = Math.max(1, currentQuantity);
+            input.value = currentQuantity;
+            updateQuantityInSession(productId, currentQuantity);
+            updateTotalAmount();
+        });
+    });
+
+    // Load Quantity từ Session Storage khi trang được tải
+    function loadQuantityFromSession() {
+        var productQuantities = JSON.parse(sessionStorage.getItem('productQuantities')) || {};
+        var quantityInputs = document.querySelectorAll('.quantity-input');
+
+        quantityInputs.forEach(function (input) {
+            var productId = input.parentElement.parentElement.getAttribute('data-product-id');
+            if (productQuantities[productId]) {
+                input.value = productQuantities[productId];
+            }
+        });
+    }
+
+    // Gọi hàm loadQuantityFromSession, loadUserInfoFromSession khi trang được tải
+    window.addEventListener('load', function () {
+        loadQuantityFromSession();
+        loadUserInfoFromSession();
+    });
+
+
+
+    // Xử lý sự kiện khi nhấn vào nút Remove
+    document.querySelectorAll('.remove-link').forEach(function (removeBtn) {
+        removeBtn.addEventListener('click', function (event) {
+
+            var productId = removeBtn.parentElement.parentElement.getAttribute('data-product-id');
+
+            // Gửi yêu cầu đến máy chủ để xóa sản phẩm khỏi giỏ hàng
+            fetch('/Cart?handler=Delete&productId=' + productId)
+                .then(function (response) {
+                    if (response.ok) {
+                        // Nếu xóa thành công, cập nhật số lượng sản phẩm trong phiên lưu trữ về 1
+                        updateQuantityInSession(productId, 1);
+                        loadQuantityFromSession(); // Cập nhật số lượng trên trang
+                        updateTotalAmount(); // Cập nhật tổng số tiền
+                    } else {
+                        // Xử lý khi xảy ra lỗi
+                        console.error('Failed to delete product from cart.');
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                });
+        });
+    });
+
+    // Xử lý sự kiện khi nhấn vào nút ORDER NOW!
+    document.getElementById('orderButton').addEventListener('click', function (event) {
+        // Ngăn chặn hành động mặc định của nút ORDER NOW!
+        event.preventDefault();
+
+        // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
+        var products = document.querySelectorAll('.products_cart');
+        products.forEach(function (product) {
+            var productId = product.getAttribute('data-product-id');
+            updateQuantityInSession(productId, 1);
+        });
+
+        // Cập nhật số lượng trên trang và tổng số tiền
+        loadQuantityFromSession();
+        updateTotalAmount();
+
+        // Submit form để đặt hàng
+        document.getElementById('orderForm').submit();
+    });
+
+    // Xử lý sự kiện khi nhấn vào nút ORDER NOW!
+    document.getElementById('orderButton').addEventListener('click', function (event) {
+
+
+        // Cập nhật số lượng trên trang và tổng số tiền
+        loadQuantityFromSession();
+        updateTotalAmount();
+
+        // Submit form để đặt hàng
+        var form = document.getElementById('orderForm');
+        var formData = new FormData(form);
+
+        // Gửi yêu cầu đặt hàng đến máy chủ
+        fetch('/Cart/OnPost', {
+            method: 'POST',
+            body: formData
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
+                    var products = document.querySelectorAll('.products_cart');
+                    products.forEach(function (product) {
+                        var productId = product.getAttribute('data-product-id');
+                        updateQuantityInSession(productId, 1);
+                    });
+                    // // Nếu đơn hàng được đặt thành công, làm trống các trường thông tin và lưu vào phiên lưu trữ
+                    // sessionStorage.removeItem('userInfo');
+                    // var userInfo = {
+                    //     name: document.getElementById('name').value = '',
+                    //     phone: document.getElementById('phone').value = '',
+                    //     address: document.getElementById('address').value = ''
+                    // };
+                    // sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+                } else {
+                    console.error('Failed to place order.');
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    });
+
 </script>
 
