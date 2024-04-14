@@ -202,43 +202,6 @@
 
     var quantityInputs = document.querySelectorAll('.quantity-input');
 
-    quantityInputs.forEach(function (input) {
-        input.addEventListener('change', function () {
-            var productId = input.parentElement.parentElement.getAttribute('data-product-id');
-            var currentQuantity = parseInt(input.value);
-            currentQuantity = Math.max(1, currentQuantity);
-            input.value = currentQuantity;
-            updateTotalAmount();
-        });
-    });
-    // // Function to update user information in session storage
-    // function updateUserInfoInSession() {
-    //     var userInfo = {
-    //         name: document.getElementById('name').value,
-    //         phone: document.getElementById('phone').value,
-    //         address: document.getElementById('address').value
-    //     };
-    //     sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
-    // }
-
-    // // Call the function to update user information when there's a change in any field
-    // var userInfoInputs = document.querySelectorAll('#name, #phone, #address');
-    // userInfoInputs.forEach(function (input) {
-    //     input.addEventListener('change', function () {
-    //         updateUserInfoInSession();
-    //     });
-    // });
-
-    // // Load user information from session storage
-    // function loadUserInfoFromSession() {
-    //     var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-    //     if (userInfo) {
-    //         document.getElementById('name').value = userInfo.name;
-    //         document.getElementById('phone').value = userInfo.phone;
-    //         document.getElementById('address').value = userInfo.address;
-    //     }
-    // }
-
     // Lưu Quantity vào Session Storage khi thay đổi
     function updateQuantityInSession(productId, quantity) {
         var productQuantities = JSON.parse(sessionStorage.getItem('productQuantities')) || {};
@@ -270,7 +233,35 @@
             }
         });
     }
+    // Function to update user information in session storage
+    function updateUserInfoInSession(nameValue, phoneValue, addressValue) {
+        var userInfo = {
+            name: nameValue,
+            phone: phoneValue,
+            address: addressValue
+        };
+        sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+    }
 
+    // Call the function to update user information when there's a change in any field
+    var userInfoInputs = document.querySelectorAll('#name, #phone, #address');
+    userInfoInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            updateUserInfoInSession(document.getElementById('name').value,
+                document.getElementById('phone').value,
+                document.getElementById('address').value);
+        });
+    });
+
+    // Load user information from session storage
+    function loadUserInfoFromSession() {
+        var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+        if (userInfo) {
+            document.getElementById('name').value = userInfo.name;
+            document.getElementById('phone').value = userInfo.phone;
+            document.getElementById('address').value = userInfo.address;
+        }
+    }
     // Gọi hàm loadQuantityFromSession, loadUserInfoFromSession khi trang được tải
     window.addEventListener('load', function () {
         loadQuantityFromSession();
@@ -278,36 +269,28 @@
     });
 
 
-
     // Xử lý sự kiện khi nhấn vào nút Remove
     document.querySelectorAll('.remove-link').forEach(function (removeBtn) {
-        removeBtn.addEventListener('click', function (event) {
-
+        removeBtn.addEventListener('click', async function (event) {
             var productId = removeBtn.parentElement.parentElement.getAttribute('data-product-id');
 
-            // Gửi yêu cầu đến máy chủ để xóa sản phẩm khỏi giỏ hàng
-            fetch('/Cart?handler=Delete&productId=' + productId)
-                .then(function (response) {
-                    if (response.ok) {
-                        // Nếu xóa thành công, cập nhật số lượng sản phẩm trong phiên lưu trữ về 1
-                        updateQuantityInSession(productId, 1);
-                        loadQuantityFromSession(); // Cập nhật số lượng trên trang
-                        updateTotalAmount(); // Cập nhật tổng số tiền
-                    } else {
-                        // Xử lý khi xảy ra lỗi
-                        console.error('Failed to delete product from cart.');
-                    }
-                })
-                .catch(function (error) {
-                    console.error('Error:', error);
-                });
+            
+
+            // Cập nhật số lượng sản phẩm trong session
+            await updateQuantityInSession(productId, 1);
+
+            // Tải lại số lượng từ session
+            loadQuantityFromSession();
+            
+            // Cập nhật tổng số tiền
+            updateTotalAmount();
         });
     });
 
 
     // Xử lý sự kiện khi nhấn vào nút ORDER NOW!
-    document.getElementById('orderButton').addEventListener('click', function (event) {
-
+    document.getElementById('orderButton').addEventListener('click', async function (event) {
+        loadUserInfoFromSession();
         // Cập nhật số lượng trên trang và tổng số tiền
         loadQuantityFromSession();
         updateTotalAmount();
@@ -316,36 +299,17 @@
         var form = document.getElementById('orderForm');
         var formData = new FormData(form);
 
-        // Gửi yêu cầu đặt hàng đến máy chủ
-        fetch('/Cart', {
-            method: 'POST',
-            body: formData
-        })
-            .then(function (response) {
-                if (response.ok) {
-                    // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
-                    var products = document.querySelectorAll('.products_cart');
-                    products.forEach(function (product) {
-                        var productId = product.getAttribute('data-product-id');
-                        updateQuantityInSession(productId, 1);
-                    });
-                    // // Nếu đơn hàng được đặt thành công, làm trống các trường thông tin và lưu vào phiên lưu trữ
-                    // sessionStorage.removeItem('userInfo');
-                    // var userInfo = {
-                    //     name: document.getElementById('name').value = '',
-                    //     phone: document.getElementById('phone').value = '',
-                    //     address: document.getElementById('address').value = ''
-                    // };
-                    // sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+        // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
+        var products = document.querySelectorAll('.products_cart');
+        products.forEach(async function (product) {
+            var productId = product.getAttribute('data-product-id');
 
-                } else {
-                    console.error('Failed to place order.');
-                }
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
+            // Cập nhật số lượng sản phẩm trong session
+            await updateQuantityInSession(productId, 1);
+            await updateUserInfoInSession('', '', '');
+        });
     });
+
 
 </script>
 
