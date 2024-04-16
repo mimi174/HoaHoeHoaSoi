@@ -90,7 +90,6 @@
                         <th>Product Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody style="background-color: lightpink;">
@@ -100,13 +99,6 @@
                             <td>@orderLine.ProductName</td>
                             <td>@orderLine.Price</td>
                             <td>@orderLine.Quantity</td>
-                            <td>
-                                <a href="/ADMIN/Order/Edit/@orderLine.OrderLineId" class="btn btn-danger" role="button">Edit</a>
-                                <form asp-page-handler="Delete">
-                                    <input hidden type="number" value="@orderLine.OrderLineId" asp-for="DeleteId" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
                         </tr>
                     }
                 </tbody>
