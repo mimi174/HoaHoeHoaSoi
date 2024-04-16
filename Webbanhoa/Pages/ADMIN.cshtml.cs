@@ -21,8 +21,6 @@ namespace HoaHoeHoaSoi.Pages {
                 HttpContext.Session.SetString("Name", admin.Name);
                 TempData["AdminName"] = admin.Name;
                 if (admin != null) {
-
-
                     return RedirectToPage("/ADMIN/HomeAdmin");
                 } else {
                     TempData["Error"] = "Login Failed! Please check your username and password!";

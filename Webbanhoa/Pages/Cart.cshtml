@@ -69,9 +69,12 @@
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
 
-    #div-payment {
-        border-bottom: solid;
+    .text-header-total {
+        border-top: solid;
         border-color: #9D1030;
+        font-size: 2.2vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
 
     .btn-submit {
@@ -135,6 +138,7 @@
             <div class="text-header">
                 <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
             </div>
+            <div style="height:1.5vw"></div>
             @if (Model.SelectedProducts != null) {
                 @foreach (var product in Model.SelectedProducts) {
                     <div class="products_cart" data-product-id="@product.Id">
@@ -150,16 +154,16 @@
                     <div style="padding:0.5vw"></div>
                 }
             }
-            <div class="text-header">
+            <div class="text-header-total">
                 <p style="text-align: right;">
                     <span style="float: left;"><b>TOTAL:</b></span>
-                    <b>$<span id="totalAmount">0.00</span></b>
+                    <b><span id="totalAmount">0.00</span>$</b>
                 </p>
             </div>
         </div>
     </div>
 
-    <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;">
+    <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;border:none">
         <center style="width:100%">
             <button type="submit" id="orderButton" form="orderForm" class="btn-submit"><b>ORDER NOW!</b></button>
         </center>

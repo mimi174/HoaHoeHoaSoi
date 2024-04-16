@@ -104,7 +104,6 @@
                             <td>@feedback.Phone</td>
                             <td>@feedback.Content</td>
                             <td>
-                                <a href="/ADMIN/Feedback/Edit/@feedback.FeedbackId" class="btn btn-danger" role="button">Edit</a>
                                 <form asp-page-handler="Delete">
                                     <input hidden type="number" value="@feedback.FeedbackId" asp-for="DeleteId" />
                                     <button type="submit" class="btn btn-danger">Delete</button>
