@@ -85,3 +85,16 @@ button.accept-policy {
     padding-bottom: 3vw;
     padding-top:0px;
 }
+
+/*.nav-link-icon img {*/
+    /*margin-right: 20%;*/ /* Khoảng cách giữa các icon */
+    /*margin-bottom: 8px;
+}*/
+
+.icon-container {
+    width: 15%;
+    display: flex;
+    justify-content: flex-end; /* Đẩy tất cả icon sang phải */
+    align-items: center; /* Canh giữa theo chiều dọc */
+    gap: 20%;
+}
