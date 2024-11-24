@@ -70,7 +70,7 @@
                     <label class="box-title" for="name"><b>Username</b></label><br>
                     <input class="text-box" type="text" id="Username" name="Username" value=""><br>
                     <label class="box-title" for="phone"><b>Password</b></label><br>
-                    <input class="text-box" type="text" id="Password" name="Password" value=""><br>
+                    <input class="text-box" type="password" id="Password" name="Password" value=""><br>
                 </div>
                 <div style="width:10%"></div>
             <center style="width:100%; padding-top:2vw">
@@ -79,3 +79,25 @@
         </form>
     </div>
 </div>
+@section Script{
+    <script type="text/javascript">
+        debugger;
+        var isValid = @Html.Raw(Json.Serialize(Model.IsValid));
+        var isLoginFail = @Html.Raw(Json.Serialize(Model.IsLoginFail));
+
+        if (!isValid) {
+            Swal.fire({
+                title: "Username and password are empty",
+                text: "Please try again",
+                icon: "error"
+            });
+        } else if (isLoginFail) {
+            Swal.fire({
+                title: "Wrong username and password",
+                text: "Please try again",
+                icon: "error"
+            });
+        }
+    </script>
+}
+

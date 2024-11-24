@@ -44,10 +44,31 @@
                     <a asp-area="" asp-page="/Cart" class="nav-link-icon" >
                         <img src="/Picture/cart1.png" alt="Cart" style=" max-width: 100%;"/>
                     </a>
-                    <a asp-area="" asp-page="/UserInfo" class="nav-link-icon">
-                        <img src="/Picture/user_logo.png" alt="User Info" style=" max-width: 32%;"/>
+                    @{
+                        var sessionInfo = Context.Session.GetString(HoaHoeHoaSoi.Properties.Resources.UserSessionInfo);
+                        HoaHoeHoaSoi.Model.UserInfoSession userData = null;
+                        if (!string.IsNullOrEmpty(sessionInfo))
+                        {
+                            userData = Newtonsoft.Json.JsonConvert.DeserializeObject<HoaHoeHoaSoi.Model.UserInfoSession>(sessionInfo);
+                        }
+
+                        var userIconPage = userData != null ? $"/UserInfo/{userData.Id}" : "/Login";
+                    }
+                    <a href="@userIconPage" class="nav-link-icon">
+                        <img src="/Picture/user_logo.png" alt="User Info" style=" max-width: 32%;"/>                        
                     </a>
                 </div>
+                @{
+                    if (userData != null)
+                    {
+                        <div>
+                            <p>Hello, @userData.Name</p>
+                            <form asp-page="/Logout" method="post">
+                                <button class="btn-danger" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    }
+                }
             </div>
         </nav>
 
@@ -89,6 +110,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
     @if (IsSectionDefined("Script"))

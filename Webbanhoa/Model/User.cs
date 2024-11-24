@@ -18,4 +18,10 @@ namespace HoaHoeHoaSoi.Model
         {
         }
     }
+
+    public class UserInfoSession
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }
