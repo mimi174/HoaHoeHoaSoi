@@ -108,3 +108,23 @@
         </form>
     </div>
 </div>
+
+@section Script{
+    <script type="text/javascript">
+        var errorMsg = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+        var isSuccess = @Html.Raw(Json.Serialize(Model.IsSuccess));
+        if (errorMsg) {
+            Swal.fire({
+                title: errorMsg,
+                text: "Please try again",
+                icon: "error"
+            });
+        } else if(isSuccess) {
+            Swal.fire({
+                title: "Sign up successful",
+                text: "",
+                icon: "success"
+            });
+        }
+    </script>
+}

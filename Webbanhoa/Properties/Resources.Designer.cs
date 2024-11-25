@@ -61,6 +61,33 @@ namespace HoaHoeHoaSoi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username is already taken.
+        /// </summary>
+        internal static string ExistedSignUpMsg {
+            get {
+                return ResourceManager.GetString("ExistedSignUpMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username and Password must have 5 to 10 letters.
+        /// </summary>
+        internal static string InValidSignupMsg {
+            get {
+                return ResourceManager.GetString("InValidSignupMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign up failed.
+        /// </summary>
+        internal static string SignUpFailed {
+            get {
+                return ResourceManager.GetString("SignUpFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UserSessionInfo.
         /// </summary>
         internal static string UserSessionInfo {
