@@ -95,17 +95,17 @@
                             <div class="row row-cols-3">
                                 <div class="col col-5 px-0">
                                     <span class="Users">Birthday</span>
-                                    @*<input type="date" id="birthDay" name="birthDay" value="@(Model.userInfo.DOB)">*@
+                                    <input type="date" id="birthDay" name="birthDay" value="@(Model.userInfo.DOB)">
                                 </div>
                                 <div class="col col-2"></div>
                                 <div class="col col-5 px-0">
                                     <span class="Users">Gender</span>
-                                    @*<select id="gender" name="gender">
-                                        @{
+                                    <select id="gender" name="gender">
+                                        @*@{
                                             // Kiểm tra xem giá trị từ cơ sở dữ liệu có tồn tại không
                                             if (Model.userInfo.Gender != null && Model.userInfo.Gender == "Female")
                                             {
-                                                <option value="@Model.userInfo.gender" selected>@Model.userInfo.gender</option>
+                                                <option value="@Model.userInfo.Gender" selected>@Model.userInfo.Gender</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Other">Other...</option>
                                             }
@@ -121,14 +121,14 @@
                                                 <option value="Female">Female</option>
                                                 <option value="Male">Male</option>
                                             }
-                                        }
-                                    </select>*@
+                                        }*@
+                                    </select>
                                 </div>
                             </div>
                             <br />
                             <div class="row">
                                 <span class="Users">Email</span>
-                                <input id="email" name="email" type="text" class="form-control" value="@Model.userInfo.Mail" readonly>
+                                <input id="email" name="email" type="text" class="form-control" value="@Model.userInfo.Mail" >
                             </div>
                             <br />
                             <div class="row">

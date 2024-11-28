@@ -41,8 +41,8 @@
                     </div>
                 </center>
                 <div class="icon-container" style="margin-left: 10%;">
-                    <a asp-area="" asp-page="/Cart" class="nav-link-icon" >
-                        <img src="/Picture/cart1.png" alt="Cart" style=" max-width: 100%;"/>
+                    <a asp-area="" asp-page="/Cart" class="nav-link-icon">
+                        <img src="/Picture/cart1.png" alt="Cart" style=" max-width: 100%;" />
                     </a>
                     @{
                         var sessionInfo = Context.Session.GetString(HoaHoeHoaSoi.Properties.Resources.UserSessionInfo);
@@ -54,9 +54,20 @@
 
                         var userIconPage = userData != null ? $"/UserInfo/{userData.Id}" : "/Login";
                     }
-                    <a href="@userIconPage" class="nav-link-icon">
-                        <img src="/Picture/user_logo.png" alt="User Info" style=" max-width: 32%;"/>                        
-                    </a>
+                    @*<a href="@userIconPage" class="nav-link-icon">
+                        
+
+                    </a>*@
+                <div class="dropdown">
+                    <button class="dropbtn" onclick="myFunction()">
+                        <img src="/Picture/user_logo.png" alt="User Info" style="max-width: 43%;" />
+                    </button>
+                    <div id="myDropdown" class="dropdown-content" style="display: none;">
+                        <a href="/Users/Home">Home</a>
+                        <a href="/Users/About">About</a>
+                        <a href="/Users/Contact">Contact</a>
+                    </div>
+                </div>
                 </div>
                 @{
                     if (userData != null)
@@ -116,7 +127,26 @@
     @if (IsSectionDefined("Script"))
         @RenderSection("Script")
 
+    @section Scrip{
+        <script>
+            function myFunction() {
+                const dropdown = document.getElementById("myDropdown");
+                dropdown.classList.toggle("show");
+            }
 
+            window.onclick = function (event) {
+                if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown')) {
+                    const dropdowns = document.getElementsByClassName("dropdown-content");
+                    for (let i = 0; i < dropdowns.length; i++) {
+                        const openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            };
+        </script>
+     }
 
 
 

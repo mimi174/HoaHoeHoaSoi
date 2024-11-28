@@ -4,17 +4,43 @@
 }
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        margin: 0;
-        padding: 0;
+
+    .info-left {
         justify-content: center;
-        align-items: center;
-        height: 100vh;
+        width: 40%;
     }
 
-    .register-container {
+    .info-right {
+        justify-content: center;
+        width: 50%;
+    }
+
+    .box-title {
+        font-size: 2.5vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1vw;
+    }
+
+    .text-box {
+        width: 100%;
+        font-family: Courier;
+        font-size: 1.5vw;
+        color: #9D1030;
+        background-color: #F6D8DC;
+        border-color: #9D1030;
+        border: 0.3vw solid;
+        border-radius: 100px;
+        padding: 1vw 2vw 1vw 2vw;
+    }
+
+
+    .img-info {
+        border-radius: 50px;
+        filter: drop-shadow(0 0 5px black);
+    }
+
+/*    .register-container {
         background: #fff;
         padding: 20px 30px;
         border-radius: 8px;
@@ -22,89 +48,93 @@
         width: 100%;
         max-width: 400px;
         text-align: center;
-    }
+    }*/
 
-    h1 {
-        margin-bottom: 20px;
-        color: #333;
+
+    .btn-Signup {
+        justify-content: center;
+        filter: drop-shadow(0.3em 0.3em 0.3em black);
+        border-radius: 30px;
+        background-color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.6vw;
+        border: none;
     }
 
     .form-group {
-        margin-bottom: 15px;
-        text-align: left;
+        font-size: 2.5vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1vw;
     }
 
-    .label {
-        display: block;
-        margin-bottom: 5px;
-        color: #555;
-    }
-
-    .input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-
-       .input:focus {
-            border-color: #007BFF;
-            outline: none;
-        }
-
-    .submit-btn {
-        background: #007BFF;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-        .submit-btn:hover {
-            background: #0056b3;
-        }
-
-    p {
-        margin-top: 10px;
-        font-size: 14px;
-    }
-
-    a {
-        color: #007BFF;
-        text-decoration: none;
-    }
-
-        a:hover {
-            text-decoration: underline;
-        }
 </style>
 
-<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 5% 10%; display: flex; ">
+<!--<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 5% 10%; display: flex; ">-->
     <!-- Phần ảnh bên trái -->
-    <div class="image-section"></div>
+    <!--<div class="image-section" style="max-width:20vw">
+        <img class="img-info" src="/Picture/8.png" style="max-width: 100%; max-height: 100%" />
+    </div>-->
 
     <!-- Phần form bên phải -->
-    <div class="form-section">
-        <h1 style="color: darkred; margin-bottom: 20px; text-align: center;">Sign Up</h1>
+    <!--<div class="form-section" style=" justify-content: center; width: 50%;">
+        <center>
+            <p style=" font-size: 2.5vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; padding: 1vw;">
+                <b>Sign Up</b>
+            </p>
+        </center>
         <form method="post">
-            <div class="form-group">
-                <label for="fullname">Fullname</label>
-                <input type="text" id="fullname" name="fullname" required="">
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="box-title" for="fullname">Fullname</label>
+                    <input class="text-box" type="text" id="fullname" name="fullname" required="">
+                </div>
+                <div class="form-group">
+                    <label class="box-title" for="username">Username</label>
+                    <input class="text-box" type="text" id="username" name="username" required="">
+                </div>
+                <div class="form-group">
+                    <label class="box-title" for="password">Password</label>
+                    <input class="text-box" type="password" id="password" name="password" required="">
+                </div>
+                <div class="text-center">
+                    <input class="btn-Signup" type="submit" value="Sign Up">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required="">
+        </form>
+    </div>
+</div>-->
+
+<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 5% 10%; display: flex; ">
+    <div class="info-left">
+        <center>
+            <div style="width:60%; height:60%">
+                <img class="img-info" src="/Picture/8.png" style="max-width: 100%; max-height: 100%" />
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required="">
-            </div>
-            <div class="text-center">
-                <input type="submit" value="Sign Up">
-            </div>
+        </center>
+    </div>
+    <div class="info-right">
+        <form method="post">
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="box-title" for="name"><b>Fullname</b></label><br>
+                    <input class="text-box" type="text" id="fullname" name="fullname" required="">
+                </div>
+                <div class="form-group">
+                    <label class="box-title" for="Username"><b>Username</b></label><br>
+                    <input class="text-box" type="text" id="Fullname" name="fullname" required="">
+                </div>
+                <div class="form-group">
+                    <label class="box-title" for="phone"><b>Password</b></label><br>
+                    <input class="text-box" type="password" id="password" name="password" required="">
+                </div>
+                <center style="width:100%; padding-top:2vw">
+                    <div>
+                        <button class="btn-Signup" style="padding: 10px 50px 10px 50px ; color:white"><b>Sign Up</b></button>
+                        @*<input class="btn-Signup" type="submit" value="Sign Up">*@
+                    </div>
+                </center>
+                </div>
         </form>
     </div>
 </div>

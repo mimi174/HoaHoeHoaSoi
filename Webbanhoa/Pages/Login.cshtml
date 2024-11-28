@@ -52,6 +52,11 @@
         filter: drop-shadow(0 0 5px black);
     }
 
+    .question {
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1vw;
+    }
 
 </style>
 
@@ -69,14 +74,15 @@
                 <div class="info-left-note" style="">
                     <label class="box-title" for="name"><b>Username</b></label><br>
                     <input class="text-box" type="text" id="Username" name="Username" value=""><br>
-                    <label class="box-title" for="phone"><b>Password</b></label><br>
+                    <label class="box-title" for="pass"><b>Password</b></label><br>
                     <input class="text-box" type="password" id="Password" name="Password" value=""><br>
                 </div>
                 <div style="width:10%"></div>
-                <a href="/SignUp"><p>Don't have a account ?</p></a>
-            <center style="width:100%; padding-top:2vw">
-                <button class="btn-login" style="padding: 10px 50px 10px 50px ; color:white"><b>Login</b></button>
-            </center>
+                <a href="/SignUp" class="question"><p>Don't have a account ?</p></a>
+                <center style="width:100%; padding-top:2vw">
+                    <button class="btn-login" style="padding: 10px 50px 10px 50px ; color:white"><b>Login</b></button>
+                </center>
+            </div>
         </form>
     </div>
 </div>
