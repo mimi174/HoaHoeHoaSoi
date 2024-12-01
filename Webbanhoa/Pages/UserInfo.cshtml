@@ -61,26 +61,28 @@
 
 
 <div style="background-color: #F6D8DC; color: #9D1030;">
-    @if (Model.errorMessage.Length > 0)
-    {
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>@Model.errorMessage</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div class="container" style=" padding: 2vw 10vw 2vw 10vw">
             <div >
                 <div class="row row-cols-2">
                     <div class="col col-4">
                         <div class="box py-4">
                             <div class="row">
-                                <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" class="img-thumbnail" alt="Beatles" style="width:auto;">
+                                @if (!string.IsNullOrEmpty(Model.Avatar))
+                                {
+                                    <img id="avatar-display" src="data:image/jpeg;base64, @Model.Avatar" class="img-thumbnail" alt="Beatles" style="width:auto;">
+                                }
+                                else
+                                {
+                                    <img id="avatar-display" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" class="img-thumbnail" alt="Beatles" style="width:auto;">
+                                }
                             </div>
                             <br />
                             <div class="row">
-                                <button type="button" class="btn btn-outline-success">
-                                    Avatar
+                                <input type="hidden" id="avatar" name="avatar" value="@Model.Avatar"/>
+                                <input asp-for="FileAvatar" id="file-avatar" class="form-control" accept="image/png, image/jpg, image/jpeg" onchange="readURL(this);" />
+                                <button type="button" class="btn btn-outline-success" onclick="deleteAvatar();">
+                                    Delete Avatar
                                 </button>
                             </div>
                         </div>
@@ -88,62 +90,48 @@
                     <div class="col col-8 ps-5" style="width: 50%; justify-content: center; margin-left: auto; ">
                         <div class="box">
                             <div class="row">
-                                <input type="hidden" name="id" value="@Model.userInfo.Id" />
+                                <span class="fName"><b>Username</b></span>
+                                <input id="uname" name="Username" value="@Model.Username" type="text" class="form-control" placeholder="" readonly>
+                            </div>
+                            <div class="row">
+                                <input type="hidden" name="id" value="@Model.Id" />
                                 <span class="fName"><b>Name</b></span>
-                                <input id="fname" name="fName" type="text" class="form-control" value="@Model.userInfo.Name" placeholder="First Name..">
+                                <input id="fname" name="Fullname" value="@Model.Fullname" type="text" class="form-control" placeholder="">
                             </div>
                             <div class="row row-cols-3">
                                 <div class="col col-5 px-0">
                                     <span class="Users">Birthday</span>
-                                    <input type="date" id="birthDay" name="birthDay" value="@(Model.userInfo.DOB)">
+                                    <input type="date" id="DOB" name="DOB" value="@(Model.DOB?.ToString("yyyy-MM-dd"))">
                                 </div>
                                 <div class="col col-2"></div>
                                 <div class="col col-5 px-0">
                                     <span class="Users">Gender</span>
-                                    <select id="gender" name="gender">
-                                        @*@{
-                                            // Kiểm tra xem giá trị từ cơ sở dữ liệu có tồn tại không
-                                            if (Model.userInfo.Gender != null && Model.userInfo.Gender == "Female")
-                                            {
-                                                <option value="@Model.userInfo.Gender" selected>@Model.userInfo.Gender</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Other">Other...</option>
-                                            }
-                                            else if (Model.userInfo.Gender != null && Model.userInfo.Gender == "Male")
-                                            {
-                                                <option value="@Model.userInfo.Gender" selected>@Model.userInfo.Gender</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Other">Other...</option>
-                                            }
-                                            else if (Model.userInfo.Gender != null && Model.userInfo.Gender != "Male" && Model.userInfo.Gender != "Female")
-                                            {
-                                                <option value="@Model.userInfo.Gender" selected>@Model.userInfo.Gender</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Male">Male</option>
-                                            }
-                                        }*@
-                                    </select>
+                                    <br />
+                                    <input type="radio" id="male" name="gender" value="true" @Html.Raw(Model.Gender ? "checked" : "")>
+                                    <label for="male">Male</label>
+                                    <input type="radio" id="female" name="gender" value="false" @Html.Raw(!Model.Gender ? "checked" : "")>
+                                    <label for="female">Female</label>
                                 </div>
                             </div>
                             <br />
                             <div class="row">
                                 <span class="Users">Email</span>
-                                <input id="email" name="email" type="text" class="form-control" value="@Model.userInfo.Mail" >
+                                <input id="email" name="email" type="text" class="form-control" value="@Model.Email" >
                             </div>
                             <br />
-                            <div class="row">
+                           @*  <div class="row">
                                 <span class="Users">Password</span>
-                                <input id="pass" name="pass" type="password" class="form-control" value="@Model.userInfo.Password">
-                            </div>
+                                <input id="pass" name="pass" type="password" class="form-control" value="@Model.Password">
+                            </div> *@
                             <br />
                             <div class="row">
                                 <span class="Users">Phone</span>
-                                <input id="phone" name="phone" type="text" class="form-control" value="@(Model.userInfo.Phone == " " ? "" : Model.userInfo.Phone)">
+                                <input id="phone" name="phone" type="text" class="form-control" value="@(Model.Phone == " " ? "" : Model.Phone)">
                             </div>
                             <br />
                             <div class="row">
                                 <span class="Users">Address</span>
-                                <input id="address" name="address" type="text" class="form-control" value="@(Model.userInfo.Address == " " ? "" : Model.userInfo.Address)">
+                                <input id="address" name="address" type="text" class="form-control" value="@(Model.Address == " " ? "" : Model.Address)">
                             </div>
                             <br />
                             <div class="row mb-3">
@@ -151,7 +139,7 @@
                                     <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
                                 <div class="col-sm-4 d-grid">
-                                    <a class="btn btn-outline-success" href="/Users/Infor?id=@Model.userInfo.Id" role="button">Cancel</a>
+                                    <a class="btn btn-outline-success" href="/Users/Infor?id=@Model.Id" role="button">Cancel</a>
                                 </div>
 
                             </div>
@@ -162,3 +150,45 @@
         </div>
     </form>
 </div>
+
+@section Script{
+    <script type="text/javascript">
+        var errorMsg = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+        var isSuccess = @Html.Raw(Json.Serialize(Model.IsSuccess));
+        console.log("S: " + isSuccess);
+        if (errorMsg) {
+            Swal.fire({
+                title: "Error, please try again",
+                icon: "error",
+                html: errorMsg
+            });
+        } else if (isSuccess) {
+            Swal.fire({
+                title: "Update successful",
+                text: "",
+                icon: "success"
+            });
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#avatar-display').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function deleteAvatar(){
+            $('#avatar-display').attr('src', "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg");
+            $('#avatar').attr('value', null);
+            var avatarInput = $('#file-avatar');
+            if (avatarInput && avatarInput.length > 0) {
+                avatarInput[0].value = null;
+            }
+        }
+    </script>
+}

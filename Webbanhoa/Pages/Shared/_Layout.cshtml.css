@@ -99,7 +99,7 @@ button.accept-policy {
     gap: 20%;
 }
 
-/*.dropbtn {
+.dropbtn {
     background-color: white ;
     padding: 16px;
     font-size: 16px;
@@ -138,7 +138,7 @@ button.accept-policy {
 
 .show {
     display: block !important;
-}*/
+}
 
 /* Kiểu mặc định */
 .dropdown-content {

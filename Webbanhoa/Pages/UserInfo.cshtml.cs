@@ -1,24 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using HoaHoeHoaSoi.Helpers;
 using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HoaHoeHoaSoi.Pages
 {
-	    public class UserInfoModel : PageModel
+	public class UserInfoModel : PageModel
     {
+        [BindProperty]
         public string Id { get; set; }
-        public UserInfo userInfo = new UserInfo();
-        public string errorMessage = "";
+
+        [BindProperty]
+        [Required]
+        [MaxLength(20)]
+        [MinLength(5)]
+        public string Fullname { get; set; }
+        [BindProperty]
+        public string Username { get; set; }
+        [BindProperty]
+        public string Address { get; set; }
+        [BindProperty]
+        public string Phone { get; set; }
+        [BindProperty]
+        public string Avatar { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
+        [BindProperty]
+        public bool Gender { get; set; }
+        [BindProperty]
+        public DateTime? DOB { get; set; }
+        [BindProperty]
+        [ImageExtenstion]
+        public IFormFile FileAvatar { get; set; }
+        private IEnumerable<ModelErrorCollection> Errors { get; set; }
+        public string ErrorMsg { get; set; } = string.Empty;
+        public bool IsSuccess = false;
         public void OnGet(string id)
         {
-            //string Id = Request.Query["Id"];
             Id = id;
             try
             {
@@ -33,16 +60,14 @@ namespace HoaHoeHoaSoi.Pages
                         {
                             while (reader.Read())   
                             {          
-                                userInfo.Id = reader.GetInt32(0);
-                                userInfo.Username = reader.GetString(1);
-                                userInfo.Password = reader.GetString(2);
-                                userInfo.Name = reader.GetString(3);
-                                userInfo.DOB = reader.IsDBNull(4) ? null : reader.GetDateTime(4);
-                                userInfo.Address = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
-                                userInfo.Phone = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
-                                userInfo.Avatar = reader.IsDBNull(7) ? string.Empty : reader.GetString(7);
-                                userInfo.Gender = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
-                                userInfo.Mail = reader.IsDBNull(9) ? string.Empty : reader.GetString(9);
+                                Username = reader.GetString(1);
+                                Fullname = reader.GetString(3);
+                                DOB = reader.IsDBNull(4) ? null : reader.GetDateTime(4);
+                                Address = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                                Phone = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                                Avatar = reader.IsDBNull(7) ? string.Empty : reader.GetString(7);
+                                Gender = reader.IsDBNull(8) ? false : reader.GetBoolean(8);
+                                Email = reader.IsDBNull(9) ? string.Empty : reader.GetString(9);
                             }
                         }
                     }
@@ -55,59 +80,55 @@ namespace HoaHoeHoaSoi.Pages
             }
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
-            //userInfo.Id = Request.Form["Id"];
-            //userInfo.Username = Request.Form["Username"];
-            //userInfo.Password = Request.Form["Password"];
-            //userInfo.Name = Request.Form["Name"];
-            //userInfo.DOB = Request.Form["DOB"];
-            //userInfo.Address = Request.Form["Address"];
-            //userInfo.Phone = Request.Form["Phone"];
-            //userInfo.Avatar = Request.Form["Avatar"];
-            //userInfo.Gender = Request.Form["Gender"];
-            //userInfo.Mail = Request.Form["Mail"];
+            ModelState.Remove("Avatar");
+            ModelState.Remove("FileAvatar");
+            if (!ModelState.IsValid)
+            {
+                Errors =  ModelState.Where(x => x.Value != null && x.Value.Errors.Count() > 0).Select(x => x.Value.Errors);
+                foreach(var error in Errors)
+                {
+                    ErrorMsg += string.Join("<br/>", error.Where(e => !string.IsNullOrEmpty(e.ErrorMessage)).Select(e => e.ErrorMessage)) + "<br/>";
+                }
+                return Page();
+            }
 
+            if(FileAvatar != null)
+            {
+                Avatar = FuncHelpers.ConvertImgToBase64(FileAvatar);
+            }
 
-            ////check all fields are filled 
-            //if (string.IsNullOrEmpty(userInfo.email) || string.IsNullOrEmpty(userInfo.pass) || string.IsNullOrEmpty(userInfo.fName) || string.IsNullOrEmpty(userInfo.lName)
-            //    || string.IsNullOrEmpty(userInfo.gender) || string.IsNullOrEmpty(userInfo.birthDay) || string.IsNullOrEmpty(userInfo.phone) || string.IsNullOrEmpty(userInfo.address))
-            //{
-            //    errorMessage = "All fields are required!!!";
-            //    return;
-            //}
+            try
+            {
+                using (SqlConnection connection = HoaDBContext.GetSqlConnection())
+                {
+                    connection.Open();
 
-            //try
-            //{
-            //    string connectionString = "Data Source=THANHHOA\\MSSQLSERVER01;Initial Catalog=HFINANCE;Integrated Security = True; Pooling = False; TrustServerCertificate = True";
-            //    using (SqlConnection connection = new SqlConnection(connectionString))
-            //    {
-            //        connection.Open();
+                    string sql = "UPDATE UserInfo SET mail=@email,gender=@gender,dob=@dob,address=@address,phone=@phone,name=@name,avatar=@avatar WHERE Id=@id";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@email", Email);
+                        command.Parameters.AddWithValue("@Name", Fullname);
+                        command.Parameters.AddWithValue("@gender", Gender ? 1 : 0);
+                        command.Parameters.AddWithValue("@DOB", DOB);
+                        command.Parameters.AddWithValue("@address", Address);
+                        command.Parameters.AddWithValue("@phone", Phone);
+                        command.Parameters.AddWithValue("@avatar", string.IsNullOrEmpty(Avatar) ? "" : Avatar);
+                        command.Parameters.AddWithValue("@id", Id);
 
-            //        string sql = "UPDATE Users SET email=@email,passWord=@pass,firstName=@fName,lastName=@lName,gender=@gender,birthDay=@birthDay,address=@address,phone=@phone WHERE userId=@id";
-            //        using (SqlCommand command = new SqlCommand(sql, connection))
-            //        {
-            //            command.Parameters.AddWithValue("@email", userInfo.email);
-            //            command.Parameters.AddWithValue("@pass", userInfo.pass);
-            //            command.Parameters.AddWithValue("@fName", userInfo.fName);
-            //            command.Parameters.AddWithValue("@lName", userInfo.lName);
-            //            command.Parameters.AddWithValue("@gender", userInfo.gender);
-            //            command.Parameters.AddWithValue("@birthDay", userInfo.birthDay);
-            //            command.Parameters.AddWithValue("@address", userInfo.address);
-            //            command.Parameters.AddWithValue("@phone", userInfo.phone);
-            //            command.Parameters.AddWithValue("@id", userInfo.id);
+                        command.ExecuteNonQuery();
+                        IsSuccess = true;
+                    }
+                }
 
-            //            command.ExecuteNonQuery();
-            //        }
-            //    }
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.ToString());
-            //    throw;
-            //}
-            //Response.Redirect("/Users/Infor?id=" + userInfo.id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
+            return Page();
         }
     }
 }
