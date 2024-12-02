@@ -1,0 +1,93 @@
+﻿@page "{id}"
+@model HoaHoeHoaSoi.Pages.ChangePassModel
+@{
+
+}
+
+<style>
+    .info-left {
+        width: 45%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #avatar-display {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Đảm bảo hình ảnh không bị méo */
+    }
+
+    .info-right {
+        justify-content: center;
+        width: 55%;
+    }
+
+    .box-title {
+        font-size: 2.5vw;
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1vw;
+    }
+
+    .text-box {
+        width: 100%;
+        font-family: Courier;
+        font-size: 1.5vw;
+        color: #9D1030;
+        background-color: #F6D8DC;
+        border-color: #9D1030;
+        border: 0.3vw solid;
+        border-radius: 100px;
+        padding: 1vw 2vw 1vw 2vw;
+    }
+
+    .btn-submit {
+        justify-content: center;
+        filter: drop-shadow(0.3em 0.3em 0.3em black);
+        border-radius: 30px;
+        background-color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.6vw;
+        border: none;
+    }
+
+</style>
+
+<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; padding: 5% 10%; display: flex; ">
+    <div class="info-left">
+            <div style="width:80%; height: 80%">
+                @if (!string.IsNullOrEmpty(Model.Avatar))
+                {
+                    <img id="avatar-display" src="data:image/jpeg;base64, @Model.Avatar" class="img-thumbnail" alt="Beatles" style="width: auto; justify-content: center;">
+                }
+                else
+                {
+                    <img id="avatar-display" src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg" class="img-thumbnail" alt="Beatles" style="width: auto; justify-content: center;">
+                }
+            <p style="font-size: 2.5vw; color: #9D1030; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-align: center; ">@Model.Username</p>
+            </div>
+    </div>
+    <div class="info-right">
+        <form method="post" onsubmit="return validateForm()">
+            <div class="form-container">
+                <div class="info-left-note" style="width:90%">
+                    <label class="box-title" for="name"><b>Current Password</b></label><br>
+                    <input class="text-box" type="text" id="Username" name="Username" value=""><br>
+                    <label class="box-title" for="pass"><b>New Password</b></label><br>
+                    <input class="text-box" type="password" id="Password" name="Password" value=""><br>
+                    <label class="box-title" for="pass"><b>Verify Password</b></label><br>
+                    <input class="text-box" type="password" id="Password" name="Password" value=""><br>
+                </div>
+                <div style="width:10%"></div>
+                <center style="width:100%; padding-top:2vw">
+                    <button class="btn-submit" style="padding: 10px 50px 10px 50px ; color:white"><b>Submit</b></button>
+                </center>
+            </div>
+        </form>
+    </div>
+</div>
+@section Script{
+    <script></script>
+}
+

@@ -59,19 +59,17 @@
                     <button class="dropbtn" onclick="myFunction()">
                         <img src="/Picture/user_logo.png" alt="User Info" style="max-width: 43%;" />
                     </button>
-                    @if (userData != null){
+                    @if (userData != null)
+                    {
                         <div id="myDropdown" class="dropdown-content">
-                            <div>
+                            <div class="format">
+                                <p>@userData.Name</p>
                                 <a href="/UserInfo/@userData?.Id" class="nav-link-icon">Profile</a>
-                                <a href="/Users/Home">Home</a>
-                                <a href="/Users/About">About</a>
-                                <a href="/Users/Contact">Contact</a>
                                 <form asp-page="/Logout" method="post">
-                                    <button class="btn-danger" type="submit">Logout</button>
+                                    <button class="btn" type="submit">Logout</button>
                                 </form>
                             </div>
                         </div>
-                        <p>Hello, @userData.Name</p>
                     }
                 </div>
                 </div>

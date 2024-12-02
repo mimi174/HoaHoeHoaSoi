@@ -43,7 +43,7 @@
     }
 
     .row{
-        padding: 1vw 0vw 1vw 0vw;
+        padding: 1vw 0vw 0vw 0vw;
     }
 
     .btn {
@@ -55,6 +55,11 @@
         color: white;
     }
 
+    .question {
+        color: #9D1030;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 1vw;
+    }
 </style>
 
         @*<a href="/Index" class=" btn btn-outline-success" style="border-radius:5vw; float:right">Log out</a>*@
@@ -81,8 +86,9 @@
                             <div class="row">
                                 <input type="hidden" id="avatar" name="avatar" value="@Model.Avatar"/>
                                 <input asp-for="FileAvatar" id="file-avatar" class="form-control" accept="image/png, image/jpg, image/jpeg" onchange="readURL(this);" />
+                                <div style=" padding-top: 1vw"></div>
                                 <button type="button" class="btn btn-outline-success" onclick="deleteAvatar();">
-                                    Delete Avatar
+                                    <b>Delete Avatar</b>
                                 </button>
                             </div>
                         </div>
@@ -92,6 +98,7 @@
                             <div class="row">
                                 <span class="fName"><b>Username</b></span>
                                 <input id="uname" name="Username" value="@Model.Username" type="text" class="form-control" placeholder="" readonly>
+                                <a href="/ChangePass/@Model.Id" class="question"><p>Change password</p></a>
                             </div>
                             <div class="row">
                                 <input type="hidden" name="id" value="@Model.Id" />
@@ -100,46 +107,46 @@
                             </div>
                             <div class="row row-cols-3">
                                 <div class="col col-5 px-0">
-                                    <span class="Users">Birthday</span>
-                                    <input type="date" id="DOB" name="DOB" value="@(Model.DOB?.ToString("yyyy-MM-dd"))">
+                                    <span class="Users"><b>Birthday</b></span>
+                                    <input type="date" id="DOB" name="DOB" value="@(Model.DOB?.ToString("YYYY-MM-DD"))">
                                 </div>
                                 <div class="col col-2"></div>
                                 <div class="col col-5 px-0">
-                                    <span class="Users">Gender</span>
-                                    <br />
+                                    <span class="Users"><b>Gender</b></span>
+                                    <br/>
                                     <input type="radio" id="male" name="gender" value="true" @Html.Raw(Model.Gender ? "checked" : "")>
                                     <label for="male">Male</label>
                                     <input type="radio" id="female" name="gender" value="false" @Html.Raw(!Model.Gender ? "checked" : "")>
                                     <label for="female">Female</label>
                                 </div>
                             </div>
-                            <br />
+                            
                             <div class="row">
-                                <span class="Users">Email</span>
+                                <span class="Users"><b>Email</b></span>
                                 <input id="email" name="email" type="text" class="form-control" value="@Model.Email" >
                             </div>
-                            <br />
+                            
                            @*  <div class="row">
                                 <span class="Users">Password</span>
                                 <input id="pass" name="pass" type="password" class="form-control" value="@Model.Password">
                             </div> *@
-                            <br />
+                            
                             <div class="row">
-                                <span class="Users">Phone</span>
+                                <span class="Users"><b>Phone</b></span>
                                 <input id="phone" name="phone" type="text" class="form-control" value="@(Model.Phone == " " ? "" : Model.Phone)">
                             </div>
-                            <br />
+                            
                             <div class="row">
-                                <span class="Users">Address</span>
+                                <span class="Users"><b>Address</b></span>
                                 <input id="address" name="address" type="text" class="form-control" value="@(Model.Address == " " ? "" : Model.Address)">
                             </div>
-                            <br />
+                            
                             <div class="row mb-3">
                                 <div class="col-sm-4 d-grid">
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="submit" class="btn btn-success"><b>Submit</b></button>
                                 </div>
                                 <div class="col-sm-4 d-grid">
-                                    <a class="btn btn-outline-success" href="/Users/Infor?id=@Model.Id" role="button">Cancel</a>
+                                    <a class="btn btn-outline-success" href="/Users/Infor?id=@Model.Id" role="button"><b>Cancel</b></a>
                                 </div>
 
                             </div>
