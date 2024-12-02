@@ -72,12 +72,15 @@
         <form method="post" onsubmit="return validateForm()">
             <div class="form-container">
                 <div class="info-left-note" style="width:90%">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="username" value="@Model.Username" />
+                    <input type="hidden" name="avatar" value="@Model.Avatar" />
                     <label class="box-title" for="name"><b>Current Password</b></label><br>
-                    <input class="text-box" type="text" id="Username" name="Username" value=""><br>
+                    <input class="text-box" type="password" id="current-password" name="currentPassword" value=""><br>
                     <label class="box-title" for="pass"><b>New Password</b></label><br>
-                    <input class="text-box" type="password" id="Password" name="Password" value=""><br>
+                    <input class="text-box" type="password" id="new-password" name="newPassword" value=""><br>
                     <label class="box-title" for="pass"><b>Verify Password</b></label><br>
-                    <input class="text-box" type="password" id="Password" name="Password" value=""><br>
+                    <input class="text-box" type="password" id="verify-password" name="verifiedPassword" value=""><br>
                 </div>
                 <div style="width:10%"></div>
                 <center style="width:100%; padding-top:2vw">
@@ -88,6 +91,25 @@
     </div>
 </div>
 @section Script{
-    <script></script>
+    <script type="text/javascript">
+        var errorMsg = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+        var isSuccess = @Html.Raw(Json.Serialize(Model.IsSuccess));
+        console.log("S: " + isSuccess);
+        if (errorMsg) {
+            Swal.fire({
+                title: "Error, please try again",
+                icon: "error",
+                html: errorMsg
+            });
+        } else if (isSuccess) {
+            Swal.fire({
+                title: "Update successful",
+                text: "",
+                icon: "success"
+            }).then(function(){
+                window.location.href = "/UserInfo/" + @Model.Id;
+            });
+        }
+    </script>
 }
 
