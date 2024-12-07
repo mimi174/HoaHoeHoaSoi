@@ -1,0 +1,70 @@
+﻿@page 
+@model HoaHoeHoaSoi.Pages.ViewProductModel
+@{
+}
+
+<style>
+    .info-left {
+        display: flex;
+        justify-content: center; /* Căn giữa theo chiều ngang */
+        align-items: center; /* Căn giữa theo chiều dọc */
+        width: 50%;
+    }
+
+    .info-right {
+        justify-content: center;
+        padding: 2vw;
+        width: 50%;
+    }
+
+    .button {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        border:none;
+        padding: 0.5vw 1vw 0.5vw 1vw;
+        border-radius: 100px;
+        background-color: #9D1030;
+        color: white;
+    }
+
+    .product_name {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 2.5vw;
+        color: #9D1030
+    }
+
+    .product_detail {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        color: #9D1030;
+    }
+
+    .product-price {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        color: #9D1030;
+        font-size: 2vw;
+    }
+
+
+</style>
+
+<div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; ">
+    <div class="container" style=" padding: 2vw 10vw 2vw 10vw ;display: flex; ">
+        <div class="info-left">
+            <div style="max-width:75%">
+                <img class="product-pic" src="/Picture/Hoa.png" style="max-width: 90%; max-height: 90%" />
+            </div>
+        </div>
+        <div class="info-right">
+                <p class="product_name"><b>NAME OF PRODUCT</b></p>
+                <p class="product-price"><b>99$</b></p>
+                <p class="product_detail">
+                    Introducing...
+                    <br />
+                    The name "pipe cleaners" originated from their initial intended use of cleaning tobacco pipes. However, over time, their versatility and ease of manipulation led to their adoption in a wide range of creative projects.
+                </p>
+                <br>
+            <div>
+                <button type="submit" class="button"><b>Add to Cart</b></button>               
+            </div>
+        </div>
+    </div>
+</div>
