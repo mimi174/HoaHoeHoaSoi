@@ -15,6 +15,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         }
 
         public IActionResult OnPost() {
+            ModelState.Remove("Description");
+
             if (!ModelState.IsValid) {
                 return Page();
             }
@@ -23,7 +25,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
 
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
-                var command = $"INSERT INTO Products(Name, Price, Img) VALUES(N'{Name}', {Price}, '{imgValue}')";
+                var command = $"INSERT INTO Products(Name, Price, Img, Description) VALUES(N'{Name}', {Price}, '{imgValue}', '{Description}')";
 
                 using (var sqlCommand = new SqlCommand(command, connection)) {
                     sqlCommand.ExecuteNonQuery();

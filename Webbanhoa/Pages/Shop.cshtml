@@ -44,6 +44,9 @@
         background-color: #F6D8DC;
         border: none;
     }
+    .card-body:hover{
+        cursor: pointer
+    }
 
 </style>
 
@@ -53,7 +56,7 @@
         @foreach (var item in Model.listProducts) {
             <div id="card-products" class="card col-sm-6 col-md-4 col-lg-3">
                 <img class="img" src="data:image/jpeg;base64, @item.Img" alt="Sheep" />
-                <div class="card-body">
+                <div class="card-body" onclick="goToDetail(@item.Id)">
                     <h5 class="card-title"><b>@item.Name</b></h5>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: auto; bottom:0">
                         <div class="price">
@@ -62,7 +65,7 @@
                         <div class="add-cart" style="margin-left: auto; right: 0; bottom: 0;">
                             <form method="post" asp-page-handler="AddToCart">
                                 <input type="hidden" name="productId" value="@item.Id" />
-                                <button type="submit" style="border: none; background-color: #F6D8DC;">
+                                <button type="submit" style="border: none; background-color: #F6D8DC;" onclick="showAddToCardSB()">
                                     <img src="/Picture/cart1.png" style="max-width: 15%; max-height: 15%; float: right;" />
                                 </button>
                             </form>
@@ -74,3 +77,10 @@
     </div>
 
 </div>
+@section Scripts{
+    <script type="text/javascript">
+        function goToDetail(id) {
+            window.location.href = "/ViewProduct/" + id;
+        }
+    </script>
+}

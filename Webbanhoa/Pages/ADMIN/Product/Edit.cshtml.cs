@@ -23,7 +23,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         private void LoadProduct(int id) {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
-                string command = $"SELECT Id, Name, Price, Img FROM Products Where Id = {id}";
+                string command = $"SELECT Id, Name, Price, Img, Description FROM Products Where Id = {id}";
                 using (var sqlCommand = new SqlCommand(command, connection)) {
                     using (var reader = sqlCommand.ExecuteReader()) {
                         if (reader.Read()) {
@@ -33,6 +33,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
                             Product.Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
                             Product.Price = reader.IsDBNull(2) ? 0 : reader.GetDouble(2);
                             Product.Img = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                            Product.Description = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
                         }
                     }
                 }
@@ -40,6 +41,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         }
 
         public IActionResult OnPost() {
+            ModelState.Remove("Description");
+            ModelState.Remove("CurrentImg");
             string imgValue = ConvertImgToBase64();
             if (string.IsNullOrEmpty(imgValue))
                 imgValue = CurrentImg;
@@ -50,7 +53,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
                     Id = Id,
                     Name = Name,
                     Price = Price,
-                    Img = imgValue
+                    Img = imgValue,
+                    Description = Description
                 };
                 return Page();
             }
@@ -58,7 +62,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
 
-                string command = $"UPDATE Products SET Name = N'{Name}', Price = {Price}, Img = '{imgValue}' WHERE Id = {Id}";
+                string command = $"UPDATE Products SET Name = N'{Name}', Price = {Price}, Img = '{imgValue}', Description = '{Description}' WHERE Id = {Id}";
                 using (var sqlCommand = new SqlCommand(command, connection)) {
                     sqlCommand.ExecuteNonQuery();
                 }

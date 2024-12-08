@@ -26,7 +26,7 @@ namespace Webbanhoa.Pages.Shared {
             try {
                 using (SqlConnection connection = HoaDBContext.GetSqlConnection()) {
                     connection.Open();
-                    string sql = "SELECT * FROM Products";
+                    string sql = "SELECT Id, Name, Price, Img FROM Products";
                     using (SqlCommand command = new SqlCommand(sql, connection)) {
                         using (SqlDataReader reader = command.ExecuteReader()) {
                             while (reader.Read()) {

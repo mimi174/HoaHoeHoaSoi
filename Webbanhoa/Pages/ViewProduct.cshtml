@@ -1,4 +1,4 @@
-﻿@page 
+﻿@page "{id}"
 @model HoaHoeHoaSoi.Pages.ViewProductModel
 @{
 }
@@ -48,23 +48,40 @@
 
 <div class="contai'ner-fluid text-white" style=" background-color: #F6D8DC; ">
     <div class="container" style=" padding: 2vw 10vw 2vw 10vw ;display: flex; ">
-        <div class="info-left">
-            <div style="max-width:75%">
-                <img class="product-pic" src="/Picture/Hoa.png" style="max-width: 90%; max-height: 90%" />
+        @if(Model.Product == null)
+        {
+            <h2 class="product_name">Product not found</h2>
+        }
+        else
+        {
+            <div class="info-left">
+                <div style="max-width:75%">
+                    @if (!string.IsNullOrEmpty(Model.Product.Img))
+                    {
+                        <img id="product-pic" src="data:image/jpeg;base64, @Model.Product.Img" style="max-width: 90%; max-height: 90%">
+                    }
+                    else
+                    {
+                        <img class="product-pic" src="/Picture/Hoa.png" style="max-width: 90%; max-height: 90%" />
+                    }
+                </div>
             </div>
-        </div>
-        <div class="info-right">
-                <p class="product_name"><b>NAME OF PRODUCT</b></p>
-                <p class="product-price"><b>99$</b></p>
+            <div class="info-right">
+                <p class="product_name"><b>@Model.Product.Name</b></p>
+                <p class="product-price"><b>$@Model.Product.Price</b></p>
                 <p class="product_detail">
-                    Introducing...
-                    <br />
-                    The name "pipe cleaners" originated from their initial intended use of cleaning tobacco pipes. However, over time, their versatility and ease of manipulation led to their adoption in a wide range of creative projects.
+                    @Model.Product.Description
                 </p>
                 <br>
-            <div>
-                <button type="submit" class="button"><b>Add to Cart</b></button>               
+                <div>
+                    <form method="post" asp-page-handler="AddToCart">
+                        <input type="hidden" name="productId" value="@Model.Product.Id" />
+                        <button type="submit" class="button" style="">
+                            Add to cart
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

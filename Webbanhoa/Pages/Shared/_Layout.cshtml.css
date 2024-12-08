@@ -185,3 +185,31 @@ button.accept-policy {
         box-shadow: none; /* Loại bỏ bóng */
         border: none; /* Đảm bảo không viền */
     }
+
+.badge {
+    padding-left: 9px;
+    padding-right: 9px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+    background-color: #c67605;
+}
+
+#lblCartCount {
+    font-size: 12px;
+    background: #9D1030;
+    color: #fff;
+    padding: 1px 6px;
+    vertical-align: top;
+    position: absolute;
+    top: 70%;
+    left: 60%;
+}
+
+.cart-container {
+    position: relative;
+}

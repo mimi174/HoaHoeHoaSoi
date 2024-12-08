@@ -41,8 +41,21 @@
                     </div>
                 </center>
                 <div class="icon-container" style="width:15%">
-                    <a asp-area="" asp-page="/Cart" class="nav-link-icon">
+                    <a asp-area="" asp-page="/Cart" class="nav-link-icon" style="position: relative">
                         <img src="/Picture/cart1.png" alt="Cart" style=" max-width: 100%;" />
+                        @{
+                            var cartCount = 0;
+                            var cartInfo = Context.Session.GetString("SelectedProducts");
+                            if (!string.IsNullOrEmpty(cartInfo))
+                            {
+                                var products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<HoaHoeHoaSoi.Model.Products>>(cartInfo);
+                                cartCount = products.Count;
+                            }
+                        }
+                        @if(cartCount > 0)
+                        {
+                            <label class='badge badge-warning' id='lblCartCount'>@cartCount</label>
+                        }
                     </a>
                     @{
                         var sessionInfo = Context.Session.GetString(HoaHoeHoaSoi.Properties.Resources.UserSessionInfo);

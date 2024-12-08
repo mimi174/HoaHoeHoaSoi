@@ -19,6 +19,9 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         [ImageExtenstion]
         public IFormFile Img { get; set; }
 
+        [BindProperty]
+        public string Description { get; set; }
+
         protected string ConvertImgToBase64() {
             if (Img == null)
                 return string.Empty;

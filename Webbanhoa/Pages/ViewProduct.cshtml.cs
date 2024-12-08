@@ -16,36 +16,37 @@ namespace HoaHoeHoaSoi.Pages
 {
     public class ViewProductModel : PageModel
     {
-        public List<Products> listProducts = new List<Products>();
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<ShopModel> _logger;
+        public Products Product { get; set; }
 
-        //public ShopModel(IHttpContextAccessor httpContextAccessor, ILogger<ShopModel> logger)
-        //{
-        //    _httpContextAccessor = httpContextAccessor;
-        //    _logger = logger;
-        //}
+        public ViewProductModel(IHttpContextAccessor httpContextAccessor, ILogger<ShopModel> logger)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
+        }
 
-        public void OnGet()
+        public void OnGet(int id)
         {
             try
             {
                 using (SqlConnection connection = HoaDBContext.GetSqlConnection())
                 {
                     connection.Open();
-                    string sql = "SELECT * FROM Products";
+                    string sql = "SELECT Id, Name, Price, Img, Description FROM Products Where Id = @Id";
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
+                        command.Parameters.AddWithValue("@Id", id);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                var Products = new Products();
-                                Products.Id = reader.GetInt32(0);
-                                Products.Name = reader.GetString(1);
-                                Products.Price = reader.GetDouble(2);
-                                Products.Img = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
-                                listProducts.Add(Products);
+                                Product = new Products();
+                                Product.Id = reader.GetInt32(0);
+                                Product.Name = reader.GetString(1);
+                                Product.Price = reader.GetDouble(2);
+                                Product.Img = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                                Product.Description = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
                             }
                         }
                     }
@@ -99,7 +100,7 @@ namespace HoaHoeHoaSoi.Pages
                 if (products.Any(p => p.Id == productId))
                 {
                     _logger.LogInformation($"Product with ID {productId} already exists in the cart.");
-                    return RedirectToPage("Shop");
+                    return Redirect("/ViewProduct/" + productId);
                 }
 
                 products.Add(product);
@@ -109,7 +110,7 @@ namespace HoaHoeHoaSoi.Pages
                 _httpContextAccessor.HttpContext.Session.SetString("SelectedProducts",
                     JsonConvert.SerializeObject(products));
 
-                return RedirectToPage("Shop");
+                return Redirect("/ViewProduct/" + productId);
             }
             catch (Exception ex)
             {
