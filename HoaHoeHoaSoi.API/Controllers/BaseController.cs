@@ -1,4 +1,5 @@
-﻿using HoaHoeHoaSoi.API.Models;
+﻿using HoaHoeHoaSoi.API.Helpers;
+using HoaHoeHoaSoi.API.Models;
 using HoaHoeHoaSoi.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,14 @@ namespace HoaHoeHoaSoi.API.Controllers
             _dbContext = dbContext;
         }
 
-        public ObjectResult Response<T>(int statusCode, T result, string errorMsg = "") where T : class
+        protected UserInfo GetUserFromToken()
+        {
+            var token = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ")[1];
+            var userId = JwtUtils.ValidateToken(token);
+            return _dbContext.UserInfos.FirstOrDefault(u => u.Id == userId);
+        }
+
+        public ObjectResult Response<T>(int statusCode, T result, string errorMsg = "")
         {
             return StatusCode(statusCode, new ResponseModel<T>
             {
@@ -21,7 +29,7 @@ namespace HoaHoeHoaSoi.API.Controllers
             });
         }
 
-        public ObjectResult Response<T>(int statusCode, T result, int totalItem, int pageNumber, int itemCount, string errorMsg = "") where T : class
+        public ObjectResult Response<T>(int statusCode, T result, int totalItem, int pageNumber, int itemCount, string errorMsg = "")
         {
             return StatusCode(statusCode, new ResponseModelList<T>
             {

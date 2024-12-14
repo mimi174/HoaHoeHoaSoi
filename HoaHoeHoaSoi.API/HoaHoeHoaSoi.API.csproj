@@ -21,4 +21,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Webbanhoa\HoaHoeHoaSoi.csproj" />
+  </ItemGroup>
+
 </Project>
