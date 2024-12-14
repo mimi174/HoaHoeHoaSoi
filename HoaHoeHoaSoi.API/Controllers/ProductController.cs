@@ -31,7 +31,7 @@ namespace HoaHoeHoaSoi.API.Controllers
             var total = products.Count();
             products = products.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
 
-            return Response(200, products.Select(p => new ProductViewModel { Id = p.Id, Description = p.Description, Name = p.Name, Price = p.Price }).ToList(), total, filter.Page, products.Count());
+            return Response(200, products.Select(p => new ProductViewModel { Id = p.Id, Description = p.Description, Name = p.Name, Price = p.Price, Img = p.Img }).ToList(), total, filter.Page, products.Count());
         }
     }
 }
