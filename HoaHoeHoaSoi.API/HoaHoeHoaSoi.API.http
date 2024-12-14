@@ -1,0 +1,6 @@
+@HoaHoeHoaSoi.API_HostAddress = http://localhost:5208
+
+GET {{HoaHoeHoaSoi.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
