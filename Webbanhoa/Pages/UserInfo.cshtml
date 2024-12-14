@@ -25,15 +25,7 @@
         padding: 8px 16px;
         text-decoration: none;
     }
-/*
-    li a.active {
-        color: white;
-    }
 
-    li a:hover:not(.active) {
-        background-color: #9D1030;
-        color: white;
-    }*/
 
     .form-control {
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -60,6 +52,19 @@
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         padding: 1vw;
     }
+
+/*    .btn-success:active {
+        background-color: aqua
+    }*/
+
+    /*button:active {
+        background-color: inherit !important;*/ /* Giữ nguyên màu nút */
+    /*}
+
+    .btn-success:active {
+        background-color: #9D1030 !important;*/ /* Bootstrap không thể ghi đè */
+    /*}*/
+
 </style>
 
         @*<a href="/Index" class=" btn btn-outline-success" style="border-radius:5vw; float:right">Log out</a>*@
@@ -87,7 +92,7 @@
                                 <input type="hidden" id="avatar" name="avatar" value="@Model.Avatar"/>
                                 <input asp-for="FileAvatar" id="file-avatar" class="form-control" accept="image/png, image/jpg, image/jpeg" onchange="readURL(this);" />
                                 <div style=" padding-top: 1vw"></div>
-                                <button type="button" class="btn btn-outline-success" onclick="deleteAvatar();">
+                                <button type="button" class="btn btn-danger" onclick="deleteAvatar();">
                                     <b>Delete Avatar</b>
                                 </button>
                             </div>
@@ -143,10 +148,10 @@
                             
                             <div class="row mb-3">
                                 <div class="col-sm-4 d-grid">
-                                    <button type="submit" class="btn btn-success"><b>Submit</b></button>
+                                    <button type="submit" class="btn btn-sucess"><b>Submit</b></button>
                                 </div>
                                 <div class="col-sm-4 d-grid">
-                                    <a class="btn btn-outline-success" href="/Users/Infor?id=@Model.Id" role="button"><b>Cancel</b></a>
+                                    <a class="btn btn-sucess" href="/Users/Infor?id=@Model.Id" role="button"><b>Cancel</b></a>
                                 </div>
 
                             </div>

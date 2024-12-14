@@ -142,7 +142,7 @@
             @if (Model.SelectedProducts != null) {
                 @foreach (var product in Model.SelectedProducts) {
                     <div class="products_cart" data-product-id="@product.Id">
-                        <div style="float:left;">
+                        <div style="float:left; width: 40%">
                             @product.Name
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
