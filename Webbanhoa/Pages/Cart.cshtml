@@ -133,7 +133,6 @@
         </div>
 
         <div style="width:10%"></div>
-
         <div class="info-right">
             <div class="text-header">
                 <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
@@ -291,16 +290,22 @@
         // Submit form để đặt hàng
         var form = document.getElementById('orderForm');
         var formData = new FormData(form);
+        if (!form.checkValidity())
+            return;        
 
+        sessionStorage.removeItem('productQuantities');
+        sessionStorage.removeItem('userInfo');
+        //form.submit();
+        
         // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
-        var products = document.querySelectorAll('.products_cart');
-        products.forEach(async function (product) {
-            var productId = product.getAttribute('data-product-id');
+        // var products = document.querySelectorAll('.products_cart');
+        // products.forEach(async function (product) {
+        //     var productId = product.getAttribute('data-product-id');
 
-            // Cập nhật số lượng sản phẩm trong session
-            await updateQuantityInSession(productId, 1);
-            await updateUserInfoInSession('', '', '');
-        });
+        //     // Cập nhật số lượng sản phẩm trong session
+        //     await updateQuantityInSession(productId, 1);
+        //     await updateUserInfoInSession('', '', '');
+        // });
     });
 
 

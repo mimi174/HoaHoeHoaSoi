@@ -1,3 +1,6 @@
+using HoaHoeHoaSoi.Model;
+using Microsoft.Extensions.Configuration;
+
 namespace Webbanhoa;
 
 public class Program {
@@ -8,7 +11,7 @@ public class Program {
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddRazorPages();
         builder.Services.AddSession();
-
+        builder.Services.Configure<MomoAPI>(builder.Configuration.GetSection("MomoAPI"));
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

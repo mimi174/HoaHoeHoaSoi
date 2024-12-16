@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using Webbanhoa.Pages.Shared;
+using HoaHoeHoaSoi.Properties;
 
 namespace HoaHoeHoaSoi.Pages
 {
@@ -63,6 +64,11 @@ namespace HoaHoeHoaSoi.Pages
         [HttpPost]
         public IActionResult OnPostAddToCart(int productId)
         {
+            var userSessionInfo = HttpContext.Session.GetString(Resources.UserSessionInfo);
+            if (string.IsNullOrEmpty(userSessionInfo))
+            {
+                return Redirect("/Login");
+            }
             Products product = null;
 
             try

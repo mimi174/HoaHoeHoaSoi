@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaHoeHoaSoi", "Webbanhoa\HoaHoeHoaSoi.csproj", "{A3D30932-BFBE-4DF9-BC85-37C26805EC3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoaHoeHoaSoi.API", "HoaHoeHoaSoi.API\HoaHoeHoaSoi.API.csproj", "{A5E33E1D-B4A8-44AA-9629-ECC4BB14DC6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaHoeHoaSoi.API", "HoaHoeHoaSoi.API\HoaHoeHoaSoi.API.csproj", "{A5E33E1D-B4A8-44AA-9629-ECC4BB14DC6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

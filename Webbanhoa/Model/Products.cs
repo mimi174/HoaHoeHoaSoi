@@ -10,7 +10,7 @@ namespace HoaHoeHoaSoi.Model
         public double Price { get; set; }
 
         public string Img { get; set; }
-        public string Quantity { get; internal set; }
+        public int Quantity { get; internal set; }
         public string Description { get; set; }
 
         public Products()

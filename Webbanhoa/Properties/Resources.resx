@@ -123,6 +123,9 @@
   <data name="InValidSignupMsg" xml:space="preserve">
     <value>Username and Password must have 5 to 10 letters</value>
   </data>
+  <data name="OrderInfoMessage" xml:space="preserve">
+    <value>Thanh toán tại HoaHoeHoaSoi</value>
+  </data>
   <data name="SignUpFailed" xml:space="preserve">
     <value>Sign up failed</value>
   </data>

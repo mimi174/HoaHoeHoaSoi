@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using HoaHoeHoaSoi.Helpers;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using HoaHoeHoaSoi.Properties;
 
 namespace Webbanhoa.Pages.Shared {
     public class ShopModel : PageModel {
@@ -49,6 +50,12 @@ namespace Webbanhoa.Pages.Shared {
 
         [HttpPost]
         public IActionResult OnPostAddToCart(int productId) {
+            var userSessionInfo = HttpContext.Session.GetString(Resources.UserSessionInfo);
+            if (string.IsNullOrEmpty(userSessionInfo))
+            {
+                return Redirect("/Login");
+            }
+
             Products product = null;
 
             try {

@@ -78,6 +78,7 @@
                             <div class="format">
                                 <p>@userData.Name</p>
                                 <a href="/UserInfo/@userData?.Id" class="nav-link-icon">Profile</a>
+                                <a href="/MyOrders/@userData?.Id" class="nav-link-icon">My orders</a>
                                 <form asp-page="/Logout" method="post">
                                     <button class="btn" type="submit">Logout</button>
                                 </form>

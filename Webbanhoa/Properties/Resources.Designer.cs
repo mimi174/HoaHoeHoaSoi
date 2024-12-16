@@ -79,6 +79,15 @@ namespace HoaHoeHoaSoi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thanh toán tại HoaHoeHoaSoi.
+        /// </summary>
+        internal static string OrderInfoMessage {
+            get {
+                return ResourceManager.GetString("OrderInfoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sign up failed.
         /// </summary>
         internal static string SignUpFailed {

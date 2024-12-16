@@ -1,0 +1,142 @@
+﻿@page "{id}"
+@using HoaHoeHoaSoi.Model
+@model HoaHoeHoaSoi.Pages.MyOrdersModel
+@{
+    int rowCount = 0;
+}
+
+<style>
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Total</th>
+            <th scope="col">Status</th>
+            <th scope="col">Detail</th>
+            <th scope="col">Pay</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var ordered in Model.Ordereds)
+        {
+            rowCount++;
+            <tr>
+                <td>@ordered.Date</td>
+                <td>@ordered.Total</td>
+                <td>
+                    @switch (ordered.PaymentStatus)
+                    {
+                        case PaymentStatus.Paid:
+                            <span class="badge bg-success">Paid</span>
+                            break;
+                        case PaymentStatus.UnPaid:
+                            <span class="badge bg-secondary">UnPaid</span>
+                            break;
+                        case PaymentStatus.Failed:
+                            <span class="badge bg-danger">Failed</span>
+                            break;
+                        default:
+                            break;
+                    }
+                </td>
+                <td>
+                    <!-- The Modal -->
+                    <div id="myModal-@rowCount" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModals()">&times;</span>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product Name</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                    </tr>
+                                </thead>
+                                @foreach (var line in ordered.Lines)
+                                {
+                                    <tr>
+                                        <td>@line.ProductName</td>
+                                        <td>@line.Price</td>
+                                        <td>@line.Quantity</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                    <button id="myBtn-@rowCount" class="btn btn-primary" onclick="popupModal(@rowCount)">Detail</button>
+                </td>
+                <td>
+                    @if (ordered.PaymentStatus != PaymentStatus.Paid)
+                    {
+                        <form method="POST">
+                            <input type="hidden" name="Total" value="@ordered.Total"/>
+                            <input type="hidden" name="OrderId" value="@ordered.Id" />
+                            <button type="submit" class="btn btn-success" type="submit">Pay</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script type="text/javascript">
+        function closeModals(){
+            $('div[class="modal"]').css('display', 'none');
+        }
+
+        function init() {
+            window.onclick = function (event) {
+                debugger;
+                if (event.target.className == 'modal') {
+                    closeModals();
+                }
+            }
+        }
+        init();
+
+        function popupModal(id) {
+            var modal = document.getElementById("myModal-" + id);
+            modal.style.display = "block";
+        }
+    </script>
+}

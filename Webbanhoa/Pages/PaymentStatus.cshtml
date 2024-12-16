@@ -1,0 +1,22 @@
+﻿@page
+@using HoaHoeHoaSoi.Model
+@model HoaHoeHoaSoi.Pages.PaymentStatusModel
+@{
+}
+<div class="text-center">
+    @if(Model.Response != null){
+        <div class="container">
+            @if (Model.Response.ErrorCode == "0")
+            {
+                <h1 class="text-success">Thanh Toán Thành Công</h1>
+            }else{
+                <h1 class="text-danger">Thanh Toán Thất Bại</h1>
+                <p>Mã lỗi: <strong>@Model.Response.ErrorCode</strong></p>
+                <p>Chi tiết: <strong>@Model.Response.LocalMessage</strong></p>
+            }
+            <p>Order ID: <strong>@Model.Response.OrderId</strong></p>
+            <p>Tổng cộng: <strong>@Model.Response.Amount</strong></p>
+            <p>Order Info: <strong>@Model.Response.OrderInfo</strong></p>
+        </div>
+    }
+</div>
