@@ -19,6 +19,12 @@ public partial class Ordered
 
     public string? MomoOrderId { get; set; }
 
+    public string? ReceiverName { get; set; }
+
+    public string? ReceiverPhone { get; set; }
+
+    public string? ReceiverAddress { get; set; }
+
     public virtual Customer? Customer { get; set; }
 
     public virtual ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();

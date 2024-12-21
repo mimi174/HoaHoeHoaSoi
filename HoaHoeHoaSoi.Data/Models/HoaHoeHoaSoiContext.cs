@@ -104,6 +104,11 @@ public partial class HoaHoeHoaSoiContext : DbContext
             entity.Property(e => e.MomoOrderId)
                 .HasMaxLength(200)
                 .IsUnicode(false);
+            entity.Property(e => e.ReceiverAddress).HasMaxLength(200);
+            entity.Property(e => e.ReceiverName).HasMaxLength(200);
+            entity.Property(e => e.ReceiverPhone)
+                .HasMaxLength(10)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Ordereds)
                 .HasForeignKey(d => d.CustomerId)

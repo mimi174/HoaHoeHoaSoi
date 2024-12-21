@@ -35,11 +35,12 @@
         }
 
     .info-left {
-        width: 40%;
+        display: none;
+        width: 100%;
     }
 
     .info-right {
-        width: 50%;
+        width: 100%;
     }
 
     .box-title {
@@ -100,6 +101,9 @@
         justify-content: center;
         align-items: center;
     }
+    .payment-submit{
+        display: none;
+    }
 </style>
 
 <div class="container-fluid text-white" style="padding: 2vw; background-color: #9D1030; ">
@@ -109,7 +113,7 @@
 </div>
 <form id="orderForm" method="post">
     <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;">
-        <div class="info-left">
+        <div class="info-left payment-submit">
             <div class="text-header">
                 <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFORMATION</b> </p>
             </div>
@@ -129,8 +133,8 @@
 
         </div>
 
-        <div style="width:10%"></div>
-        <div class="info-right">
+        @* <div style="width:10%"></div> *@
+        <div class="info-right payment-checkout">
             <div class="text-header">
                 <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
             </div>
@@ -163,23 +167,59 @@
             <div class="text-header-total">
                 <p style="text-align: right;">
                     <span style="float: left;"><b>TOTAL: </b></span>
-                    <b><span id="totalAmount">@Model.TotalAmount</span>$</b>
-                    <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
+                    <b><span id="totalAmount">@Model.TotalAmount</span>$</b>                   
                 </p>
             </div>
         </div>
     </div>
 
     <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;border:none">
-        <center style="width:100%">
+        <center style="width:100%" class="payment-submit">
+            <p>TOTAL: $@Model.TotalAmount</p>
+            <div class="col col-5 px-0">
+                <span class="Users"><b>Payment method</b></span>
+                <br />
+                <input type="radio" id="momo" name="paymentMethod" value="0" required>
+                <label for="momo">Momo</label>
+                <input type="radio" id="cod" name="paymentMethod" value="1" required>
+                <label for="cod">COD</label>
+            </div>
+            <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
+            <button type="button" id="submitButton" form="orderForm" class="btn-submit" onclick="onBack()"><b>BACK</b></button>
             <button type="submit" id="orderButton" form="orderForm" class="btn-submit"><b>ORDER NOW!</b></button>
+        </center>
+        <center style="width:100%" class="payment-checkout">
+            <button type="button" id="checkoutButton" form="orderForm" class="btn-submit" onclick="onCheckOut()"><b>CHECK OUT</b></button>
         </center>
     </div>
 </form>
-<script>
-    function updateCart(productId, e) {
-        debugger;
-        window.location.href = "/Cart?handler=Update&productId=" + productId + "&quantity=" + e.value;
-    }
-</script>
+@section Scripts{
+    <script>
+        init();
+        function init() {
+            var color = '#9D1030';
+            var isDisabled = false;
+            if (@Model.SelectedProducts.Count == 0) {
+                color = 'grey';
+                isDisabled = true;
+            }
+
+            $('#checkoutButton').css('background-color', color);
+            $('#checkoutButton').prop('disabled', isDisabled);
+        }
+
+        function updateCart(productId, e) {
+            debugger;
+            window.location.href = "/Cart?handler=Update&productId=" + productId + "&quantity=" + e.value;
+        }
+        function onCheckOut() {
+            $('.payment-checkout').css('display', 'none');
+            $('.payment-submit').css('display', 'block');
+        }
+        function onBack() {
+            $('.payment-checkout').css('display', 'block');
+            $('.payment-submit').css('display', 'none');
+        }
+    </script>
+}
 

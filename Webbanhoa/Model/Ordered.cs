@@ -26,4 +26,10 @@
         Failed,
         InCart
     }
+
+    public enum PaymentMethod
+    {
+        Momo = 0,
+        COD
+    }
 }

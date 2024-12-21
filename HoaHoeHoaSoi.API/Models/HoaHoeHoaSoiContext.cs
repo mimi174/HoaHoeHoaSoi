@@ -100,10 +100,22 @@ public partial class HoaHoeHoaSoiContext : DbContext
             entity.ToTable("Ordered");
 
             entity.Property(e => e.CustomerId).HasColumnName("Customer_Id");
+            entity.Property(e => e.MomoOrderId)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.ReceiverAddress).HasMaxLength(200);
+            entity.Property(e => e.ReceiverName).HasMaxLength(200);
+            entity.Property(e => e.ReceiverPhone)
+                .HasMaxLength(10)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Ordereds)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Ordered_Customer");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Ordereds)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__Ordered__UserId__49C3F6B7");
         });
 
         modelBuilder.Entity<Product>(entity =>

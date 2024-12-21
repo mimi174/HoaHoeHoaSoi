@@ -13,7 +13,21 @@ public partial class Ordered
 
     public double? Total { get; set; }
 
+    public int PaymentStatus { get; set; }
+
+    public int? UserId { get; set; }
+
+    public string? MomoOrderId { get; set; }
+
+    public string? ReceiverName { get; set; }
+
+    public string? ReceiverPhone { get; set; }
+
+    public string? ReceiverAddress { get; set; }
+
     public virtual Customer? Customer { get; set; }
 
     public virtual ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+
+    public virtual UserInfo? User { get; set; }
 }

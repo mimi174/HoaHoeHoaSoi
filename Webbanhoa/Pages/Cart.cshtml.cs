@@ -47,6 +47,9 @@ namespace HoaHoeHoaSoi.Pages.Shared {
 
         private MomoAPI _momoAPI { get; set; }
 
+        [BindProperty]
+        public PaymentMethod PaymentMethod { get; set; }
+
         public CartModel(IHttpContextAccessor httpContextAccessor, ILogger<CartModel> logger, IOptions<MomoAPI> momoAPI) {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -115,18 +118,30 @@ namespace HoaHoeHoaSoi.Pages.Shared {
             }
 
             try {
-                var momoOrder = new MomoOrder
+                string momoOrderId = string.Empty;
+                string payURL = string.Empty;
+                if(PaymentMethod == PaymentMethod.Momo)
                 {
-                    CustomerName = userInfo.Name,
-                    Total = TotalAmount,
-                    OrderInfo = Resources.OrderInfoMessage
-                };
-                var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
-                if(response.PayUrl != null)
-                {
-                    CartHelper.ProcessCartIntoOrder(userInfo.Id, response.OrderId);
+                    var momoOrder = new MomoOrder
+                    {
+                        CustomerName = userInfo.Name,
+                        Total = TotalAmount,
+                        OrderInfo = Resources.OrderInfoMessage
+                    };
+                    var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
+                    payURL = response.PayUrl;
+                    momoOrderId = response.OrderId;
                 }
-                return Redirect(response.PayUrl);
+                CartHelper.ProcessCartIntoOrder(userInfo.Id, Name, Address, Phone, momoOrderId);
+
+                if (string.IsNullOrEmpty(payURL)) 
+                {
+                    return Redirect("/Cart");
+                }
+                else
+                {
+                    return Redirect(payURL);
+                }
             } catch (Exception ex) {
                 ModelState.AddModelError(string.Empty, "An error occurred while processing your order. Please try again later.");
                 return RedirectToAction("Get");

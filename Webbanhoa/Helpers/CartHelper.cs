@@ -131,7 +131,7 @@ namespace HoaHoeHoaSoi.Helpers
             UpdateOrderTotal(orderId);
         }
 
-        public static void ProcessCartIntoOrder(int userId, string momoId = "")
+        public static void ProcessCartIntoOrder(int userId, string name, string address, string phone, string momoId = "")
         {
             using(var ctx = new HoaHoeHoaSoiContext())
             {
@@ -140,6 +140,9 @@ namespace HoaHoeHoaSoi.Helpers
                 {
                     order.MomoOrderId = momoId;
                     order.PaymentStatus = (int)PaymentStatus.UnPaid;
+                    order.ReceiverName = name;
+                    order.ReceiverAddress = address;
+                    order.ReceiverPhone = phone;
                     ctx.Ordereds.Update(order);
                     ctx.SaveChanges();
                 }

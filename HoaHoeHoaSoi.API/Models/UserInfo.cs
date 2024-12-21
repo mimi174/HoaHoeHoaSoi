@@ -24,4 +24,6 @@ public partial class UserInfo
     public bool? Gender { get; set; }
 
     public string? Mail { get; set; }
+
+    public virtual ICollection<Ordered> Ordereds { get; set; } = new List<Ordered>();
 }
