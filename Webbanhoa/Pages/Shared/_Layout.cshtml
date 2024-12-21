@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using HoaHoeHoaSoi.Data.Models
+@using HoaHoeHoaSoi.Model
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,34 +42,39 @@
                         </ul>
                     </div>
                 </center>
+                @{
+                    var sessionInfo = Context.Session.GetString(HoaHoeHoaSoi.Properties.Resources.UserSessionInfo);
+                    HoaHoeHoaSoi.Model.UserInfoSession userData = null;
+                    if (!string.IsNullOrEmpty(sessionInfo))
+                    {
+                        userData = Newtonsoft.Json.JsonConvert.DeserializeObject<HoaHoeHoaSoi.Model.UserInfoSession>(sessionInfo);
+                    }
+
+                    var isAuthenticated = userData != null;
+                    var userIconPage = userData != null ? $"/UserInfo/{userData.Id}" : "/Login";
+                }
                 <div class="icon-container" style="width:15%">
                     <a asp-area="" asp-page="/Cart" class="nav-link-icon" style="position: relative">
                         <img src="/Picture/cart1.png" alt="Cart" style=" max-width: 100%;" />
                         @{
                             var cartCount = 0;
-                            var cartInfo = Context.Session.GetString("SelectedProducts");
-                            if (!string.IsNullOrEmpty(cartInfo))
+                            if(userData != null)
                             {
-                                var products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<HoaHoeHoaSoi.Model.Products>>(cartInfo);
-                                cartCount = products.Count;
+                                using(var ctx = new HoaHoeHoaSoiContext())
+                                {
+                                    var order = ctx.Ordereds.FirstOrDefault(o => o.UserId == userData.Id && o.PaymentStatus == (int)PaymentStatus.InCart);
+                                    if(order != null)
+                                    {
+                                        cartCount = ctx.OrderLines.Where(ol => ol.OrderedId == order.Id).Count();
+                                    }
+                                }
                             }
                         }
                         @if(cartCount > 0)
                         {
                             <label class='badge badge-warning' id='lblCartCount'>@cartCount</label>
                         }
-                    </a>
-                    @{
-                        var sessionInfo = Context.Session.GetString(HoaHoeHoaSoi.Properties.Resources.UserSessionInfo);
-                        HoaHoeHoaSoi.Model.UserInfoSession userData = null;
-                        if (!string.IsNullOrEmpty(sessionInfo))
-                        {
-                            userData = Newtonsoft.Json.JsonConvert.DeserializeObject<HoaHoeHoaSoi.Model.UserInfoSession>(sessionInfo);
-                        }
-
-                        var isAuthenticated = userData != null;
-                        var userIconPage = userData != null ? $"/UserInfo/{userData.Id}" : "/Login";
-                    }                    
+                    </a>                    
                 <div class="dropdown">
                     <button class="dropbtn" onclick="myFunction()">
                         <img src="/Picture/user_logo.png" alt="User Info" style="max-width: 43%;" />

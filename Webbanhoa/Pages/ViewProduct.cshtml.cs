@@ -70,7 +70,7 @@ namespace HoaHoeHoaSoi.Pages
                 return Redirect("/Login");
             }
             Products product = null;
-
+            var userInfoSession = JsonConvert.DeserializeObject<UserInfoSession>(userSessionInfo);
             try
             {
                 using (SqlConnection connection = HoaDBContext.GetSqlConnection())
@@ -100,21 +100,7 @@ namespace HoaHoeHoaSoi.Pages
                     return RedirectToPage("Shop");
                 }
 
-                var productJson = _httpContextAccessor.HttpContext.Session.GetString("SelectedProducts");
-                var products = string.IsNullOrEmpty(productJson) ? new List<Products>() : JsonConvert.DeserializeObject<List<Products>>(productJson);
-
-                if (products.Any(p => p.Id == productId))
-                {
-                    _logger.LogInformation($"Product with ID {productId} already exists in the cart.");
-                    return Redirect("/ViewProduct/" + productId);
-                }
-
-                products.Add(product);
-                _logger.LogInformation(
-                    $"Added product with ID {productId} to the cart. There are now {products.Count} product(s) in the cart.");
-
-                _httpContextAccessor.HttpContext.Session.SetString("SelectedProducts",
-                    JsonConvert.SerializeObject(products));
+                CartHelper.AddToCard(productId, 1, userInfoSession.Id, product.Price);
 
                 return Redirect("/ViewProduct/" + productId);
             }

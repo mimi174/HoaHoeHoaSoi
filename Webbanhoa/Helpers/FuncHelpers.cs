@@ -1,4 +1,5 @@
 ﻿using HoaHoeHoaSoi.Model;
+using HoaHoeHoaSoi.Properties;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Security.Cryptography;

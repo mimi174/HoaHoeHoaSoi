@@ -23,6 +23,7 @@
     {
         UnPaid = 0,
         Paid,
-        Failed
+        Failed,
+        InCart
     }
 }

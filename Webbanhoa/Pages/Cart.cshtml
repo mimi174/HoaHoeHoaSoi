@@ -114,9 +114,6 @@
                 <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFORMATION</b> </p>
             </div>
             <input type="hidden" id="currentQuantityInput" name="currentQuantity" value="0">
-
-            <input type="hidden" id="totalAmountInput" name="totalAmount" value="0">
-
             <label class="box-title" for="name">Name</label><br>
             <center>
                 <input class="text-box" type="text" id="name" name="name" required><br>
@@ -141,11 +138,21 @@
             @if (Model.SelectedProducts != null) {
                 @foreach (var product in Model.SelectedProducts) {
                     <div class="products_cart" data-product-id="@product.Id">
+                        <div style="max-width:25%">
+                            @if (!string.IsNullOrEmpty(product.Img))
+                            {
+                                <img id="product-pic" src="data:image/jpeg;base64, @product.Img" style="max-width: 90%; max-height: 90%">
+                            }
+                            else
+                            {
+                                <img class="product-pic" src="/Picture/Hoa.png" style="max-width: 90%; max-height: 90%" />
+                            }
+                        </div>
                         <div style="float:left; width: 40%">
                             @product.Name
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <input style ="width:15%;margin-left: 20%;" type="number" class="quantity-input" value="1" min="1">
+                            <input style="width:15%;margin-left: 20%;" type="number" class="quantity-input" value="@product.Quantity" min="1" onchange="updateCart(@product.Id, this)">
                             <span class="price">@product.Price$</span>
                             <a href="/Cart?handler=Delete&productId=@product.Id" class="remove-link">Remove</a>
                         </div>
@@ -155,8 +162,9 @@
             }
             <div class="text-header-total">
                 <p style="text-align: right;">
-                    <span style="float: left;"><b>TOTAL:</b></span>
-                    <b><span id="totalAmount">0.00</span>$</b>
+                    <span style="float: left;"><b>TOTAL: </b></span>
+                    <b><span id="totalAmount">@Model.TotalAmount</span>$</b>
+                    <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
                 </p>
             </div>
         </div>
@@ -169,145 +177,9 @@
     </div>
 </form>
 <script>
-    var productQuantities = {};
-    updateTotalAmount();
-
-    function updateTotalAmount() {
-        var totalAmount = 0;
-        var products = document.querySelectorAll('.products_cart');
-        products.forEach(function (product) {
-            var price = parseFloat(product.querySelector('.price').innerText.match(/[\d.]+/g)[0]);
-            var quantity = parseInt(product.querySelector('.quantity-input').value);
-            var productId = product.getAttribute('data-product-id');
-            totalAmount += price * quantity;
-            productQuantities[productId] = quantity;
-        });
-        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
-        var quantitiesArray = Object.values(productQuantities);
-        var integerQuantities = quantitiesArray.filter(quantity => Number.isInteger(quantity));
-        var quantityString = integerQuantities.join(',');
-        document.getElementById('currentQuantityInput').value = quantityString;
-        document.getElementById('totalAmountInput').value = totalAmount.toFixed(2);
+    function updateCart(productId, e) {
+        debugger;
+        window.location.href = "/Cart?handler=Update&productId=" + productId + "&quantity=" + e.value;
     }
-
-    var quantityInputs = document.querySelectorAll('.quantity-input');
-
-    // Lưu Quantity vào Session Storage khi thay đổi
-    function updateQuantityInSession(productId, quantity) {
-        var productQuantities = JSON.parse(sessionStorage.getItem('productQuantities')) || {};
-        productQuantities[productId] = quantity;
-        sessionStorage.setItem('productQuantities', JSON.stringify(productQuantities));
-    }
-
-    // Cập nhật số lượng và lưu vào Session Storage khi số lượng thay đổi
-    quantityInputs.forEach(function (input) {
-        input.addEventListener('change', function () {
-            var productId = input.parentElement.parentElement.getAttribute('data-product-id');
-
-            console.log("Product ID:", productId);
-
-            var currentQuantity = parseInt(input.value);
-            currentQuantity = Math.max(1, currentQuantity);
-            input.value = currentQuantity;
-            updateQuantityInSession(productId, currentQuantity);
-            updateTotalAmount();
-        });
-    });
-
-    // Load Quantity từ Session Storage khi trang được tải
-    function loadQuantityFromSession() {
-        var productQuantities = JSON.parse(sessionStorage.getItem('productQuantities')) || {};
-        console.log("productQuantities:", productQuantities);
-        var quantityInputs = document.querySelectorAll('.quantity-input');
-        quantityInputs.forEach(function (input) {
-            var productId = input.parentElement.parentElement.getAttribute('data-product-id');
-            if (productQuantities[productId]) {
-                input.value = productQuantities[productId];
-            }
-        });
-    }
-    // Function to update user information in session storage
-    function updateUserInfoInSession(nameValue, phoneValue, addressValue) {
-        var userInfo = {
-            name: nameValue,
-            phone: phoneValue,
-            address: addressValue
-        };
-        sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
-    }
-
-    // Call the function to update user information when there's a change in any field
-    var userInfoInputs = document.querySelectorAll('#name, #phone, #address');
-    userInfoInputs.forEach(function (input) {
-        input.addEventListener('change', function () {
-            updateUserInfoInSession(document.getElementById('name').value,
-                document.getElementById('phone').value,
-                document.getElementById('address').value);
-        });
-    });
-
-    // Load user information from session storage
-    function loadUserInfoFromSession() {
-        var userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-        if (userInfo) {
-            document.getElementById('name').value = userInfo.name;
-            document.getElementById('phone').value = userInfo.phone;
-            document.getElementById('address').value = userInfo.address;
-        }
-    }
-
-    // Gọi hàm loadQuantityFromSession, loadUserInfoFromSession khi trang được tải
-    window.addEventListener('load', function () {
-        loadQuantityFromSession();
-        loadUserInfoFromSession();
-    });
-
-
-    // Xử lý sự kiện khi nhấn vào nút Remove
-    document.querySelectorAll('.remove-link').forEach(function (removeBtn) {
-        removeBtn.addEventListener('click', async function (event) {
-            var productId = removeBtn.parentElement.parentElement.getAttribute('data-product-id');
-
-            // Cập nhật số lượng sản phẩm trong session
-            await updateQuantityInSession(productId, 1);
-
-            // Tải lại số lượng từ session
-            loadQuantityFromSession();
-
-            // Cập nhật tổng số tiền
-            updateTotalAmount();
-        });
-    });
-
-
-    // Xử lý sự kiện khi nhấn vào nút ORDER NOW!
-    document.getElementById('orderButton').addEventListener('click', async function (event) {
-        loadUserInfoFromSession();
-        // Cập nhật số lượng trên trang và tổng số tiền
-        loadQuantityFromSession();
-        updateTotalAmount();
-
-        // Submit form để đặt hàng
-        var form = document.getElementById('orderForm');
-        var formData = new FormData(form);
-        if (!form.checkValidity())
-            return;        
-
-        sessionStorage.removeItem('productQuantities');
-        sessionStorage.removeItem('userInfo');
-        //form.submit();
-        
-        // Lấy danh sách sản phẩm và cập nhật số lượng của từng sản phẩm về 1 trong phiên lưu trữ
-        // var products = document.querySelectorAll('.products_cart');
-        // products.forEach(async function (product) {
-        //     var productId = product.getAttribute('data-product-id');
-
-        //     // Cập nhật số lượng sản phẩm trong session
-        //     await updateQuantityInSession(productId, 1);
-        //     await updateUserInfoInSession('', '', '');
-        // });
-    });
-
-
 </script>
 
