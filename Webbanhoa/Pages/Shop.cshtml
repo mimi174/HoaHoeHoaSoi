@@ -59,14 +59,14 @@
                 <div class="card-body" onclick="goToDetail(@item.Id)">
                     <h5 class="card-title"><b>@item.Name</b></h5>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: auto; bottom:0">
-                        <div class="price">
-                            @item.Price<p style="display:inline">$</p>
+                        <div class="price format-product-price" style="width: 80%" id="value">
+                            @item.Price<p style="display:inline"> VND</p>
                         </div>
-                        <div class="add-cart" style="margin-left: auto; right: 0; bottom: 0;">
+                        <div class="add-cart" style="width: 20%; margin-left: auto; right: 0; bottom: 0;">
                             <form method="post" asp-page-handler="AddToCart">
                                 <input type="hidden" name="productId" value="@item.Id" />
                                 <button type="submit" style="border: none; background-color: #F6D8DC;" onclick="showAddToCardSB()">
-                                    <img src="/Picture/cart1.png" style="max-width: 15%; max-height: 15%; float: right;" />
+                                    <img src="/Picture/cart1.png" style="max-width: 40%; max-height: 40%; float: right;" />
                                 </button>
                             </form>
                         </div>
@@ -81,6 +81,6 @@
     <script type="text/javascript">
         function goToDetail(id) {
             window.location.href = "/ViewProduct/" + id;
-        }
+        }        
     </script>
 }

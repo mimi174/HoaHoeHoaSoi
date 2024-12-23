@@ -160,6 +160,20 @@
                 }
             }
         };
+        formatPrice();
+        function formatPrice() {
+            var prices = document.getElementsByClassName("format-product-price");
+            if (!prices)
+                return;
+            //Use the code in the answer above to replace the commas.
+            for (i = 0; i < prices.length; i++) {
+                prices[i].innerHTML = numberWithCommas(prices[i].innerHTML);
+            }
+        }
+        
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

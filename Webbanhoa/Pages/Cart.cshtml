@@ -157,7 +157,7 @@
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <input style="width:15%;margin-left: 20%;" type="number" class="quantity-input" value="@product.Quantity" min="1" onchange="updateCart(@product.Id, this)">
-                            <span class="price">@product.Price$</span>
+                            <span class="price format-product-price">@product.Price VND</span>
                             <a href="/Cart?handler=Delete&productId=@product.Id" class="remove-link">Remove</a>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
             <div class="text-header-total">
                 <p style="text-align: right;">
                     <span style="float: left;"><b>TOTAL: </b></span>
-                    <b><span id="totalAmount">@Model.TotalAmount</span>$</b>                   
+                    <b><span id="totalAmount" class="format-product-price">@Model.TotalAmount</span> VND</b>                   
                 </p>
             </div>
         </div>
