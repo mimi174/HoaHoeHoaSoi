@@ -53,6 +53,28 @@
         padding: 1vw;
     }
 
+    input[type="radio"] {
+        appearance: none; /* Loại bỏ kiểu mặc định */
+        width: 15px;
+        height: 15px;
+        border: 2px solid #9D1030; /* Đường viền màu đỏ */
+        border-radius: 50%; /* Tạo hình tròn */
+        outline: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+        /* Màu khi được chọn */
+        input[type="radio"]:checked {
+            background-color: #9D1030; /* Màu nền khi chọn */
+        }
+
+    label {
+        margin-left: 1vw; 
+        margin-right: 1vw;
+    }
+
+
 /*    .btn-success:active {
         background-color: aqua
     }*/
@@ -153,7 +175,6 @@
                                 <div class="col-sm-4 d-grid">
                                     <a class="btn btn-sucess" href="/Users/Infor?id=@Model.Id" role="button"><b>Cancel</b></a>
                                 </div>
-
                             </div>
                         </div>
                     </div>
