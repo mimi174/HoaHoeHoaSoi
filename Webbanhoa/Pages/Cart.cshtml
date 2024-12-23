@@ -133,6 +133,25 @@
 
         </div>
 
+        <div class="info-right payment-submit container-fluid">
+            <div class="text-header">
+                <p style="text-align: center; margin-bottom: 0.1vw;"><b>DELIVERY INFORMATION</b> </p>
+            </div>
+            <br />
+            <center style="width: 100%; display: flex; margin: auto; justify-content:center">
+                <div class="products_cart" style="width: 40%">
+                    <input type="radio" id="momo" name="paymentMethod" value="0" required>
+                    <label for="momo">Momo</label>
+                </div>
+                <div style="width: 10%"></div>
+                <div class="products_cart" style="width: 40%">
+                    <input type="radio" id="cod" name="paymentMethod" value="1" required>
+                    <label for="cod">COD</label>
+                </div>
+            </center>
+            <p class="box-title format-product-price" style="text-align: center">TOTAL: @Model.TotalAmount VND</p>
+        </div>
+
         @* <div style="width:10%"></div> *@
         <div class="payment-checkout">
             <div class="text-header">
@@ -173,17 +192,8 @@
         </div>
     </div>
 
-    <div id="div-payment" class=" container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;border:none">
-        <center style="width:100%" class="payment-submit">
-            <p>TOTAL: $@Model.TotalAmount</p>
-            <div class="col col-5 px-0">
-                <span class="Users"><b>Payment method</b></span>
-                <br />
-                <input type="radio" id="momo" name="paymentMethod" value="0" required>
-                <label for="momo">Momo</label>
-                <input type="radio" id="cod" name="paymentMethod" value="1" required>
-                <label for="cod">COD</label>
-            </div>
+    <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;border:none">
+        <center style="width:100%" class="payment-submit">           
             <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
             <button type="button" id="submitButton" form="orderForm" class="btn-submit" onclick="onBack()"><b>BACK</b></button>
             <button type="submit" id="orderButton" form="orderForm" class="btn-submit"><b>ORDER NOW!</b></button>
