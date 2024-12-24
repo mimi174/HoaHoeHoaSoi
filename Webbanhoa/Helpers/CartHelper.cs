@@ -110,6 +110,31 @@ namespace HoaHoeHoaSoi.Helpers
             UpdateOrderTotal(orderId);
         }
 
+        public static void UpdateCart(Dictionary<int, int> items, int userId)
+        {
+            int orderId = 0;
+            using (var ctx = new HoaHoeHoaSoiContext())
+            {
+                var order = GetCartByUserId(userId);
+                if (order != null)
+                {
+                    orderId = order.Id;
+                    foreach (var item in items)
+                    {
+                        var line = ctx.OrderLines.FirstOrDefault(ol => ol.ProductsId == item.Key && ol.OrderedId == order.Id);
+                        if (line != null)
+                        {
+                            line.Quantity = item.Value;
+                            ctx.OrderLines.Update(line);
+                        }
+                    }
+                    ctx.SaveChanges();
+                }
+            }
+
+            UpdateOrderTotal(orderId);
+        }
+
         public static void RemoveProductFromCart(int productId, int userId)
         {
             int orderId = 0;

@@ -1,4 +1,6 @@
-﻿namespace HoaHoeHoaSoi.Model
+﻿using Newtonsoft.Json;
+
+namespace HoaHoeHoaSoi.Model
 {
     public class Ordered
     {
@@ -6,8 +8,9 @@
         public DateOnly? Date { get; set; }
         public double? Total { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
+        [JsonProperty("Lines")]
 
-        public List<OrderLine> Lines = new List<OrderLine> { };
+        public List<OrderLine> Lines { get; set; } = new List<OrderLine>();
     }
 
     public class OrderLine
@@ -17,6 +20,7 @@
         public int Quantity { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
+        public string Img { get; set; }
     }
 
     public enum PaymentStatus

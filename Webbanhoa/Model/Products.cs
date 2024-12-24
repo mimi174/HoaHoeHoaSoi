@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 namespace HoaHoeHoaSoi.Model
 {
     public class Products
