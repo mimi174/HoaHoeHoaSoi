@@ -41,13 +41,14 @@ namespace HoaHoeHoaSoi.API.Controllers
 
                 //var sortedIds = data.Select(d => d.ProductId).ToList();
                 //products = products.ToList().OrderBy(p => sortedIds.IndexOf(p.Id)).AsQueryable();
-                products = products.Include(p => p.OrderLines).OrderByDescending(p => p.OrderLines.Sum(ol => ol.Quantity));
+                products = products.Include(p => p.OrderLines)
+                    .OrderByDescending(p => p.OrderLines.AsQueryable().Include(ol => ol.Ordered).Where(ol => ol.Ordered.PaymentStatus != (int)PaymentStatus.InCart).Sum(ol => ol.Quantity));
             }
 
             var total = products.Count();
             products = products.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
 
-            return Response(200, products.Select(p => new ProductViewModel { Id = p.Id, Description = p.Description, Name = p.Name, Price = p.Price }).ToList(), total, filter.Page, products.Count());
+            return Response(200, products.Select(p => new ProductViewModel { Id = p.Id, Description = p.Description, Name = p.Name, Price = p.Price, Img = p.Img }).ToList(), total, filter.Page, products.Count());
         }
     }
 }
