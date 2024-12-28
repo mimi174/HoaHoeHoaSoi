@@ -161,7 +161,16 @@
             }
         };
         formatPrice();
-        function formatPrice() {
+        function formatPrice(ids) {
+            if (ids) {
+                for (i = 0; i < ids.length; i++){
+                    var price = document.getElementById(ids[i]);
+                    price.innerHTML = numberWithCommas(price.innerHTML);
+                }
+                
+                return;
+            }
+
             var prices = document.getElementsByClassName("format-product-price");
             if (!prices)
                 return;

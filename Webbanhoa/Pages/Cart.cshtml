@@ -1,4 +1,5 @@
 ﻿@page
+@using HoaHoeHoaSoi.Model
 @model HoaHoeHoaSoi.Pages.Shared.CartModel
 @{
 }
@@ -131,7 +132,10 @@
         margin-left: 10px; 
     }
 
-
+    #discount-badge{
+        font-size: 18px;
+        font-style: italic;
+    }
 </style>
 
 <div class="container-fluid text-white" style="padding: 2vw; background-color: #9D1030; ">
@@ -169,7 +173,7 @@
             <center style="width: 100%; margin: auto; justify-content:center">
                 <div class="products_cart" style="width: 100%; padding">
                     <input type="radio" id="momo" name="paymentMethod" value="0" required style="left:1vw; color: #9D1030;">
-                    <label for="momo">Momo</label>
+                    <span><label for="momo">Momo</label><span id="discount-badge"> 20% OFF <i class="fa-solid fa-tag"></i></span></span>
                 </div>
                 </br>
                 <div class="products_cart" style="width: 100%">
@@ -178,7 +182,11 @@
                 </div>
                 </br>
             </center>
-            <p class="text-header-total format-product-price" style="text-align: center"><b>TOTAL: @Model.TotalAmount VND</b></p>
+            <div id="discount-subtotal" style="display: none;">
+                <p class="text-header-total format-product-price" style="text-align: center"><b>Sub total: <span id="subTotalAmount">@Model.TotalAmount</span> VND</b></p>
+                <p class="text-header-total format-product-price" style="text-align: center; border-top: 0;"><b>Discount: <span id="discountAmount"></span> VND</b></p>
+            </div>
+            <p class="text-header-total format-product-price" style="text-align: center"><b>TOTAL: <span id="finalTotalAmount">@Model.TotalAmount</span> VND</b></p>
         </div>
 
         @* <div style="width:10%"></div> *@
@@ -216,7 +224,7 @@
                 <b>
                     <p style="text-align: right;">
                         <span style="float: left;"><b>TOTAL: </b></span>
-                        <b><span id="totalAmount" class="format-product-price">@Model.TotalAmount</span> VND</b>
+                        <b><span class="format-product-price">@Model.TotalAmount</span> VND</b>
                     </p>
                 </b>
             </div>
@@ -224,8 +232,9 @@
     </div>
 
     <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;border:none">
-        <center style="width:100%" class="payment-submit">           
-            <input type="hidden" name="TotalAmount" value="@Model.TotalAmount" />
+        <center style="width:100%" class="payment-submit">
+            <input type="hidden" id="constTotalAmount" name="constTotalAmount" value="@Model.TotalAmount" />
+            <input type="hidden" id="bindingTotalAmount" name="TotalAmount" value="@Model.TotalAmount" />
             <button type="button" id="submitButton" form="orderForm" class="btn-submit" onclick="onBack()"><b>BACK</b></button>
             <button type="submit" id="orderButton" form="orderForm" class="btn-submit"><b>ORDER NOW!</b></button>
         </center>
@@ -237,6 +246,7 @@
 @section Scripts{
     <script>
         init();
+        paymentMethodOnChange();
         function init() {
             var color = '#9D1030';
             var isDisabled = false;
@@ -247,6 +257,38 @@
 
             $('#checkoutButton').css('background-color', color);
             $('#checkoutButton').prop('disabled', isDisabled);
+        }
+
+        function paymentMethodOnChange(){
+            var radios = document.getElementsByName("paymentMethod");
+            if (!radios)
+                return;
+            that = this;
+
+            that.bindingTotalAmount = document.getElementById('bindingTotalAmount');
+            that.constTotalAmount = document.getElementById('constTotalAmount');
+            that.finalTotalAmount = document.getElementById('finalTotalAmount');
+            that.discountAmount = document.getElementById('discountAmount');
+            that.discountSubtotal = document.getElementById('discount-subtotal');
+
+            if (!that.bindingTotalAmount || !that.constTotalAmount || !that.finalTotalAmount)
+                return;
+
+            for (var i = 0; i < radios.length; i++) {
+                radios[i].addEventListener('change', function () {
+                    newAmount = that.constTotalAmount.value;
+                    that.discountSubtotal.style.display = "none";
+                    if (this.value == @PaymentMethod.Momo.ToString("D")) {
+                        newAmount = Math.ceil(newAmount * 0.8);
+                        that.discountSubtotal.style.display = "block";
+                    }
+
+                    that.bindingTotalAmount.value = newAmount;
+                    that.finalTotalAmount.innerHTML = newAmount;
+                    that.discountAmount.innerHTML = -Math.ceil(that.constTotalAmount.value * 0.2);
+                    formatPrice(['finalTotalAmount', 'discountAmount', 'subTotalAmount']);
+                });
+            }
         }
 
         function updateCart(productId, e) {

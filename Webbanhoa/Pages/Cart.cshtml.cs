@@ -122,6 +122,14 @@ namespace HoaHoeHoaSoi.Pages.Shared {
                 string payURL = string.Empty;
                 if(PaymentMethod == PaymentMethod.Momo)
                 {
+                    using(var ctx = new HoaHoeHoaSoiContext())
+                    {
+                        var cart = CartHelper.GetCartByUserId(userInfo.Id);
+                        cart.Total = TotalAmount;
+                        ctx.Ordereds.Update(cart);
+                        ctx.SaveChanges();
+                    }
+
                     var momoOrder = new MomoOrder
                     {
                         CustomerName = userInfo.Name,
