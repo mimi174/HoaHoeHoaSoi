@@ -23,6 +23,7 @@ namespace HoaHoeHoaSoi.API.Helpers
             ValidateAudience = true,
             ValidAudience = AUDIENCE,
             ValidIssuer = ISSUER,
+            ClockSkew = TimeSpan.Zero
         };
 
         public static int ValidateToken(string token)

@@ -27,6 +27,8 @@ public partial class HoaHoeHoaSoiContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductWishlist> ProductWishlists { get; set; }
+
     public virtual DbSet<UserInfo> UserInfos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -126,6 +128,23 @@ public partial class HoaHoeHoaSoiContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<ProductWishlist>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductW__3214EC0778AC9EBE");
+
+            entity.ToTable("ProductWishlist");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductWishlists)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductWi__Produ__5CD6CB2B");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ProductWishlists)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductWi__UserI__5DCAEF64");
         });
 
         modelBuilder.Entity<UserInfo>(entity =>

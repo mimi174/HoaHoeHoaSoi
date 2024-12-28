@@ -26,4 +26,6 @@ public partial class UserInfo
     public string? Mail { get; set; }
 
     public virtual ICollection<Ordered> Ordereds { get; set; } = new List<Ordered>();
+
+    public virtual ICollection<ProductWishlist> ProductWishlists { get; set; } = new List<ProductWishlist>();
 }

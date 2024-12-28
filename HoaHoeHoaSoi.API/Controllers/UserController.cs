@@ -152,5 +152,12 @@ namespace HoaHoeHoaSoi.API.Controllers
                 return Response(500, string.Empty, ex.Message);
             }
         }
+
+        [HttpGet("verify-token")]
+        [Authorize]
+        public IActionResult VerifyToken()
+        {
+            return Response(200, string.Empty);
+        }
     }
 }

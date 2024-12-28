@@ -16,4 +16,6 @@ public partial class Product
     public string? Img { get; set; }
 
     public virtual ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+
+    public virtual ICollection<ProductWishlist> ProductWishlists { get; set; } = new List<ProductWishlist>();
 }

@@ -20,4 +20,17 @@
         public string Description { get; set; }
         public string Img { get; set; }
     }
+
+    public class ProductWishListCreateModel
+    {
+        public int ProductId { get; set; }
+    }
+
+    public class ProductWishListFilter
+    {
+        public int ProductId { get; set; }
+        public string Search { get; set; } = string.Empty;
+        public int Page { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
+    }
 }
