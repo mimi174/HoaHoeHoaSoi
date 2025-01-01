@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using HoaHoeHoaSoi.Helpers;
 using HoaHoeHoaSoi.Model;
 using Microsoft.IdentityModel.Tokens;
+using HoaHoeHoaSoi.Data.Models;
 
 namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
     public class IndexModel : PageModel {
@@ -34,28 +35,24 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
 
 
             OrderList = new List<OrderViewModel>();
-
-
+            
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();
-
 
                 string command = $@"
                     SELECT
                         O.Id,
-                        C.[Name],
-                        C.[Address],
-                        C.Phone,
+                        O.[ReceiverName],
+                        O.[ReceiverAddress],
+                        O.ReceiverPhone,
                         O.[Date],
                         O.Total
                     FROM
                         Ordered AS O
-                    INNER JOIN
-                        Customer AS C ON O.Customer_Id = C.Id
-                    WHERE O.Id LIKE '%{Search}%' OR C.[Name] LIKE '%{Search}%' OR
-                        C.[Address] LIKE '%{Search}%' OR C.Phone LIKE '%{Search}%' OR
-                        CONVERT(NVARCHAR, O.[Date], 23) LIKE '%{Search}%' OR 
-                        CAST(O.Total AS NVARCHAR) LIKE '%{Search}%'
+                    WHERE O.Id LIKE N'%{Search}%' OR O.[ReceiverName] LIKE N'%{Search}%' OR
+                        O.[ReceiverAddress] LIKE N'%{Search}%' OR O.ReceiverPhone LIKE N'%{Search}%' OR
+                        CONVERT(NVARCHAR, O.[Date], 23) LIKE N'%{Search}%' OR 
+                       LTRIM(STR(Total)) LIKE N'%{Search}%'
                 ";
 
 
@@ -65,7 +62,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
 
                             var order = new OrderViewModel {
                                 OrderId = reader.GetInt32(0),
-                                CustomerName = reader.GetString(1),
+                                CustomerName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
                                 CustomerAddress = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
                                 CustomerPhone = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                                 Date = reader.GetDateTime(4),
@@ -96,7 +93,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
                     using (var selectCustomerIdCmd = new SqlCommand(selectCustomerIdCommand, connection)) {
                         using (var reader = selectCustomerIdCmd.ExecuteReader()) {
                             if (reader.Read()) {
-                                customerId = reader.GetInt32(0);
+                                customerId = reader.IsDBNull(0) ? -1 : reader.GetInt32(0);
                             }
                         }
                     }
