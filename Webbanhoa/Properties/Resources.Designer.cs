@@ -61,6 +61,123 @@ namespace HoaHoeHoaSoi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Giao dịch thành công.
+        /// </summary>
+        internal static string _00 {
+            get {
+                return ResourceManager.GetString("00", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trừ tiền thành công. Giao dịch bị nghi ngờ (liên quan tới lừa đảo, giao dịch bất thường)..
+        /// </summary>
+        internal static string _07 {
+            get {
+                return ResourceManager.GetString("07", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng chưa đăng ký dịch vụ InternetBanking tại ngân hàng..
+        /// </summary>
+        internal static string _09 {
+            get {
+                return ResourceManager.GetString("09", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Khách hàng xác thực thông tin thẻ/tài khoản không đúng quá 3 lần.
+        /// </summary>
+        internal static string _10 {
+            get {
+                return ResourceManager.GetString("10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Đã hết hạn chờ thanh toán. Xin quý khách vui lòng thực hiện lại giao dịch..
+        /// </summary>
+        internal static string _11 {
+            get {
+                return ResourceManager.GetString("11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng bị khóa..
+        /// </summary>
+        internal static string _12 {
+            get {
+                return ResourceManager.GetString("12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do Quý khách nhập sai mật khẩu xác thực giao dịch (OTP). Xin quý khách vui lòng thực hiện lại giao dịch..
+        /// </summary>
+        internal static string _13 {
+            get {
+                return ResourceManager.GetString("13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Khách hàng hủy giao dịch.
+        /// </summary>
+        internal static string _24 {
+            get {
+                return ResourceManager.GetString("24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Tài khoản của quý khách không đủ số dư để thực hiện giao dịch..
+        /// </summary>
+        internal static string _51 {
+            get {
+                return ResourceManager.GetString("51", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: Tài khoản của Quý khách đã vượt quá hạn mức giao dịch trong ngày..
+        /// </summary>
+        internal static string _65 {
+            get {
+                return ResourceManager.GetString("65", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ngân hàng thanh toán đang bảo trì..
+        /// </summary>
+        internal static string _75 {
+            get {
+                return ResourceManager.GetString("75", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Giao dịch không thành công do: KH nhập sai mật khẩu thanh toán quá số lần quy định. Xin quý khách vui lòng thực hiện lại giao dịch.
+        /// </summary>
+        internal static string _79 {
+            get {
+                return ResourceManager.GetString("79", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Các lỗi khác.
+        /// </summary>
+        internal static string _99 {
+            get {
+                return ResourceManager.GetString("99", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username is already taken.
         /// </summary>
         internal static string ExistedSignUpMsg {

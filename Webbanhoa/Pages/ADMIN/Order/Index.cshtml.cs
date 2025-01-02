@@ -21,6 +21,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
             public string CustomerPhone { get; set; }
             public DateTime Date { get; set; }
             public float Total { get; set; }
+            public PaymentStatus PaymentStatus { get; set; }
         }
         public int DeleteId { get; set; }
         public void OnGet() {
@@ -46,7 +47,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
                         O.[ReceiverAddress],
                         O.ReceiverPhone,
                         O.[Date],
-                        O.Total
+                        O.Total,
+                        O.PaymentStatus
                     FROM
                         Ordered AS O
                     WHERE O.Id LIKE N'%{Search}%' OR O.[ReceiverName] LIKE N'%{Search}%' OR
@@ -66,7 +68,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
                                 CustomerAddress = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
                                 CustomerPhone = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                                 Date = reader.GetDateTime(4),
-                                Total = (float)reader.GetDouble(5)
+                                Total = (float)reader.GetDouble(5),
+                                PaymentStatus = (PaymentStatus) reader.GetInt32(6) 
                             };
 
 
@@ -74,6 +77,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
                         }
                     }
                 }
+
+                OrderList = OrderList.OrderByDescending(o => o.OrderId).ToList();
             }
         }
 

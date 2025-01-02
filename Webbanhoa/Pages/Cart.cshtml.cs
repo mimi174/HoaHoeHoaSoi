@@ -25,6 +25,7 @@ namespace HoaHoeHoaSoi.Pages.Shared {
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CartModel> _logger;
+        private readonly IConfiguration _configuration;
 
         [BindProperty]
         public string Name { get; set; }
@@ -50,10 +51,11 @@ namespace HoaHoeHoaSoi.Pages.Shared {
         [BindProperty]
         public PaymentMethod PaymentMethod { get; set; }
 
-        public CartModel(IHttpContextAccessor httpContextAccessor, ILogger<CartModel> logger, IOptions<MomoAPI> momoAPI) {
+        public CartModel(IHttpContextAccessor httpContextAccessor, ILogger<CartModel> logger, IOptions<MomoAPI> momoAPI, IConfiguration configuration) {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
             _momoAPI = momoAPI.Value;
+            _configuration = configuration;
         }
 
         private UserInfoSession GetUserInfoFromSession()
@@ -118,18 +120,12 @@ namespace HoaHoeHoaSoi.Pages.Shared {
             }
 
             try {
-                string momoOrderId = string.Empty;
+                string orderId = string.Empty;
                 string payURL = string.Empty;
-                if(PaymentMethod == PaymentMethod.Momo)
-                {
-                    using(var ctx = new HoaHoeHoaSoiContext())
-                    {
-                        var cart = CartHelper.GetCartByUserId(userInfo.Id);
-                        cart.Total = TotalAmount;
-                        ctx.Ordereds.Update(cart);
-                        ctx.SaveChanges();
-                    }
+                int paymentMethod = (int)PaymentMethod.COD;
 
+                if (PaymentMethod == PaymentMethod.Momo)
+                {                    
                     var momoOrder = new MomoOrder
                     {
                         CustomerName = userInfo.Name,
@@ -138,9 +134,34 @@ namespace HoaHoeHoaSoi.Pages.Shared {
                     };
                     var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
                     payURL = response.PayUrl;
-                    momoOrderId = response.OrderId;
+                    orderId = response.OrderId;
+                    paymentMethod = (int)PaymentMethod.Momo;
                 }
-                CartHelper.ProcessCartIntoOrder(userInfo.Id, Name, Address, Phone, momoOrderId);
+                else if(PaymentMethod == PaymentMethod.VNPAY)
+                {
+                    var vnpayOrder = new VnpayOrder
+                    {
+                        CustomerName = userInfo.Name,
+                        Total = TotalAmount,
+                        OrderInfo = Resources.OrderInfoMessage,
+                    };
+                    var response = FuncHelpers.CreateVnPayPaymentAsync(vnpayOrder, _configuration, HttpContext);
+                    payURL = response.PayUrl;
+                    orderId = response.OrderId;
+                    paymentMethod = (int)PaymentMethod.VNPAY;
+                }
+
+                //Update cart total (discount) and payment method
+                using (var ctx = new HoaHoeHoaSoiContext())
+                {
+                    var cart = CartHelper.GetCartByUserId(userInfo.Id);
+                    cart.Total = TotalAmount;
+                    cart.PaymentMethod = paymentMethod;
+                    ctx.Ordereds.Update(cart);
+                    ctx.SaveChanges();
+                }
+
+                CartHelper.ProcessCartIntoOrder(userInfo.Id, Name, Address, Phone, orderId);
 
                 if (string.IsNullOrEmpty(payURL)) 
                 {

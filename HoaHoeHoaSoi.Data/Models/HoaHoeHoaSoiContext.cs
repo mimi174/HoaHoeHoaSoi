@@ -103,13 +103,17 @@ public partial class HoaHoeHoaSoiContext : DbContext
 
             entity.Property(e => e.CustomerId).HasColumnName("Customer_Id");
             entity.Property(e => e.Date).HasColumnType("date");
-            entity.Property(e => e.MomoOrderId)
+            entity.Property(e => e.PaymentMethod).HasDefaultValueSql("((1))");
+            entity.Property(e => e.PaymentOrderId)
                 .HasMaxLength(200)
                 .IsUnicode(false);
             entity.Property(e => e.ReceiverAddress).HasMaxLength(200);
             entity.Property(e => e.ReceiverName).HasMaxLength(200);
             entity.Property(e => e.ReceiverPhone)
                 .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.ResultCode)
+                .HasMaxLength(100)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Ordereds)

@@ -1,4 +1,5 @@
 ﻿@page "{id}"
+@using HoaHoeHoaSoi.Model
 @model HoaHoeHoaSoi.Pages.ADMIN.Order.DetailModel
 @{
     Layout = "/Pages/Shared/_HomeAdminLayout.cshtml";
@@ -68,8 +69,27 @@
 </style>
 
 <div class="container-fluid">
+    <div class="text-center">
+        <div class="container">
+            <p>Order ID: <strong>@Model.OrderId</strong></p>
+            <p>Payment method: <strong>@Model.OrderPaymentMethod</strong></p>
+            <p>Payment status: <strong>@Model.OrderPaymentStatus</strong></p>
+            <p>Total: <strong>@Model.OrderTotal</strong></p>
+            <p>Order result code: <strong>@Model.OrderResultCode</strong></p>
+            <p>Order message: <strong>@Model.OrderPaymentNote</strong></p>
+        </div>
+    </div>
     <a href="/ADMIN/Order/Index" class="btn-create" role="button" style="text-decoration: none;font-size: 1.2em;padding-bottom: 0.1%;padding-top: 0.1%;">Back</a>
     <div id="wall-form" class="container-fluid">
+        @if(Model.OrderPaymentMethod == PaymentMethod.COD.ToString() && Model.OrderPaymentStatus != PaymentStatus.Paid.ToString() && Model.OrderPaymentStatus != PaymentStatus.InCart.ToString())
+        {
+            <form method="post" style="position: absolute; left: 0">
+                <div class="form-group">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <button type="submit" class="btn-search">Pay the order</button>
+                </div>
+            </form>
+        }
         <form method="get">
             <div class="form-group">
                 <label for="search" style="font-size:1.6vw;padding-right:3vw"><b>Search</b></label>

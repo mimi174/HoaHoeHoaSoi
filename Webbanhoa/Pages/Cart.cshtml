@@ -176,6 +176,11 @@
                     <span><label for="momo">Momo</label><span id="discount-badge"> 20% OFF <i class="fa-solid fa-tag"></i></span></span>
                 </div>
                 </br>
+                <div class="products_cart" style="width: 100%; padding">
+                    <input type="radio" id="vnpay" name="paymentMethod" value="2" required style="left:1vw; color: #9D1030;">
+                    <span><label for="vnpay">VNPAY</label><span id="discount-badge"> 20% OFF <i class="fa-solid fa-tag"></i></span></span>
+                </div>
+                </br>
                 <div class="products_cart" style="width: 100%">
                     <input type="radio" id="cod" name="paymentMethod" value="1" required>
                     <label for="cod">COD</label>
@@ -279,6 +284,9 @@
                     newAmount = that.constTotalAmount.value;
                     that.discountSubtotal.style.display = "none";
                     if (this.value == @PaymentMethod.Momo.ToString("D")) {
+                        newAmount = Math.ceil(newAmount * 0.8);
+                        that.discountSubtotal.style.display = "block";
+                    } else if (this.value == @PaymentMethod.VNPAY.ToString("D")) {
                         newAmount = Math.ceil(newAmount * 0.8);
                         that.discountSubtotal.style.display = "block";
                     }

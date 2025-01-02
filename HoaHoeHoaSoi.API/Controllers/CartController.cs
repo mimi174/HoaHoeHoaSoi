@@ -71,7 +71,7 @@ namespace HoaHoeHoaSoi.API.Controllers
         public async Task<IActionResult> Checkout(CheckoutModel model)
         {
             var userInfo = GetUserFromToken();
-            string momoOrderId = string.Empty;
+            string paymentOrderId = string.Empty;
             string payURL = string.Empty;
 
             var order = _dbContext.Ordereds.FirstOrDefault(o => o.UserId == userInfo.Id && o.PaymentStatus == (int)PaymentStatus.InCart);
@@ -94,9 +94,9 @@ namespace HoaHoeHoaSoi.API.Controllers
                 };
                 var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
                 payURL = response.PayUrl;
-                momoOrderId = response.OrderId;
+                paymentOrderId = response.OrderId;
             }
-            CartHelper.ProcessCartIntoOrder(userInfo.Id, model.ReceiverName, model.ReceiverAddress, model.ReceiverPhone, momoOrderId);
+            CartHelper.ProcessCartIntoOrder(userInfo.Id, model.ReceiverName, model.ReceiverAddress, model.ReceiverPhone, paymentOrderId);
             return Response(200, new CheckoutResponse { OrderId = order.Id, PayURL = payURL});
         }
 
@@ -108,7 +108,7 @@ namespace HoaHoeHoaSoi.API.Controllers
             var response = FuncHelpers.PaymentExecuteAsync(HttpContext.Request.Query);
             int paymentStatus = response.ErrorCode == "0" ? (int)PaymentStatus.Paid : (int)PaymentStatus.Failed;
 
-            var order = _dbContext.Ordereds.FirstOrDefault(o => o.MomoOrderId == response.OrderId);
+            var order = _dbContext.Ordereds.FirstOrDefault(o => o.PaymentOrderId == response.OrderId);
             if (order == null)
                 return Response(404, string.Empty, "Order not found");
 

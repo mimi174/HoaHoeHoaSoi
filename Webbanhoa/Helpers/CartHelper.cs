@@ -156,14 +156,14 @@ namespace HoaHoeHoaSoi.Helpers
             UpdateOrderTotal(orderId);
         }
 
-        public static void ProcessCartIntoOrder(int userId, string name, string address, string phone, string momoId = "")
+        public static void ProcessCartIntoOrder(int userId, string name, string address, string phone, string paymentOrderId = "")
         {
             using(var ctx = new HoaHoeHoaSoiContext())
             {
                 var order = GetCartByUserId(userId);
                 if (order != null) 
                 {
-                    order.MomoOrderId = momoId;
+                    order.PaymentOrderId = paymentOrderId;
                     order.PaymentStatus = (int)PaymentStatus.UnPaid;
                     order.ReceiverName = name;
                     order.ReceiverAddress = address;

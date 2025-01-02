@@ -39,7 +39,7 @@ namespace HoaHoeHoaSoi.Helpers
             var hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
 
             return hashString;
-        }
+        }        
 
         public static async Task<MomoResponse> CreatePaymentAsync(MomoOrder model, MomoAPI config)
         {
@@ -91,6 +91,37 @@ namespace HoaHoeHoaSoi.Helpers
                 OrderInfo = orderInfo,
                 ErrorCode = errorCode,
                 LocalMessage = localMessage
+            };
+        }
+
+        public static VnPayCreatePaymentResponseModel CreateVnPayPaymentAsync(VnpayOrder model, IConfiguration configuration, HttpContext context)
+        {
+            var timeZoneById = TimeZoneInfo.FindSystemTimeZoneById(configuration["TimeZoneId"]);
+            var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneById);
+            var tick = DateTime.Now.Ticks.ToString();
+            var pay = new VnPayLibrary();
+            var urlCallBack = configuration["PaymentCallBack:ReturnUrl"];
+
+            pay.AddRequestData("vnp_Version", configuration["Vnpay:Version"]);
+            pay.AddRequestData("vnp_Command", configuration["Vnpay:Command"]);
+            pay.AddRequestData("vnp_TmnCode", configuration["Vnpay:TmnCode"]);
+            pay.AddRequestData("vnp_Amount", ((int)model.Total * 100).ToString());
+            pay.AddRequestData("vnp_CreateDate", timeNow.ToString("yyyyMMddHHmmss"));
+            pay.AddRequestData("vnp_CurrCode", configuration["Vnpay:CurrCode"]);
+            pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
+            pay.AddRequestData("vnp_Locale", configuration["Vnpay:Locale"]);
+            pay.AddRequestData("vnp_OrderInfo", $"{model.CustomerName} {model.OrderInfo} {model.Total}");
+            pay.AddRequestData("vnp_OrderType", configuration["Vnpay:OrderType"]);
+            pay.AddRequestData("vnp_ReturnUrl", urlCallBack);
+            pay.AddRequestData("vnp_TxnRef", tick);
+
+            var paymentUrl =
+               pay.CreateRequestUrl(configuration["Vnpay:BaseUrl"], configuration["Vnpay:HashSecret"]);
+
+            return new VnPayCreatePaymentResponseModel
+            {
+                PayUrl = paymentUrl,
+                OrderId = tick
             };
         }
     }

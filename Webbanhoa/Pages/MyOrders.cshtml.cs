@@ -1,14 +1,18 @@
-﻿using HoaHoeHoaSoi.Helpers;
+﻿using HoaHoeHoaSoi.Data.Models;
+using HoaHoeHoaSoi.Helpers;
 using HoaHoeHoaSoi.Model;
 using HoaHoeHoaSoi.Properties;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Net;
 using System.Numerics;
 using System.Reflection;
+using Ordered = HoaHoeHoaSoi.Model.Ordered;
+using OrderLine = HoaHoeHoaSoi.Model.OrderLine;
 
 namespace HoaHoeHoaSoi.Pages
 {
@@ -20,10 +24,12 @@ namespace HoaHoeHoaSoi.Pages
         [BindProperty]
         public double Total { get; set; }
         [BindProperty]
-        public int OrderId { get; set; }    
-        public MyOrdersModel(IOptions<MomoAPI> momoAPI)
+        public int OrderId { get; set; }
+        private readonly IConfiguration _configuration;
+        public MyOrdersModel(IOptions<MomoAPI> momoAPI, IConfiguration configuration)
         {
             _momoAPI = momoAPI.Value;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> OnPost()
@@ -34,30 +40,61 @@ namespace HoaHoeHoaSoi.Pages
                 return Redirect("/Login");
             }
             var userInfo = JsonConvert.DeserializeObject<UserInfoSession>(userSessionInfo);
-            var momoOrder = new MomoOrder
-            {
-                CustomerName = userInfo.Name,
-                Total = Total,
-                OrderInfo = Resources.OrderInfoMessage
-            };
+            HoaHoeHoaSoi.Data.Models.Ordered ordered = null;
 
-            var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
-            if (string.IsNullOrEmpty(response.PayUrl))
-                return Page();
+            using(var ctx = new HoaHoeHoaSoiContext())
+            {
+                ordered = ctx.Ordereds.FirstOrDefault(o => o.Id == OrderId);
+            }
+
+            if (ordered == null || ordered.PaymentMethod == (int)PaymentMethod.COD)
+                return Redirect("/MyOrders/" + userInfo.Id);
+
+            string payUrl = string.Empty;
+            string paymentOrderId = string.Empty;
+
+            if(ordered.PaymentMethod == (int)PaymentMethod.Momo)
+            {
+                var momoOrder = new MomoOrder
+                {
+                    CustomerName = userInfo.Name,
+                    Total = Total,
+                    OrderInfo = Resources.OrderInfoMessage
+                };
+
+                var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
+                payUrl = response.PayUrl;
+                paymentOrderId = response.OrderId;
+            }
+            else if(ordered.PaymentMethod == (int)PaymentMethod.VNPAY)
+            {
+                var vnpayOrder = new VnpayOrder
+                {
+                    CustomerName = userInfo.Name,
+                    Total = Total,
+                    OrderInfo = Resources.OrderInfoMessage,
+                };
+                var response = FuncHelpers.CreateVnPayPaymentAsync(vnpayOrder, _configuration, HttpContext);
+                payUrl = response.PayUrl;
+                paymentOrderId = response.OrderId;
+            }
+            
+            if (string.IsNullOrEmpty(payUrl))
+                return Redirect("/MyOrders/" + userInfo.Id);
 
             using (SqlConnection connection = HoaDBContext.GetSqlConnection())
             {
                 connection.Open();
-                string sql = "Update Ordered SET PaymentStatus = @PaymentStatus, MomoOrderId = @MomoOrderId WHERE Id = @OrderId";
+                string sql = "Update Ordered SET PaymentStatus = @PaymentStatus, PaymentOrderId = @PaymentOrderId WHERE Id = @OrderId";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@PaymentStatus", (int)PaymentStatus.UnPaid);
-                    command.Parameters.AddWithValue("@MomoOrderId", response.OrderId);
+                    command.Parameters.AddWithValue("@PaymentOrderId", paymentOrderId);
                     command.Parameters.AddWithValue("@OrderId", OrderId);
                     command.ExecuteNonQuery();
                 }
             }
-            return Redirect(response.PayUrl);
+            return Redirect(payUrl);
         }
 
         public void OnGet(string id)
@@ -67,7 +104,7 @@ namespace HoaHoeHoaSoi.Pages
             {
                 connection.Open();
 
-                string sql = "SELECT Id, Date, Total, PaymentStatus From Ordered Where UserId = @UserId";
+                string sql = "SELECT Id, Date, Total, PaymentStatus, PaymentNote, PaymentMethod, ResultCode From Ordered Where UserId = @UserId";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@UserId", id);
@@ -81,10 +118,15 @@ namespace HoaHoeHoaSoi.Pages
                             order.Date  = DateOnly.FromDateTime(reader.GetDateTime(1));
                             order.Total = reader.GetDouble(2);
                             order.PaymentStatus = (PaymentStatus)reader.GetInt32(3);
+                            order.PaymentNote = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                            order.PaymentMethod = reader.IsDBNull(5) ? "COD" : ((PaymentMethod)reader.GetInt32(5)).ToString();
+                            order.ResultCode = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
                             Ordereds.Add(order);
                         }
                     }
                 }
+
+                Ordereds = Ordereds.OrderByDescending(o => o.Id).ToList();
 
                 foreach (Ordered ordered in Ordereds)
                 {

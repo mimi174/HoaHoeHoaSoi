@@ -8,8 +8,10 @@ namespace HoaHoeHoaSoi.Model
         public DateOnly? Date { get; set; }
         public double? Total { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
+        public string PaymentNote { get; set; }
+        public string PaymentMethod { get; set; }
+        public string ResultCode { get; set; }
         [JsonProperty("Lines")]
-
         public List<OrderLine> Lines { get; set; } = new List<OrderLine>();
     }
 
@@ -34,6 +36,7 @@ namespace HoaHoeHoaSoi.Model
     public enum PaymentMethod
     {
         Momo = 0,
-        COD
+        COD,
+        VNPAY
     }
 }

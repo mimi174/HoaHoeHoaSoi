@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using HoaHoeHoaSoi.Data.Models;
 using HoaHoeHoaSoi.Helpers;
 using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,15 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
         [BindProperty]
         public string Search { get; set; }
         public List<OrderLineViewModel> OrderLines { get; set; }
+
+        public string OrderPaymentMethod { get; set; }
+        public string OrderResultCode { get; set; }
+        public double OrderTotal { get; set; }
+        public string OrderPaymentNote { get; set; }
+        public string OrderPaymentStatus { get; set; }
+        public string OrderId { get; set; }
+        [BindProperty]
+        public int Id { get; set; }
 
         public class OrderLineViewModel {
             public int OrderLineId { get; set; }
@@ -70,9 +80,23 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
             return RedirectToPage("/ADMIN/Order/Detail", new { id = orderId });
         }
 
-
+        public IActionResult OnPost()
+        {
+            using(var ctx = new HoaHoeHoaSoiContext())
+            {
+                var order = ctx.Ordereds.FirstOrDefault(o => o.Id == Id);
+                if(order != null && order.PaymentMethod == (int)PaymentMethod.COD 
+                    && order.PaymentStatus != (int)PaymentStatus.InCart && order.PaymentStatus != (int)PaymentStatus.Paid)
+                {
+                    order.PaymentStatus = (int)PaymentStatus.Paid;
+                    ctx.SaveChanges();
+                }
+            }
+            return Redirect("/ADMIN/Order/Detail/" + Id);
+        }
 
         public IActionResult OnGet(int id) {
+            Id = id;
             string jsonStr = JsonConvert.SerializeObject(id);
             HttpContext.Session.SetString("OrderId", jsonStr);
 
@@ -91,6 +115,21 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
 
             OrderLines = new List<OrderLineViewModel>();
 
+            using(var ctx = new HoaHoeHoaSoiContext())
+            {
+                var order = ctx.Ordereds.FirstOrDefault(o => o.Id == id);
+                if (order != null) {
+                    if (order.PaymentMethod == null)
+                        order.PaymentMethod = (int)PaymentMethod.COD;
+
+                    OrderPaymentMethod = ((PaymentMethod) order.PaymentMethod).ToString();
+                    OrderResultCode = order.ResultCode;
+                    OrderPaymentNote = order.PaymentNote;
+                    OrderTotal = order.Total.Value;
+                    OrderId = order.PaymentOrderId;
+                    OrderPaymentStatus = ((PaymentStatus)order.PaymentStatus).ToString();
+                }
+            }
 
             using (var connection = HoaDBContext.GetSqlConnection()) {
                 connection.Open();

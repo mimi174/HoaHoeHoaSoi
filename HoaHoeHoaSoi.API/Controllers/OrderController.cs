@@ -78,7 +78,7 @@ namespace HoaHoeHoaSoi.API.Controllers
             var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
 
             order.PaymentStatus = (int)PaymentStatus.UnPaid;
-            order.MomoOrderId = response.OrderId;
+            order.PaymentOrderId = response.OrderId;
             _dbContext.Ordereds.Update(order);
             _dbContext.SaveChanges();
 

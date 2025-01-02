@@ -1,4 +1,5 @@
 ﻿@page
+@using HoaHoeHoaSoi.Model
 @model HoaHoeHoaSoi.Pages.ADMIN.Order.IndexModel
 @{
     Layout = "/Pages/Shared/_HomeAdminLayout.cshtml";
@@ -93,6 +94,7 @@
                         <th scope="col">Customer Phone Number</th>
                         <th scope="col">Date</th>
                         <th scope="col">Total</th>
+                        <th scope="col">Payment Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -105,6 +107,22 @@
                             <td>@order.CustomerPhone</td>
                             <td>@order.Date.ToString("yyyy-MM-dd")</td>
                             <td>@order.Total</td>
+                            <td>
+                                @switch (order.PaymentStatus)
+                                {
+                                    case PaymentStatus.Paid:
+                                        <span class="badge bg-success">Paid</span>
+                                        break;
+                                    case PaymentStatus.UnPaid:
+                                        <span class="badge bg-secondary">UnPaid</span>
+                                        break;
+                                    case PaymentStatus.Failed:
+                                        <span class="badge bg-danger">Failed</span>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            </td>
                             <td>
                                 <a href="/ADMIN/Order/Detail/@order.OrderId" class="btn btn-danger" role="button">Details</a>
                                 <form asp-page-handler="Delete">

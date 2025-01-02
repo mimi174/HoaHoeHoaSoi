@@ -51,6 +51,7 @@
             <th scope="col">Date</th>
             <th scope="col">Total</th>
             <th scope="col">Status</th>
+            <th scope="col">Payment method</th>
             <th scope="col">Detail</th>
             <th scope="col">Pay</th>
         </tr>
@@ -78,11 +79,18 @@
                             break;
                     }
                 </td>
+                <td>@ordered.PaymentMethod</td>
                 <td>
                     <!-- The Modal -->
                     <div id="myModal-@rowCount" class="modal">
                         <div class="modal-content">
                             <span class="close" onclick="closeModals()">&times;</span>
+                            <div>
+                                <p>Payment method: <strong>@ordered.PaymentMethod</strong></p>
+                                <p>Result code: <strong>@ordered.ResultCode</strong></p>
+                                <p>Payment note: <strong>@ordered.PaymentNote</strong></p>
+                                <p>Total: <strong>@ordered.Total</strong></p>
+                            </div>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -105,7 +113,7 @@
                     <button id="myBtn-@rowCount" class="btn btn-primary" onclick="popupModal(@rowCount)">Detail</button>
                 </td>
                 <td>
-                    @if (ordered.PaymentStatus != PaymentStatus.Paid)
+                    @if (ordered.PaymentStatus != PaymentStatus.Paid && ordered.PaymentMethod != PaymentMethod.COD.ToString())
                     {
                         <form method="POST">
                             <input type="hidden" name="Total" value="@ordered.Total"/>
