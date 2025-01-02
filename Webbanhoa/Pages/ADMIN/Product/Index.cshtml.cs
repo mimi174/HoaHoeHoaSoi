@@ -1,3 +1,4 @@
+using HoaHoeHoaSoi.Data.Models;
 using HoaHoeHoaSoi.Helpers;
 using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,17 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
 
         public IActionResult OnPostDelete() {
             if (DeleteId > 0) {
-                using (var connection = HoaDBContext.GetSqlConnection()) {
-                    connection.Open();
-                    string command = $"DELETE FROM Products Where Id = {DeleteId}";
-                    using (var sqlCommand = new SqlCommand(command, connection)) {
-                        sqlCommand.ExecuteNonQuery();
+                using(var ctx = new HoaHoeHoaSoiContext())
+                {
+                    var product = ctx.Products.FirstOrDefault(p => p.Id == DeleteId);
+                    if (product != null)
+                    {
+                        var orderLines = ctx.OrderLines.Where(ol => ol.ProductsId == DeleteId).ToList();
+                        var wishlist = ctx.ProductWishlists.Where(p => p.ProductId == DeleteId);
+                        ctx.OrderLines.RemoveRange(orderLines);
+                        ctx.ProductWishlists.RemoveRange(wishlist);
+                        ctx.Products.Remove(product);
+                        ctx.SaveChanges();
                     }
                 }
             }
