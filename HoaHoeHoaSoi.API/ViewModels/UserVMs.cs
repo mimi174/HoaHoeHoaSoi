@@ -41,12 +41,8 @@ namespace HoaHoeHoaSoi.API.ViewModels
 
     public class UserEditModel
     {
-        public string? Name { get; set; }
-        public DateOnly? DOB { get; set; }
         public string? Address { get; set; }
         public string? Phone { get; set; }
-        public IFormFile? Avatar { get; set; }
-        public bool? Gender { get; set; }
         public string? Mail { get; set; }
     }
 

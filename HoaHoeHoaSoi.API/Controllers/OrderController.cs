@@ -28,33 +28,50 @@ namespace HoaHoeHoaSoi.API.Controllers
         public async Task<IActionResult> Get()
         {
             var userInfo = GetUserFromToken();
-            var orders = _dbContext.Ordereds.Where(o => o.UserId == userInfo.Id && o.PaymentStatus != (int)PaymentStatus.InCart).ToList();
-            var result = new List<Ordered>();
+            var orders = _dbContext.Ordereds
+                .Where(o => o.UserId == userInfo.Id && o.PaymentStatus != (int)PaymentStatus.InCart)
+                .Select(o => new
+                {
+                    o.Id,
+                    o.Date,
+                    PaymentStatus = (PaymentStatus)o.PaymentStatus,
+                    o.Total
+                })
+                .ToList();
 
-            foreach(var order in orders)
+            return Response(200, orders);
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrderDetails(int id)
+        {
+            var userInfo = GetUserFromToken();
+            var order = _dbContext.Ordereds
+                .Where(o => o.Id == id && o.UserId == userInfo.Id)
+                .Include(o => o.OrderLines)
+                .ThenInclude(ol => ol.Products)
+                .FirstOrDefault();
+            if (order == null)
+                return Response(404, string.Empty, "Order not found");
+            var orderDetails = new
             {
-                var item = new Ordered
+                order.Id,
+                order.Date,
+                PaymentStatus = (PaymentStatus)order.PaymentStatus,
+                order.Total,
+                Lines = order.OrderLines.Select(ol => new
                 {
-                    Id = order.Id,
-                    Date = order.Date,
-                    PaymentStatus = (PaymentStatus)order.PaymentStatus,
-                    Total = order.Total,
-                };
-                
-                var orderLines = _dbContext.OrderLines.Where(ol => ol.OrderedId == order.Id).Include(ol => ol.Products).ToList();
-                item.Lines = orderLines.Select(ol => new Model.OrderLine
-                {
-                    Id = ol.Id,
-                    Price = ol.Price.Value,
-                    ProductId = ol.ProductsId,
-                    ProductName = ol.Products.Name,
-                    Quantity = ol.Quantity.Value,     
+                    ol.Id,
+                    productId = ol.ProductsId,
+                    Name = ol.Products.Name,
+                    Quantity = ol.Quantity,
+                    Price = ol.Price,
                     Img = ol.Products.Img
-                }).ToList();
-                result.Add(item);
-            }
+                }).ToList()
+            };
 
-            return Response(200, result);
+            return Response(200, orderDetails);
         }
 
         [Authorize]
