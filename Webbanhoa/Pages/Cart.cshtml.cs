@@ -51,6 +51,8 @@ namespace HoaHoeHoaSoi.Pages.Shared {
         [BindProperty]
         public PaymentMethod PaymentMethod { get; set; }
 
+        public bool CheckOutSuccess { get; set; } = false;
+
         public CartModel(IHttpContextAccessor httpContextAccessor, ILogger<CartModel> logger, IOptions<MomoAPI> momoAPI, IConfiguration configuration) {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -108,6 +110,7 @@ namespace HoaHoeHoaSoi.Pages.Shared {
         }
 
         public async Task<IActionResult> OnPost() {
+            CheckOutSuccess = false;
             var userSessionInfo = HttpContext.Session.GetString(Resources.UserSessionInfo);
             if (string.IsNullOrEmpty(userSessionInfo))
             {
@@ -162,10 +165,11 @@ namespace HoaHoeHoaSoi.Pages.Shared {
                 }
 
                 CartHelper.ProcessCartIntoOrder(userInfo.Id, Name, Address, Phone, orderId);
-
+                CheckOutSuccess = true;
                 if (string.IsNullOrEmpty(payURL)) 
                 {
-                    return Redirect("/Cart");
+                    SelectedProducts = new List<Products>();
+                    return Page();
                 }
                 else
                 {

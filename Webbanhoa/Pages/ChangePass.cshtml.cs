@@ -51,7 +51,7 @@ namespace HoaHoeHoaSoi.Pages
                         {
                             if (reader.Read())
                             {
-                                Avatar = reader.GetString(0);
+                                Avatar = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
                                 Username = reader.GetString(1);
                             }
                         }

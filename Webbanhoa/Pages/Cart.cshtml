@@ -265,6 +265,15 @@
 </form>
 @section Scripts{
     <script>
+        var isSuccess = @Html.Raw(Json.Serialize(Model.CheckOutSuccess));
+        
+        if (isSuccess) {
+            Swal.fire({
+                title: "Successful payment",
+                icon: "success",                
+            });
+        }
+
         init();
         paymentMethodOnChange();
         function init() {
