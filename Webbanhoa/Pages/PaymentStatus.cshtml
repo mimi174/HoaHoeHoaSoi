@@ -6,7 +6,7 @@
 <div class="text-center">
     @if(Model.Response != null){
         <div class="container">
-            @if (Model.Response.ErrorCode == "0")
+            @if (Model.Response.Success)
             {
                 <h1 class="text-success">Thanh Toán Thành Công</h1>
             }else{

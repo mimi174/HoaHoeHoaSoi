@@ -43,12 +43,13 @@ namespace HoaHoeHoaSoi.Model
         public string DeeplinkWebInApp { get; set; }
     }
 
-    public class MomoExecuteResponseModel
+    public class PaymentExecuteResponseModel
     {
         public string OrderId { get; set; }
         public string Amount { get; set; }
         public string OrderInfo { get; set; }
         public string LocalMessage { get; set; }
         public string ErrorCode { get; set; }
+        public bool Success { get; set; }
     }
 }

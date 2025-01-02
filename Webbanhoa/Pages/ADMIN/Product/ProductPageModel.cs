@@ -12,7 +12,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Product {
         public string Name { get; set; }
         [BindProperty]
         [Required]
-        [Range(0, 10000)]
+        [Range(50000, 5000000, ErrorMessage = "The price must between 50,000 and 5,000,000")]
         public double Price { get; set; }
         [BindProperty]
         [Required]

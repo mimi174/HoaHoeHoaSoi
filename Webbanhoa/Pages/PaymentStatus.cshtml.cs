@@ -14,7 +14,7 @@ namespace HoaHoeHoaSoi.Pages
 {
     public class PaymentStatusModel : PageModel
     {
-        public MomoExecuteResponseModel Response { get; set; }
+        public PaymentExecuteResponseModel Response { get; set; }
         private readonly IConfiguration _configuration;
         int _paymentStatus = (int)PaymentStatus.UnPaid;
         public PaymentStatusModel(IConfiguration configuration)
@@ -54,13 +54,14 @@ namespace HoaHoeHoaSoi.Pages
         {
             var pay = new VnPayLibrary();
             var response = pay.GetFullResponseData(query, _configuration["Vnpay:HashSecret"]);
-            Response = new MomoExecuteResponseModel
+            Response = new PaymentExecuteResponseModel
             {
                 Amount = response.Amount,
                 OrderInfo = response.OrderDescription,
                 OrderId = response.OrderId,
                 ErrorCode = response.VnPayResponseCode,
-                LocalMessage = response.VnPayResponseCode != null ? Properties.Resources.ResourceManager.GetString(response.VnPayResponseCode) : string.Empty
+                LocalMessage = response.VnPayResponseCode != null ? Properties.Resources.ResourceManager.GetString(response.VnPayResponseCode) : string.Empty,
+                Success = response.Success
             };
 
             _paymentStatus = response.Success ? (int)PaymentStatus.Paid : (int)PaymentStatus.Failed;

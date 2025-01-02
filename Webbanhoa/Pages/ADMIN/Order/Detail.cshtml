@@ -74,7 +74,7 @@
             <p>Order ID: <strong>@Model.OrderId</strong></p>
             <p>Payment method: <strong>@Model.OrderPaymentMethod</strong></p>
             <p>Payment status: <strong>@Model.OrderPaymentStatus</strong></p>
-            <p>Total: <strong>@Model.OrderTotal</strong></p>
+            <p>Total: <strong class="format-product-price">@Model.OrderTotal</strong></p>
             <p>Order result code: <strong>@Model.OrderResultCode</strong></p>
             <p>Order message: <strong>@Model.OrderPaymentNote</strong></p>
         </div>
@@ -117,7 +117,7 @@
                         <tr>
                             <td>@orderLine.OrderLineId</td>
                             <td>@orderLine.ProductName</td>
-                            <td>@orderLine.Price</td>
+                            <td class="format-product-price">@orderLine.Price</td>
                             <td>@orderLine.Quantity</td>
                         </tr>
                     }

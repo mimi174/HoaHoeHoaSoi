@@ -94,6 +94,7 @@
                         <th scope="col">Customer Phone Number</th>
                         <th scope="col">Date</th>
                         <th scope="col">Total</th>
+                        <th scope="col">Payment Method</th>
                         <th scope="col">Payment Status</th>
                         <th scope="col">Actions</th>
                     </tr>
@@ -106,7 +107,8 @@
                             <td>@order.CustomerAddress</td>
                             <td>@order.CustomerPhone</td>
                             <td>@order.Date.ToString("yyyy-MM-dd")</td>
-                            <td>@order.Total</td>
+                            <td class="format-product-price">@order.Total</td>
+                            <td>@order.PaymentMethod.ToString()</td>
                             <td>
                                 @switch (order.PaymentStatus)
                                 {

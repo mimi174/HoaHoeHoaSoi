@@ -62,7 +62,7 @@
             rowCount++;
             <tr>
                 <td>@ordered.Date</td>
-                <td>@ordered.Total</td>
+                <td class="format-product-price">@ordered.Total</td>
                 <td>
                     @switch (ordered.PaymentStatus)
                     {
@@ -89,7 +89,7 @@
                                 <p>Payment method: <strong>@ordered.PaymentMethod</strong></p>
                                 <p>Result code: <strong>@ordered.ResultCode</strong></p>
                                 <p>Payment note: <strong>@ordered.PaymentNote</strong></p>
-                                <p>Total: <strong>@ordered.Total</strong></p>
+                                <p>Total: <strong class="format-product-price">@ordered.Total</strong></p>
                             </div>
                             <table class="table">
                                 <thead>
@@ -103,7 +103,7 @@
                                 {
                                     <tr>
                                         <td>@line.ProductName</td>
-                                        <td>@line.Price</td>
+                                        <td class="format-product-price">@line.Price</td>
                                         <td>@line.Quantity</td>
                                     </tr>
                                 }

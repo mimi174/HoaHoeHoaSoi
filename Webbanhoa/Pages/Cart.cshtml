@@ -195,45 +195,57 @@
         </div>
 
         @* <div style="width:10%"></div> *@
-        <div class="payment-checkout">
-            <div class="text-header">
-                <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
-            </div>
-            <div style="height:1.5vw"></div>
-            @if (Model.SelectedProducts != null) {
-                @foreach (var product in Model.SelectedProducts) {
-                    <div class="products_cart" data-product-id="@product.Id">
-                        <div style="max-width:25%">
-                            @if (!string.IsNullOrEmpty(product.Img))
-                            {
-                                <img id="product-pic" src="data:image/jpeg;base64, @product.Img" style="max-width: 90%; max-height: 90%">
-                            }
-                            else
-                            {
-                                <img class="product-pic" src="/Picture/Hoa.png" style="max-width: 90%; max-height: 90%" />
-                            }
+        @if(Model.SelectedProducts != null && Model.SelectedProducts.Count > 0)
+        {
+            <div class="payment-checkout">
+                <div class="text-header">
+                    <p style="text-align: center; margin-bottom: 0.1vw;"><b>LIST</b> </p>
+                </div>
+                <div style="height:1.5vw"></div>
+                @if (Model.SelectedProducts != null)
+                {
+                    @foreach (var product in Model.SelectedProducts)
+                    {
+                        <div class="products_cart" data-product-id="@product.Id">
+                            <div style="max-width:25%">
+                                @if (!string.IsNullOrEmpty(product.Img))
+                                {
+                                    <img id="product-pic" src="data:image/jpeg;base64, @product.Img" style="max-width: 90%; max-height: 90%">
+                                }
+                                else
+                                {
+                                    <img class="product-pic" src="/Picture/Hoa.png" style="max-width: 90%; max-height: 90%" />
+                                }
+                            </div>
+                            <div style="float:left; width: 40%">
+                                @product.Name
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <input style="width:15%;" type="number" class="quantity-input" value="@product.Quantity" min="1" onchange="updateCart(@product.Id, this)">
+                                <span class="price format-product-price">@product.Price VND</span>
+                                <a href="/Cart?handler=Delete&productId=@product.Id" class="remove-link">Remove</a>
+                            </div>
                         </div>
-                        <div style="float:left; width: 40%">
-                            @product.Name
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <input style="width:15%;" type="number" class="quantity-input" value="@product.Quantity" min="1" onchange="updateCart(@product.Id, this)">
-                            <span class="price format-product-price">@product.Price VND</span>
-                            <a href="/Cart?handler=Delete&productId=@product.Id" class="remove-link">Remove</a>
-                        </div>
-                    </div>
-                    <div style="padding:0.5vw"></div>
+                        <div style="padding:0.5vw"></div>
+                    }
                 }
-            }
-            <div class="text-header-total">
-                <b>
-                    <p style="text-align: right;">
-                        <span style="float: left;"><b>TOTAL: </b></span>
-                        <b><span class="format-product-price">@Model.TotalAmount</span> VND</b>
-                    </p>
-                </b>
+                <div class="text-header-total">
+                    <b>
+                        <p style="text-align: right;">
+                            <span style="float: left;"><b>TOTAL: </b></span>
+                            <b><span class="format-product-price">@Model.TotalAmount</span> VND</b>
+                        </p>
+                    </b>
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="container">
+                <h2 style="text-align: center; color: #9D1030;">Your cart is empty</h2>
+            </div>
+        }
+
     </div>
 
     <div id="div-payment" class="container-fluid text-white" style="background-color: #F6D8DC; padding: 2% 10%; display: flex;border:none">
@@ -243,9 +255,12 @@
             <button type="button" id="submitButton" form="orderForm" class="btn-submit" onclick="onBack()"><b>BACK</b></button>
             <button type="submit" id="orderButton" form="orderForm" class="btn-submit"><b>ORDER NOW!</b></button>
         </center>
-        <center style="width:100%" class="payment-checkout">
-            <button type="button" id="checkoutButton" form="orderForm" class="btn-submit" onclick="onCheckOut()"><b>CHECK OUT</b></button>
-        </center>
+        @if(Model.SelectedProducts != null && Model.SelectedProducts.Count > 0)
+        {
+            <center style="width:100%" class="payment-checkout">
+                <button type="button" id="checkoutButton" form="orderForm" class="btn-submit" onclick="onCheckOut()"><b>CHECK OUT</b></button>
+            </center>
+        }
     </div>
 </form>
 @section Scripts{

@@ -22,6 +22,7 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
             public DateTime Date { get; set; }
             public float Total { get; set; }
             public PaymentStatus PaymentStatus { get; set; }
+            public PaymentMethod PaymentMethod { get; set; }
         }
         public int DeleteId { get; set; }
         public void OnGet() {
@@ -48,7 +49,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
                         O.ReceiverPhone,
                         O.[Date],
                         O.Total,
-                        O.PaymentStatus
+                        O.PaymentStatus,
+                        O.PaymentMethod
                     FROM
                         Ordered AS O
                     WHERE O.Id LIKE N'%{Search}%' OR O.[ReceiverName] LIKE N'%{Search}%' OR
@@ -69,7 +71,8 @@ namespace HoaHoeHoaSoi.Pages.ADMIN.Order {
                                 CustomerPhone = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                                 Date = reader.GetDateTime(4),
                                 Total = (float)reader.GetDouble(5),
-                                PaymentStatus = (PaymentStatus) reader.GetInt32(6) 
+                                PaymentStatus = (PaymentStatus) reader.GetInt32(6),
+                                PaymentMethod = (PaymentMethod) reader.GetInt32(7)
                             };
 
 

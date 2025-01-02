@@ -77,20 +77,21 @@ namespace HoaHoeHoaSoi.Helpers
             return JsonConvert.DeserializeObject<MomoResponse>(response.Content);
         }
 
-        public static MomoExecuteResponseModel PaymentExecuteAsync(IQueryCollection collection)
+        public static PaymentExecuteResponseModel PaymentExecuteAsync(IQueryCollection collection)
         {
             var amount = collection.First(s => s.Key == "amount").Value;
             var orderInfo = collection.First(s => s.Key == "orderInfo").Value;
             var orderId = collection.First(s => s.Key == "orderId").Value;
             var localMessage = collection.First(s => s.Key == "localMessage").Value;
             var errorCode = collection.First(s => s.Key == "errorCode").Value;
-            return new MomoExecuteResponseModel()
+            return new PaymentExecuteResponseModel()
             {
                 Amount = amount,
                 OrderId = orderId,
                 OrderInfo = orderInfo,
                 ErrorCode = errorCode,
-                LocalMessage = localMessage
+                LocalMessage = localMessage,
+                Success = errorCode == "0"
             };
         }
 
