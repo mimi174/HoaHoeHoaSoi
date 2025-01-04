@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using HoaHoeHoaSoiContext = HoaHoeHoaSoi.API.Models.HoaHoeHoaSoiContext;
 using Ordered = HoaHoeHoaSoi.Model.Ordered;
@@ -18,9 +19,11 @@ namespace HoaHoeHoaSoi.API.Controllers
     public class OrderController : BaseController
     {
         private MomoAPI _momoAPI { get; set; }
-        public OrderController(HoaHoeHoaSoiContext dbContext, IOptions<MomoAPI> momoAPI) : base(dbContext)
+        private IConfiguration _configuration { get; set; }
+        public OrderController(HoaHoeHoaSoiContext dbContext, IOptions<MomoAPI> momoAPI, IConfiguration configuration) : base(dbContext)
         {
             _momoAPI = momoAPI.Value;
+            _configuration = configuration;
         }
 
         [Authorize]
@@ -86,20 +89,39 @@ namespace HoaHoeHoaSoi.API.Controllers
             if (order.PaymentStatus == (int)PaymentStatus.Paid)
                 return Response(400, string.Empty, "This order is already paid");
 
-            var momoOrder = new MomoOrder
+            string payUrl = string.Empty;
+            if(order.PaymentMethod == (int)PaymentMethod.Momo)
             {
-                CustomerName = userInfo.Name,
-                Total = order.Total.Value,
-                OrderInfo = "Thanh toán tại HoaHoeHoaSoi"
-            };
-            var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
+                var momoOrder = new MomoOrder
+                {
+                    CustomerName = userInfo.Name,
+                    Total = order.Total.Value,
+                    OrderInfo = "Thanh toán tại HoaHoeHoaSoi"
+                };
+                var response = await FuncHelpers.CreatePaymentAsync(momoOrder, _momoAPI);
+                order.PaymentOrderId = response.OrderId;
+                payUrl = response.PayUrl;
+            }
+            else if(order.PaymentMethod == (int)PaymentMethod.VNPAY)
+            {
+                var vnpayOrder = new VnpayOrder
+                {
+                    CustomerName = userInfo.Name,
+                    Total = order.Total.Value,
+                    OrderInfo = "Thanh toán tại HoaHoeHoaSoi",
+                };
+                var response = FuncHelpers.CreateVnPayPaymentAsync(vnpayOrder, _configuration, HttpContext);
+                payUrl = response.PayUrl;
+                order.PaymentOrderId = response.OrderId;
+            }
 
             order.PaymentStatus = (int)PaymentStatus.UnPaid;
-            order.PaymentOrderId = response.OrderId;
+            order.PaymentNote = string.Empty;
+            order.ResultCode = string.Empty;
             _dbContext.Ordereds.Update(order);
             _dbContext.SaveChanges();
 
-            return Response(200, new CheckoutResponse { OrderId = order.Id, PayURL = response.PayUrl });
+            return Response(200, new CheckoutResponse { OrderId = order.Id, PayURL = payUrl });
         }
     }
 }

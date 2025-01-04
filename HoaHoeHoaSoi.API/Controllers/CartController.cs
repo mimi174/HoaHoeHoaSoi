@@ -1,13 +1,17 @@
-﻿using HoaHoeHoaSoi.API.Models;
+﻿using Azure;
+using HoaHoeHoaSoi.API.Models;
 using HoaHoeHoaSoi.API.ViewModels;
+using HoaHoeHoaSoi.Data.Models;
 using HoaHoeHoaSoi.Helpers;
 using HoaHoeHoaSoi.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Numerics;
 using System.Resources;
+using HoaHoeHoaSoiContext = HoaHoeHoaSoi.API.Models.HoaHoeHoaSoiContext;
 
 namespace HoaHoeHoaSoi.API.Controllers
 {
@@ -16,9 +20,13 @@ namespace HoaHoeHoaSoi.API.Controllers
     public class CartController : BaseController
     {
         private MomoAPI _momoAPI;
-        public CartController(HoaHoeHoaSoiContext dbContext, IOptions<MomoAPI> momoAPI) : base(dbContext)
+        private readonly IConfiguration _configuration;
+        private int _paymentStatus = (int)PaymentStatus.UnPaid;
+        private PaymentExecuteResponseModel _response;
+        public CartController(HoaHoeHoaSoiContext dbContext, IOptions<MomoAPI> momoAPI, IConfiguration configuration) : base(dbContext)
         {
             _momoAPI = momoAPI.Value;
+            _configuration = configuration;
         }
 
         [Authorize]
@@ -83,9 +91,7 @@ namespace HoaHoeHoaSoi.API.Controllers
             if (model.PaymentMethod == PaymentMethod.Momo)
             {
                 order.Total = Math.Ceiling(order.Total.Value * 0.8);
-                order.PaymentMethod = (int)PaymentMethod.Momo;
-                _dbContext.Ordereds.Update(order);
-                _dbContext.SaveChanges();
+                order.PaymentMethod = (int)PaymentMethod.Momo;                
 
                 var momoOrder = new MomoOrder
                 {
@@ -97,6 +103,25 @@ namespace HoaHoeHoaSoi.API.Controllers
                 payURL = response.PayUrl;
                 paymentOrderId = response.OrderId;
             }
+            else if (model.PaymentMethod == PaymentMethod.VNPAY)
+            {
+                order.Total = Math.Ceiling(order.Total.Value * 0.8);
+                order.PaymentMethod = (int)PaymentMethod.VNPAY;
+
+                var vnpayOrder = new VnpayOrder
+                {
+                    CustomerName = userInfo.Name,
+                    Total = order.Total.Value,
+                    OrderInfo = "Thanh toán tại HoaHoeHoaSoi",
+                };
+                var response = FuncHelpers.CreateVnPayPaymentAsync(vnpayOrder, _configuration, HttpContext);
+                payURL = response.PayUrl;
+                paymentOrderId = response.OrderId;
+            }
+
+            _dbContext.Ordereds.Update(order);
+            _dbContext.SaveChanges();
+
             CartHelper.ProcessCartIntoOrder(userInfo.Id, model.ReceiverName, model.ReceiverAddress, model.ReceiverPhone, paymentOrderId);
             return Response(200, new CheckoutResponse { OrderId = order.Id, PayURL = payURL});
         }
@@ -106,18 +131,64 @@ namespace HoaHoeHoaSoi.API.Controllers
         {
             if (HttpContext.Request.Query.Count == 0)
                 return Response(404, string.Empty, "Payment not found");
-            var response = FuncHelpers.PaymentExecuteAsync(HttpContext.Request.Query);
-            int paymentStatus = response.ErrorCode == "0" ? (int)PaymentStatus.Paid : (int)PaymentStatus.Failed;
 
-            var order = _dbContext.Ordereds.FirstOrDefault(o => o.PaymentOrderId == response.OrderId);
-            if (order == null)
-                return Response(404, string.Empty, "Order not found");
+            if (HttpContext.Request.Query.Any(k => k.Key.StartsWith("vnp_")))
+            {
+                HandleVNPayResponse(HttpContext.Request.Query);
+            }
+            else if (HttpContext.Request.Query.Any(k => k.Key.Contains("orderInfo")))
+            {
+                HandleMomoResponse(HttpContext.Request.Query);
+            }
 
-            order.PaymentStatus = paymentStatus;
-            _dbContext.Ordereds.Update(order);
-            _dbContext.SaveChanges();
+            var order = _dbContext.Ordereds.FirstOrDefault(o => o.PaymentOrderId == _response.OrderId);
+            if (order != null)
+            {
+                order.PaymentNote = _response.LocalMessage;
+                order.ResultCode = _response.ErrorCode;
+                order.PaymentStatus = _paymentStatus;
 
-            return Response(200, order.Id);
+                _dbContext.SaveChanges();
+            }
+
+            //if (HttpContext.Request.Query.Count == 0)
+            //    return Response(404, string.Empty, "Payment not found");
+            //var response = FuncHelpers.PaymentExecuteAsync(HttpContext.Request.Query);
+            //int paymentStatus = response.ErrorCode == "0" ? (int)PaymentStatus.Paid : (int)PaymentStatus.Failed;
+
+            //var order = _dbContext.Ordereds.FirstOrDefault(o => o.PaymentOrderId == response.OrderId);
+            //if (order == null)
+            //    return Response(404, string.Empty, "Order not found");
+
+            //order.PaymentStatus = paymentStatus;
+            //_dbContext.Ordereds.Update(order);
+            //_dbContext.SaveChanges();
+
+            return Response(200, _response);
+        }
+
+        private void HandleVNPayResponse(IQueryCollection query)
+        {
+            var pay = new VnPayLibrary();
+            var vnPayResponse = pay.GetFullResponseData(query, _configuration["Vnpay:HashSecret"]);
+
+            _response = new PaymentExecuteResponseModel
+            {
+                Amount = vnPayResponse.Amount,
+                OrderInfo = vnPayResponse.OrderDescription,
+                OrderId = vnPayResponse.OrderId,
+                ErrorCode = vnPayResponse.VnPayResponseCode,
+                LocalMessage = vnPayResponse.VnPayResponseCode != null ? Properties.Resources.ResourceManager.GetString(vnPayResponse.VnPayResponseCode) : string.Empty,
+                Success = vnPayResponse.Success
+            };
+
+            _paymentStatus = _response.Success ? (int)PaymentStatus.Paid : (int)PaymentStatus.Failed;
+        }
+
+        private void HandleMomoResponse(IQueryCollection query)
+        {
+            _response = FuncHelpers.PaymentExecuteAsync(HttpContext.Request.Query);
+            _paymentStatus = _response.ErrorCode == "0" ? (int)PaymentStatus.Paid : (int)PaymentStatus.Failed;
         }
     }
 }
