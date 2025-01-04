@@ -19,6 +19,7 @@
         public double? Price { get; set; }
         public string Description { get; set; }
         public string Img { get; set; }
+        public bool IsFavorite { get; set; }
     }
 
     public class ProductWishListCreateModel

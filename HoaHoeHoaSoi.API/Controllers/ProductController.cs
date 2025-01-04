@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using ProductViewModel = HoaHoeHoaSoi.API.ViewModels.ProductViewModel;
+using UserInfo = HoaHoeHoaSoi.Model.UserInfo;
 
 namespace HoaHoeHoaSoi.API.Controllers
 {
@@ -21,6 +22,7 @@ namespace HoaHoeHoaSoi.API.Controllers
         [HttpGet]
         public IActionResult Get([FromQuery]ProductFilterModel filter)
         {
+            var user = GetUserFromToken();
             var products = _dbContext.Products.AsQueryable();
             if(filter.Id != 0)
                 products = products.Where(p => p.Id == filter.Id);
@@ -45,13 +47,34 @@ namespace HoaHoeHoaSoi.API.Controllers
                 products = products.Include(p => p.OrderLines)
                     .OrderByDescending(p => p.OrderLines.AsQueryable().Include(ol => ol.Ordered).Where(ol => ol.Ordered.PaymentStatus != (int)PaymentStatus.InCart).Sum(ol => ol.Quantity));
             }
-
             var total = products.Count();
+
+            if(user != null)
+            {
+                products = products.Include(p => p.ProductWishlists);
+            }
+
             products = products.Skip((filter.Page - 1) * filter.PageSize).Take(filter.PageSize);
 
-            return Response(200, products.Select(p => new ProductViewModel { Id = p.Id, Description = p.Description, Name = p.Name, Price = p.Price, Img = p.Img }).ToList(), total, filter.Page, products.Count());
+            return Response(200, 
+                products.ToList().Select(p => new ProductViewModel { 
+                    Id = p.Id, 
+                    Description = p.Description, 
+                    Name = p.Name, 
+                    Price = p.Price,
+                    Img = p.Img,  
+                    IsFavorite = CheckIfProductInWishList(p, user)
+                }).ToList()
+                , total, filter.Page, products.Count());
         }
 
+        private bool CheckIfProductInWishList(Product product, HoaHoeHoaSoi.API.Models.UserInfo user)
+        {
+            if (user == null || product.ProductWishlists == null)
+                return false;
+
+            return product.ProductWishlists.Any(wl => wl.UserId == user.Id);
+        }
         [HttpPost("add-to-wishlist")]
         [Authorize]
         public IActionResult AddToWishList(ProductWishListCreateModel model)

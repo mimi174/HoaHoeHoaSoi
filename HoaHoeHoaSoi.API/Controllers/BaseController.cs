@@ -16,6 +16,9 @@ namespace HoaHoeHoaSoi.API.Controllers
         protected UserInfo GetUserFromToken()
         {
             var token = HttpContext.Request.Headers.Authorization.FirstOrDefault()?.Split(" ")[1];
+            if (string.IsNullOrEmpty(token))
+                return null;
+
             var userId = JwtUtils.ValidateToken(token);
             return _dbContext.UserInfos.FirstOrDefault(u => u.Id == userId);
         }

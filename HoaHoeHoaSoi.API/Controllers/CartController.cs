@@ -83,6 +83,7 @@ namespace HoaHoeHoaSoi.API.Controllers
             if (model.PaymentMethod == PaymentMethod.Momo)
             {
                 order.Total = Math.Ceiling(order.Total.Value * 0.8);
+                order.PaymentMethod = (int)PaymentMethod.Momo;
                 _dbContext.Ordereds.Update(order);
                 _dbContext.SaveChanges();
 
