@@ -140,9 +140,9 @@ namespace HoaHoeHoaSoi.API.Controllers
             {
                 HandleMomoResponse(HttpContext.Request.Query);
             }
-
+            
             var order = _dbContext.Ordereds.FirstOrDefault(o => o.PaymentOrderId == _response.OrderId);
-            if (order != null)
+            if (order != null && order.PaymentStatus != (int)PaymentStatus.Paid)
             {
                 order.PaymentNote = _response.LocalMessage;
                 order.ResultCode = _response.ErrorCode;
@@ -164,7 +164,8 @@ namespace HoaHoeHoaSoi.API.Controllers
             //_dbContext.Ordereds.Update(order);
             //_dbContext.SaveChanges();
 
-            return Response(200, _response);
+            var returnURL = _configuration["MobileReturnURL"];
+            return string.IsNullOrEmpty(returnURL) ? Response(200, _response) : Redirect(returnURL + "?id=" + order.Id);
         }
 
         private void HandleVNPayResponse(IQueryCollection query)
